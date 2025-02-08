@@ -39,6 +39,9 @@ bin/
 CMakeFiles/
 CMakeCache.txt
 
+# VS Code
+.vscode/
+
 # Backup
 *.bak
 
