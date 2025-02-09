@@ -19,4 +19,5 @@
     "editor.wordWrap": "on",
     "editor.wordWrapColumn": 200,
     "makefile.configureOnOpen": true,
+    "github.copilot.editor.enableAutoCompletions": false,
 }
