@@ -37,11 +37,23 @@ jobs:
       - name: Run Doxygen
         run: doxygen
 
-      - name: Setup WebAssembly Build Environment
+      - name: Setup Emscripten
         run: |
-          sudo apt-get install -y cmake ninja-build
-          curl -fsSL https://apt.llvm.org/llvm.sh | sudo bash -s -- --install-14
-          sudo apt-get install -y clang-14 lld-14 wasm-ld-14
+          sudo apt-get install -y make clang llvm lld
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+          source ./emsdk_env.sh
+
+      - name: Setup Freeglut
+        run: |
+          sudo apt-get install -y wget freeglut3-dev freeglut3-dev libglew-dev libgl1-mesa-dev libglu1-mesa-dev
+          wget https://github.com/freeglut/freeglut/releases/download/v3.6.0/freeglut-3.6.0.tar.gz
+          tar -xvf freeglut-3.6.0.tar.gz
+          cd freeglut-3.6.0
+          ./configure
+          export FREEGLUT=$(pwd)
 
       - name: Build WebAssembly (WASM)
         run: |
