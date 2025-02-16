@@ -14,7 +14,9 @@ CFLAGS = -std=c++17 -Wall -Werror -pedantic \
 	-I$FREEGLUT/include/GL \
 	-DEMSCRIPTEN_GUI=1
 
-LDFLAGS = -s USE_WEBGL2=1 -s FULL_ES3=1 --shell-file src/index.html
+LDFLAGS = -s USE_WEBGL2=1 \
+	-s FULL_ES3=1 \
+	--shell-file src/index.html
 
 all: $(OUT)
 
@@ -23,4 +25,4 @@ $(OUT): $(SRC)
 	$(EMCC) $(CFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 clean:
-	rm -f $(OUT) $(OUT).wasm $(OUT).data
+	rm -rf build/*
