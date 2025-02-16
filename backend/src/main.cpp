@@ -1,6 +1,8 @@
 #include <iostream>
+#include <unistd.h>
 
-#define EMSCRIPTEN_GUI 1 // set this to 0 to compile to cli
+// use "g++ -std=c++17 -o graph.out src/main.cpp -DEMSCRIPTEN_GUI=0" to compile for CLI
+// use make to compile for web (Makefile will use emcc instead of g++)
 
 #if EMSCRIPTEN_GUI == 1
 
@@ -21,8 +23,12 @@ void emscripten_loop()
 
 void cli_loop()
 {
-    // update_graph();
-    // cli_print_graph();
+    while (true)
+    {
+        update_graph();
+        cli_print_graph();
+        sleep(1);
+    }
 }
 
 #endif
@@ -56,6 +62,7 @@ int main()
 
 #else
 
+    init_example_graph();
     cli_loop();
 
 #endif
