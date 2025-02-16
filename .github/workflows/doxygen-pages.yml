@@ -22,12 +22,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      
+
       - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen doxygen-latex doxygen-doc doxygen-gui graphviz xapian-tools
-      
+
       - name: Install doxygen-awesome-css
         run: |
           git clone https://github.com/jothepro/doxygen-awesome-css.git
@@ -37,10 +37,29 @@ jobs:
       - name: Run Doxygen
         run: doxygen
 
+      - name: Setup WebAssembly Build Environment
+        run: |
+          sudo apt-get install -y cmake ninja-build
+          curl -fsSL https://apt.llvm.org/llvm.sh | sudo bash -s -- --install-14
+          sudo apt-get install -y clang-14 lld-14 wasm-ld-14
+
+      - name: Build WebAssembly (WASM)
+        run: |
+          cd backend
+          make
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Prepare Deployment Artifacts
+        run: |
+          mkdir -p docs/demo
+          cp backend/src/index.html docs/demo/
+          cp backend/build/graph.js docs/demo/
+          cp backend/build/graph.wasm docs/demo/
+          cp ../assets/* docs/demo/
+
+      - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'docs/'
