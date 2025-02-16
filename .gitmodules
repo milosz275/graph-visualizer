@@ -1,0 +1,3 @@
+[submodule "backend/include/emscripten"]
+	path = backend/include/emscripten
+	url = https://github.com/milosz275/emscripten
