@@ -4,21 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebAssembly Triangle</title>
+    <title>Graph Visualizer</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>WebAssembly Triangle Example</h1>
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <canvas id="canvas"></canvas>
 
     <!-- Load your generated JavaScript -->
-    <script src="triangle.js"></script>
+    <script src="graph.js"></script>
 
     <script>
         // Wait for the WASM module to load
         Module.onRuntimeInitialized = function () {
-            // Access WebGL and render the triangle here
             var canvas = document.getElementById('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             var gl = canvas.getContext('webgl2');
 
             if (!gl) {
@@ -27,7 +43,7 @@
             }
 
             // Your WebGL initialization and drawing code will go here
-            // For example, call the WebAssembly functions to set up and draw the triangle
+            // For example, call the WebAssembly functions to set up and draw the graph
         }
     </script>
 </body>
