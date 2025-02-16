@@ -7,7 +7,7 @@
 
 ![Logo](assets/logo.png)
 
-Graph Visualizer implements directed and undirected graph structures with common path finding algorithms for traversal visualization in browser using WebGL with Emscripten.[Demo](https://milosz275.github.io/graph-visualizer/demo)
+Graph Visualizer implements directed and undirected graph structures with common path finding algorithms for traversal visualization in browser using WebGL with Emscripten. Try it out with the [demo](https://milosz275.github.io/graph-visualizer/demo).
 
 ## Table of Contents
 
