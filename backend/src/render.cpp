@@ -1,3 +1,8 @@
+#include <iostream>
+
+#include <emscripten.h>
+#include <emscripten/html5.h>
+
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GLES2/gl2.h>
@@ -10,6 +15,9 @@ using namespace std;
 
 GLuint shader_program;
 GLuint VBO, VAO;
+
+static int canvas_width;
+static int canvas_height;
 
 struct background
 {
@@ -25,14 +33,15 @@ struct background
 
     background()
     {
-        mode = DARK;
-        white_rgb[0] = 1.0f;
-        white_rgb[1] = 1.0f;
-        white_rgb[2] = 1.0f;
+        mode = DARK; // default color mode
+
+        white_rgb[0] = 0.9f;
+        white_rgb[1] = 0.9f;
+        white_rgb[2] = 0.9f;
 
         dark_rgb[0] = 0.0f;
-        dark_rgb[1] = 0.0f;
-        dark_rgb[2] = 0.0f;
+        dark_rgb[1] = 0.1f;
+        dark_rgb[2] = 0.2f;
     }
 
     void set_mode(Mode new_mode) { mode = new_mode; }
@@ -53,8 +62,8 @@ circle circles[] =
         {0.0f, 0.0f, 50.0f, 1.0f, 0.0f, 0.0f},   // Red circle
         {0.5f, 0.5f, 30.0f, 0.0f, 1.0f, 0.0f},   // Green circle
         {-0.5f, -0.5f, 40.0f, 0.0f, 0.0f, 1.0f}, // Blue circle
-        {-0.5f, 0.5f, 60.0f, 0.5f, 0.5f, 0.0f},  // Yellow circle
-        {0.5f, -0.5f, 70.0f, 0.0f, 0.5f, 0.5f}   // Purple circle
+        {-0.5f, 0.5f, 60.0f, 0.9f, 0.9f, 0.0f},  // Yellow circle
+        {0.5f, -0.5f, 70.0f, 0.9f, 0.0f, 0.9f}   // Purple circle
 };
 
 void compile_shader(GLuint shader, const char *source)
@@ -73,7 +82,7 @@ void compile_shader(GLuint shader, const char *source)
     }
 }
 
-void initGL()
+void init_gl()
 {
     GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     compile_shader(vertex_shader, vertex_shader_source);
@@ -123,6 +132,12 @@ void initGL()
     GLint color_attrib = glGetAttribLocation(shader_program, "a_color");
     glEnableVertexAttribArray(color_attrib);
     glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, sizeof(circle), (void *)offsetof(circle, r));
+
+    // Save canvas size
+    canvas_width = EM_ASM_INT({ return getCanvasSize().width; }, 0);
+    canvas_height = EM_ASM_INT({ return getCanvasSize().height; }, 0);
+    cout << "width: " << canvas_width << '\n';
+    cout << "height: " << canvas_height << '\n';
 }
 
 void render()
