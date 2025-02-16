@@ -1,4 +1,26 @@
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include <GLES3/gl3.h>
+
 using namespace std;
+
+void compile_shader(GLuint shader, const char *source)
+{
+    glShaderSource(shader, 1, &source, NULL);
+    glCompileShader(shader);
+
+    GLint success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        char info_log[512];
+        glGetShaderInfoLog(shader, 512, NULL, info_log);
+        cerr << "Shader Compilation Failed:\n"
+             << info_log << '\n';
+    }
+}
 
 const char *vertex_shader_source = R"(
     attribute vec2 a_position;
