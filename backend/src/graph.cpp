@@ -74,6 +74,12 @@ public:
     }
 
     int get_node_count() const { return edges.size(); }
+
+    auto begin() { return edges.begin(); }
+    auto end() { return edges.end(); }
+
+    auto begin() const { return edges.begin(); }
+    auto end() const { return edges.end(); }
 };
 
 /*
