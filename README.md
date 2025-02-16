@@ -1,4 +1,4 @@
-# Graph Visualizer
+# [Graph Visualizer](https://milosz275.github.io/graph-visualizer/demo)
 
 [![Make](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml)
 [![CodeQL](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml)
@@ -7,7 +7,7 @@
 
 ![Logo](assets/logo.png)
 
-Graph Visualizer implements directed and undirected graph structures with common path finding algorithms for traversal visualization in browser using WebGL with Emscripten.
+Graph Visualizer implements directed and undirected graph structures with common path finding algorithms for traversal visualization in browser using WebGL with Emscripten.[Demo](https://milosz275.github.io/graph-visualizer/demo)
 
 ## Table of Contents
 
