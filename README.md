@@ -1,18 +1,23 @@
 # Graph Visualizer
 
-[![Make](https://github.com/milosz275/c-cpp-template/actions/workflows/makefile.yml/badge.svg)](https://github.com/milosz275/c-cpp-template/actions/workflows/makefile.yml)
-[![CodeQL](https://github.com/milosz275/c-cpp-template/actions/workflows/codeql.yml/badge.svg)](https://github.com/milosz275/c-cpp-template/actions/workflows/codeql.yml)
-[![Doxygen Pages](https://github.com/milosz275/c-cpp-template/actions/workflows/doxygen-pages.yml/badge.svg)](https://github.com/milosz275/c-cpp-template/actions/workflows/doxygen-pages.yml)
-[![License](https://img.shields.io/github/license/milosz275/c-cpp-template)](/LICENSE)
+[![Make](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml)
+[![CodeQL](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml)
+[![Doxygen Pages](https://github.com/milosz275/graph-visualizer/actions/workflows/doxygen-pages.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/doxygen-pages.yml)
+[![License](https://img.shields.io/github/license/milosz275/graph-visualizer)](/LICENSE)
 
 ![Logo](assets/logo.png)
 
-Description
+Graph Visualizer implements directed and undirected graph structures with common path finding algorithms for traversal visualization in browser using WebGL with Emscripten.
 
 ## Table of Contents
 
+- [Acknowledgements](#acknowledgements)
 - [License](#license)
+
+## Acknowledgements
+
+- [Project icon](https://www.svgrepo.com/svg/451006/knowledge-graph)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/milosz275/c-cpp-template/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/milosz275/graph-visualizer/blob/main/LICENSE) file for details.
