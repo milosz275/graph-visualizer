@@ -44,7 +44,9 @@ jobs:
           cd emsdk
           ./emsdk install latest
           ./emsdk activate latest
-          source ./emsdk_env.sh
+
+      - name: Source Emscripten Environment
+        run: source ./emsdk/emsdk_env.sh
 
       - name: Setup Freeglut
         run: |
