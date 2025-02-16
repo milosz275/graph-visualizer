@@ -45,9 +45,6 @@ jobs:
           ./emsdk install latest
           ./emsdk activate latest
 
-      - name: Source Emscripten Environment
-        run: source ./emsdk/emsdk_env.sh
-
       - name: Setup Freeglut
         run: |
           sudo apt-get install -y wget freeglut3-dev freeglut3-dev libglew-dev libgl1-mesa-dev libglu1-mesa-dev
@@ -58,6 +55,7 @@ jobs:
 
       - name: Build WebAssembly (WASM)
         run: |
+          source ./emsdk/emsdk_env.sh
           cd backend
           make
 
