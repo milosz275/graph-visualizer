@@ -10,6 +10,7 @@
 #include <GLES3/gl3.h>
 
 #include "shader.cpp"
+#include "graph.cpp"
 
 using namespace std;
 
@@ -50,36 +51,51 @@ struct background
 
 background bg;
 
-struct circle
+class circle
 {
+public:
     float x, y;
     float size;
     float r, g, b;
 };
 
-circle circles[] =
-    {
-        {0.0f, 0.0f, 50.0f, 1.0f, 0.0f, 0.0f},   // Red circle
-        {0.5f, 0.5f, 30.0f, 0.0f, 1.0f, 0.0f},   // Green circle
-        {-0.5f, -0.5f, 40.0f, 0.0f, 0.0f, 1.0f}, // Blue circle
-        {-0.5f, 0.5f, 60.0f, 0.9f, 0.9f, 0.0f},  // Yellow circle
-        {0.5f, -0.5f, 70.0f, 0.9f, 0.0f, 0.9f}   // Purple circle
-};
+directed_graph g;
+graph_node a, b, c, d; // ids 0, 1, 2, 3
 
-void compile_shader(GLuint shader, const char *source)
+void init_example_graph()
 {
-    glShaderSource(shader, 1, &source, NULL);
-    glCompileShader(shader);
+    g[a][b] = 5;
+    g[a][c] = 3;
+    g[b][c] = 2;
+    g[b][d] = 2;
+    g[c];
+    g[d];
 
-    GLint success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        char info_log[512];
-        glGetShaderInfoLog(shader, 512, NULL, info_log);
-        cerr << "Shader Compilation Failed:\n"
-             << info_log << '\n';
-    }
+    cout << "Generated graph with " << g.get_node_count() << " nodes.\n";
+}
+
+vector<float> generate_render_data()
+{
+    vector<float> data;
+    float inc = 0.1f;
+    g.iterate_nodes_once([&data, &inc](const graph_node &node)
+                         {
+        circle c;
+        c.x = 0.0f + inc;
+        c.y = 0.0f + inc;
+        c.size = 50.0f;
+        c.r = 1.0f;
+        c.g = 0.0f;
+        c.b = 1.0f;
+        data.push_back(c.x);
+        data.push_back(c.y);
+        data.push_back(c.size);
+        data.push_back(c.r);
+        data.push_back(c.g);
+        data.push_back(c.b);
+        inc += 0.1f; });
+
+    return data;
 }
 
 void init_gl()
@@ -107,6 +123,9 @@ void init_gl()
              << info_log << '\n';
     }
 
+    // Generate buffer data from graph
+    vector<float> data = generate_render_data();
+
     // Clean up shaders as they are no longer needed
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
@@ -118,7 +137,7 @@ void init_gl()
     // Create and bind a Vertex Buffer Object (VBO)
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(circles), circles, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
 
     // Set up vertex attributes
     GLint pos_attrib = glGetAttribLocation(shader_program, "a_position");
@@ -136,8 +155,15 @@ void init_gl()
     // Save canvas size
     canvas_width = EM_ASM_INT({ return getCanvasSize().width; }, 0);
     canvas_height = EM_ASM_INT({ return getCanvasSize().height; }, 0);
-    cout << "width: " << canvas_width << '\n';
-    cout << "height: " << canvas_height << '\n';
+    cout << "Canvas resolution: " << canvas_width << "x" << canvas_height << '\n';
+}
+
+void update_graph()
+{
+    vector<float> data = generate_render_data();
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
 }
 
 void render()
@@ -148,5 +174,5 @@ void render()
 
     glUseProgram(shader_program);
     glBindVertexArray(VAO);
-    glDrawArrays(GL_POINTS, 0, sizeof(circles) / sizeof(circle));
+    glDrawArrays(GL_POINTS, 0, g.get_node_count());
 }
