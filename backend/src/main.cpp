@@ -11,7 +11,7 @@
 
 void emscripten_loop()
 {
-    // update_graph();
+    update_graph();
     render();
 }
 
@@ -51,6 +51,7 @@ int main()
     emscripten_webgl_make_context_current(context);
     init_gl();
 
+    init_example_graph();
     emscripten_set_main_loop(emscripten_loop, 0, 1);
 
 #else
