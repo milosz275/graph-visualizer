@@ -68,7 +68,7 @@ jobs:
           cp backend/src/index.html docs/demo/
           cp backend/build/graph.js docs/demo/
           cp backend/build/graph.wasm docs/demo/
-          cp ../assets/* docs/demo/
+          cp assets/* docs/demo/
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
