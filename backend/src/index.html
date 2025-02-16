@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Graph Visualizer">
+    <meta name="author" content="Miłosz Maculewicz">
+    <meta name="keywords" content="graph, visualizer, webgl, webassembly, wasm">
+    <link rel="icon" href="favicon.ico">
     <title>Graph Visualizer</title>
     <style>
         html,
@@ -30,6 +35,15 @@
     <script src="graph.js"></script>
 
     <script>
+        // Let canvas size be obtained
+        function getCanvasSize() {
+            var canvas = document.getElementById('canvas');
+            return {
+                width: canvas.width,
+                height: canvas.height
+            };
+        }
+
         // Wait for the WASM module to load
         Module.onRuntimeInitialized = function () {
             var canvas = document.getElementById('canvas');
