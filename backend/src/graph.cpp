@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <functional>
+#include <unordered_map>
 
 using namespace std;
 
@@ -25,6 +28,18 @@ struct graph_node_hash
     size_t operator()(const graph_node &node) const { return hash<int>()(node.get_id()); }
 };
 
+namespace std
+{
+    template <>
+    struct hash<graph_node>
+    {
+        size_t operator()(const graph_node &node) const
+        {
+            return hash<int>()(node.get_id());
+        }
+    };
+}
+
 /**
  * Directed graph represented by connected nodes having references to its' neighbours.
  */
@@ -38,13 +53,12 @@ public:
 
     friend ostream &operator<<(ostream &os, const directed_graph &graph)
     {
-        os << "Directed Graph:\n";
         for (const auto &[node, neighbors] : graph.edges)
         {
             os << node << " -> { ";
             for (const auto &[neighbor, weight] : neighbors)
             {
-                os << neighbor << "(" << weight << ") ";
+                os << neighbor << " = " << weight << "; ";
             }
             os << "}\n";
         }
@@ -58,6 +72,8 @@ public:
             func(node);
         }
     }
+
+    int get_node_count() const { return edges.size(); }
 };
 
 /*
