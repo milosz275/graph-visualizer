@@ -52,7 +52,6 @@ jobs:
           wget https://github.com/freeglut/freeglut/releases/download/v3.6.0/freeglut-3.6.0.tar.gz
           tar -xvf freeglut-3.6.0.tar.gz
           cd freeglut-3.6.0
-          ./configure
           export FREEGLUT=$(pwd)
 
       - name: Build WebAssembly (WASM)
