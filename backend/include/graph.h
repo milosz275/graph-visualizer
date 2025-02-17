@@ -15,6 +15,7 @@ class graph_node
 {
     int id;     ///< Unique identifier for the node.
     float x, y; ///< Position of the node in the -1.0f - 1.0f domain.
+    bool selected; ///< Flag indicating if the node is selected.
 
 public:
     /**
@@ -29,28 +30,16 @@ public:
     int get_id() const;
 
     /**
-     * @brief Gets the x position of the node.
-     * @return The x position of the node.
+     * @brief Gets the selected flag of the node.
+     * @return The selected flag of the node.
      */
-    float get_x() const;
-
+    bool get_selected() const;
+    
     /**
-     * @brief Gets the y position of the node.
-     * @return The y position of the node.
+     * @brief Sets the selected flag of the node.
+     * @param selected The value to set the selected flag to.
      */
-    float get_y() const;
-
-    /**
-     * @brief Sets the x position of the node.
-     * @param x The x position of the node.
-     */
-    void set_x(float x);
-
-    /**
-     * @brief Sets the y position of the node.
-     * @param y The y position of the node.
-     */
-    void set_y(float y);
+    void set_selected(bool selected);
 
     /**
      * @brief Equality operator for comparing two graph nodes.
@@ -129,7 +118,13 @@ public:
      * @brief Iterates through all nodes in the graph exactly once.
      * @param func The function to apply to each node.
      */
-    void iterate_nodes(function<void(graph_node &)> func);
+    void iterate_nodes(function<void(graph_node &)> func) const;
+
+    /**
+     * @brief Iterates through all nodes in the graph exactly once in ascending order of node id.
+     * @param func The function to apply to each node.
+     */
+    void iterate_nodes_by_id(function<void(graph_node &)> func) const;
 
     /**
      * @brief Iterates through all edges in the graph exactly once.
@@ -142,6 +137,12 @@ public:
      * @return The number of nodes in the graph.
      */
     int get_node_count() const;
+
+    /**
+     * @brief Gets the number of edges in the graph.
+     * @return The number of edges in the graph.
+     */
+    int get_edge_count() const;
 
     /**
      * @brief Gets an iterator to the beginning of the graph.
