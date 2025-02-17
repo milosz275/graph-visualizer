@@ -53,6 +53,17 @@ public:
 };
 
 /**
+ * @brief Represents an edge with start and end positions and color.
+ */
+class edge
+{
+public:
+    float start_x, start_y; ///< Start position of the edge.
+    float end_x, end_y;     ///< End position of the edge.
+    float r, g, b;          ///< Color of the edge.
+};
+
+/**
  * @brief Initializes an example graph with predefined nodes and edges.
  */
 void init_example_graph();
@@ -62,6 +73,12 @@ void init_example_graph();
  * @return A vector of floats containing the render data.
  */
 vector<float> generate_circle_render_data();
+
+/**
+ * @brief Generates render data for edges representing graph connections.
+ * @return A vector of floats containing the render data.
+ */
+vector<float> generate_edge_render_data();
 
 /**
  * @brief Initializes OpenGL settings and shaders.
