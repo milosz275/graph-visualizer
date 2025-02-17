@@ -13,7 +13,8 @@ using namespace std;
  */
 class graph_node
 {
-    int id; ///< Unique identifier for the node.
+    int id;     ///< Unique identifier for the node.
+    float x, y; ///< Position of the node in the -1.0f - 1.0f domain.
 
 public:
     /**
@@ -26,6 +27,30 @@ public:
      * @return The unique identifier of the node.
      */
     int get_id() const;
+
+    /**
+     * @brief Gets the x position of the node.
+     * @return The x position of the node.
+     */
+    float get_x() const;
+
+    /**
+     * @brief Gets the y position of the node.
+     * @return The y position of the node.
+     */
+    float get_y() const;
+
+    /**
+     * @brief Sets the x position of the node.
+     * @param x The x position of the node.
+     */
+    void set_x(float x);
+
+    /**
+     * @brief Sets the y position of the node.
+     * @param y The y position of the node.
+     */
+    void set_y(float y);
 
     /**
      * @brief Equality operator for comparing two graph nodes.
@@ -104,7 +129,13 @@ public:
      * @brief Iterates through all nodes in the graph exactly once.
      * @param func The function to apply to each node.
      */
-    void iterate_nodes_once(function<void(const graph_node &)> func) const;
+    void iterate_nodes(function<void(graph_node &)> func);
+
+    /**
+     * @brief Iterates through all edges in the graph exactly once.
+     * @param func The function to apply to each edge.
+     */
+    void iterate_edges(function<void(const graph_node &, const graph_node &)> func) const;
 
     /**
      * @brief Gets the number of nodes in the graph.
