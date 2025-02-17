@@ -15,12 +15,12 @@ struct background
      */
     enum Mode
     {
-        WHITE,
+        LIGHT,
         DARK
     };
 
     Mode mode;          ///< Current color mode.
-    float white_rgb[3]; ///< RGB values for white mode.
+    float light_rgb[3]; ///< RGB values for light mode.
     float dark_rgb[3];  ///< RGB values for dark mode.
 
     /**
@@ -61,6 +61,7 @@ public:
     float start_x, start_y; ///< Start position of the edge.
     float end_x, end_y;     ///< End position of the edge.
     float r, g, b;          ///< Color of the edge.
+    float weight;           ///< Weight of the edge.
 };
 
 /**
