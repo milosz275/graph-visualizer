@@ -6,12 +6,12 @@
 using namespace std;
 
 /**
- * @brief Represents the background color mode and RGB values.
+ * @brief Represents the color scheme light and dark mode with corresponding RGB values.
  */
-struct background
+struct color_scheme
 {
     /**
-     * @brief Enum for background color modes.
+     * @brief Enum for available color modes.
      */
     enum Mode
     {
@@ -19,14 +19,23 @@ struct background
         DARK
     };
 
-    Mode mode;          ///< Current color mode.
-    float light_rgb[3]; ///< RGB values for light mode.
-    float dark_rgb[3];  ///< RGB values for dark mode.
+    Mode mode;                     ///< Current color mode.
+    
+    float light_rgb_background[3];      ///< background RGB values for light mode.
+    float light_rgb_selected_circle[3]; ///< selected circle RGB values for light mode.
+    float light_rgb_circle[3];          ///< circle RGB values for light mode.
+    float light_rgb_line[3];            ///< line RGB values for light mode.
+
+    float dark_rgb_background[3];      ///< background RGB values for dark mode.
+    float dark_rgb_selected_circle[3]; ///< selected circle RGB values for dark mode.
+    float light_rgb_circle[3];         ///< circle RGB values for light mode.
+    float dark_rgb_circle[3];          ///< circle RGB values for dark mode.
+    float dark_rgb_line[3];            ///< line RGB values for dark mode.
 
     /**
-     * @brief Constructs a background object with default color mode set to dark.
+     * @brief Constructs a color scheme object with default color mode set to dark.
      */
-    background();
+    color_scheme();
 
     /**
      * @brief Sets the background color mode.
@@ -35,10 +44,28 @@ struct background
     void set_mode(Mode new_mode);
 
     /**
-     * @brief Gets the current RGB values based on the color mode.
+     * @brief Gets the current RGB values for the background based on the color mode.
      * @return Pointer to the current RGB values.
      */
-    const float *get_current_rgb() const;
+    const float *get_background_rgb() const;
+
+    /**
+     * @brief Gets the current RGB values for the selected circle based on the color mode.
+     * @return Pointer to the current RGB values.
+     */
+    const float *get_selected_circle_rgb() const;
+
+    /**
+     * @brief Gets the current RGB values for the circle based on the color mode.
+     * @return Pointer to the current RGB values.
+     */
+    const float *get_circle_rgb() const;
+
+    /**
+     * @brief Gets the current RGB values for the line based on the color mode.
+     * @return Pointer to the current RGB values.
+     */
+    const float *get_line_rgb() const;
 };
 
 /**
@@ -53,19 +80,19 @@ public:
 };
 
 /**
- * @brief Represents an edge with start and end positions and color.
+ * @brief Represents an line with start and end positions and color.
  */
-class edge
+class line
 {
 public:
-    float start_x, start_y; ///< Start position of the edge.
-    float end_x, end_y;     ///< End position of the edge.
-    float r, g, b;          ///< Color of the edge.
-    float weight;           ///< Weight of the edge.
+    float start_x, start_y; ///< Start position of the line.
+    float end_x, end_y;     ///< End position of the line.
+    float r, g, b;          ///< Color of the line.
+    float weight;           ///< Weight of the line.
 };
 
 /**
- * @brief Initializes an example graph with predefined nodes and edges.
+ * @brief Initializes an example graph with predefined nodes and lines.
  */
 void init_example_graph();
 
@@ -76,10 +103,10 @@ void init_example_graph();
 vector<float> generate_circle_render_data();
 
 /**
- * @brief Generates render data for edges representing graph connections.
+ * @brief Generates render data for lines representing graph connections.
  * @return A vector of floats containing the render data.
  */
-vector<float> generate_edge_render_data();
+vector<float> generate_line_render_data();
 
 /**
  * @brief Initializes OpenGL settings and shaders.
