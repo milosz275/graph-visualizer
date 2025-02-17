@@ -1,3 +1,5 @@
+#include "graph.h"
+
 #include <iostream>
 #include <algorithm>
 #include <functional>
@@ -40,9 +42,6 @@ namespace std
     };
 }
 
-/**
- * Directed graph represented by connected nodes having references to its' neighbours.
- */
 class directed_graph
 {
     unordered_map<graph_node, unordered_map<graph_node, int>, graph_node_hash> edges;
