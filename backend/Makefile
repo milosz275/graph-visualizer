@@ -10,6 +10,8 @@ CFLAGS = -std=c++17 -Wall -Werror -pedantic \
 	-s NO_EXIT_RUNTIME=1 \
 	-s WASM=1 \
 	-Wno-nullability-completeness -Wno-nullability-extension \
+	-Wno-gnu-zero-variadic-macro-arguments \
+	-Iinclude \
 	-I$EMSDK/upstream/emscripten/cache/sysroot/include \
 	-I$FREEGLUT/include/GL \
 	-DEMSCRIPTEN_GUI=1
