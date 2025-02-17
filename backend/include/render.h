@@ -28,7 +28,6 @@ struct color_scheme
 
     float dark_rgb_background[3];      ///< background RGB values for dark mode.
     float dark_rgb_selected_circle[3]; ///< selected circle RGB values for dark mode.
-    float light_rgb_circle[3];         ///< circle RGB values for light mode.
     float dark_rgb_circle[3];          ///< circle RGB values for dark mode.
     float dark_rgb_line[3];            ///< line RGB values for dark mode.
 
