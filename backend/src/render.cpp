@@ -27,7 +27,7 @@ unordered_map<int, pair<float, float>> node_positions; // node id -> (x, y)
 
 color_scheme::color_scheme()
 {
-    mode = LIGHT; // default color mode
+    mode = DARK; // default color mode
 
     light_rgb_background[0] = 0.9f;
     light_rgb_background[1] = 0.9f;
@@ -35,7 +35,7 @@ color_scheme::color_scheme()
 
     light_rgb_selected_circle[0] = 1.0f;
     light_rgb_selected_circle[1] = 0.0f;
-    light_rgb_selected_circle[2] = 0.0f;
+    light_rgb_selected_circle[2] = 1.0f;
 
     light_rgb_circle[0] = 0.0f;
     light_rgb_circle[1] = 0.0f;
@@ -51,7 +51,7 @@ color_scheme::color_scheme()
 
     dark_rgb_selected_circle[0] = 1.0f;
     dark_rgb_selected_circle[1] = 0.0f;
-    dark_rgb_selected_circle[2] = 0.0f;
+    dark_rgb_selected_circle[2] = 1.0f;
 
     dark_rgb_circle[0] = 0.0f;
     dark_rgb_circle[1] = 1.0f;
