@@ -13,6 +13,14 @@ graph_node::graph_node() { id = counter++; }
 
 int graph_node::get_id() const { return id; }
 
+float graph_node::get_x() const { return x; }
+
+float graph_node::get_y() const { return y; }
+
+void graph_node::set_x(float x) { this->x = x; }
+
+void graph_node::set_y(float y) { this->y = y; }
+
 bool graph_node::operator==(const graph_node &other) const { return id == other.id; }
 
 ostream &operator<<(ostream &os, const graph_node &node)
@@ -46,11 +54,22 @@ ostream &operator<<(ostream &os, const directed_graph &graph)
     return os;
 }
 
-void directed_graph::iterate_nodes_once(function<void(const graph_node &)> func) const
+void directed_graph::iterate_nodes(function<void(graph_node &)> func)
 {
-    for (const auto &[node, _] : edges)
+    for (auto &pair : edges)
     {
-        func(node);
+        func(const_cast<graph_node&>(pair.first));
+    }
+}
+
+void directed_graph::iterate_edges(function<void(const graph_node &, const graph_node &)> func) const
+{
+    for (const auto &[node, neighbors] : edges)
+    {
+        for (const auto &[neighbor, _] : neighbors)
+        {
+            func(node, neighbor);
+        }
     }
 }
 
