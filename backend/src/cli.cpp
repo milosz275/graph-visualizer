@@ -1,6 +1,8 @@
+#include "cli.h"
+
 #include <iostream>
 
-#include "graph.cpp"
+#include "graph.h"
 
 using namespace std;
 
