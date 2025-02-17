@@ -72,7 +72,7 @@ vector<float> generate_circle_render_data()
     int i = 0, j = 0;
     float inc = 0.5f;
 
-    g.iterate_nodes_once([&data, &rows, &cols, &i, &j, &inc](const graph_node &node)
+    g.iterate_nodes_once([&data, &cols, &i, &j, &inc](const graph_node &node)
                          {
         circle c;
         c.x = -0.25f + i * inc;
