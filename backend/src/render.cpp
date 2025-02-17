@@ -16,19 +16,22 @@
 
 using namespace std;
 
-GLuint shader_program;
-GLuint VBO, VAO;
+GLuint circle_shader_program;  // shader program for circles
+GLuint edge_shader_program;    // shader program for edges
+GLuint circle_vbo, circle_vao; // vertex buffer object, vertex array object for circles
+GLuint edge_vbo, edge_vao;     // vertex buffer object, vertex array object for edges
 
-static int canvas_width;
-static int canvas_height;
+static int canvas_width, canvas_height; // canvas resolution
+
+unordered_map<int, pair<float, float>> node_positions; // node id -> (x, y)
 
 background::background()
 {
-    mode = DARK; // default color mode
+    mode = LIGHT; // default color mode
 
-    white_rgb[0] = 0.9f;
-    white_rgb[1] = 0.9f;
-    white_rgb[2] = 0.9f;
+    light_rgb[0] = 0.9f;
+    light_rgb[1] = 0.9f;
+    light_rgb[2] = 1.0f;
 
     dark_rgb[0] = 0.0f;
     dark_rgb[1] = 0.1f;
@@ -42,25 +45,30 @@ void background::set_mode(Mode new_mode)
 
 const float *background::get_current_rgb() const
 {
-    return (mode == WHITE) ? white_rgb : dark_rgb;
+    return (mode == LIGHT) ? light_rgb : dark_rgb;
 }
 
 background bg;
 
 directed_graph g;
-graph_node a, b, c, d, e; // ids 0, 1, 2, 3, 4
+graph_node a, b, c, d; // ids 0, 1, 2, 3
 
 void init_example_graph()
 {
-    g[a][b] = 5;
-    g[a][c] = 3;
-    g[b][c] = 2;
-    g[b][d] = 2;
+    // add nodes
+    g[a];
+    g[b];
     g[c];
     g[d];
-    g[e];
 
-    cout << "Generated graph with " << g.get_node_count() << " nodes.\n";
+    // define edges
+    g[a][b] = 5; // 0 to 1
+    g[a][c] = 3; // 0 to 2
+    g[b][c] = 2; // 1 to 2
+    g[b][d] = 2; // 1 to 3
+
+    cout << "Generated graph with " << g.get_node_count() << " nodes and " << g.get_edge_count() << " edges.\n";
+    cout << g;
 }
 
 vector<float> generate_circle_render_data()
@@ -72,11 +80,11 @@ vector<float> generate_circle_render_data()
     int i = 0, j = 0;
     float inc = 0.5f;
 
-    g.iterate_nodes_once([&data, &rows, &cols, &i, &j, &inc](const graph_node &node)
-                         {
+    g.iterate_nodes_by_id([&data, &rows, &cols, &i, &j, &inc](graph_node &node)
+                    {
         circle c;
-        c.x = -0.25f + i * inc;
-        c.y = -0.25f + j * inc;
+        c.x = -0.25f + i * inc;       // from left to right
+        c.y = 0.25f + j * (-1 * inc); // from top to bottom
         c.size = 40.0f;
         c.r = 1.0f;
         c.g = 0.0f;
@@ -87,6 +95,7 @@ vector<float> generate_circle_render_data()
         data.push_back(c.r);
         data.push_back(c.g);
         data.push_back(c.b);
+        node_positions[node.get_id()] = {c.x, c.y};
         i++; 
         if (i == cols)
         {
@@ -94,65 +103,153 @@ vector<float> generate_circle_render_data()
             j++;
             if (j == rows)
                 j = 0;
-        }
-    });
+        } });
+
+    return data;
+}
+
+vector<float> generate_edge_render_data()
+{
+    vector<float> data;
+
+    g.iterate_edges([&data](const graph_node &start, const graph_node &end)
+                    {
+                        auto start_pos = node_positions[start.get_id()];
+                        auto end_pos = node_positions[end.get_id()];
+
+                        // first vertex of the edge
+                        data.push_back(start_pos.first);
+                        data.push_back(start_pos.second);
+                        data.push_back(end_pos.first);
+                        data.push_back(end_pos.second);
+                        data.push_back(1.0f); // r
+                        data.push_back(1.0f); // g
+                        data.push_back(1.0f); // b
+
+                        // second vertex of the edge
+                        data.push_back(end_pos.first);
+                        data.push_back(end_pos.second);
+                        data.push_back(start_pos.first);
+                        data.push_back(start_pos.second);
+                        data.push_back(1.0f); // r
+                        data.push_back(1.0f); // g
+                        data.push_back(1.0f); // b
+                    });
 
     return data;
 }
 
 void init_gl()
 {
-    GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    compile_shader(vertex_shader, vertex_shader_source);
+    // compile and link circle shaders
+    GLuint circle_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    compile_shader(circle_vertex_shader, circle_vertex_shader_source);
 
-    GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    compile_shader(fragment_shader, fragment_shader_source);
+    GLuint circle_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    compile_shader(circle_fragment_shader, circle_fragment_shader_source);
 
-    // link shaders into a program
-    shader_program = glCreateProgram();
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-    glLinkProgram(shader_program);
+    circle_shader_program = glCreateProgram();
+    glAttachShader(circle_shader_program, circle_vertex_shader);
+    glAttachShader(circle_shader_program, circle_fragment_shader);
+    glLinkProgram(circle_shader_program);
 
     // check for linking errors
     GLint success;
-    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
+    glGetProgramiv(circle_shader_program, GL_LINK_STATUS, &success);
     if (!success)
     {
         char info_log[512];
-        glGetProgramInfoLog(shader_program, 512, NULL, info_log);
-        cerr << "Shader Program Linking Failed:\n"
+        glGetProgramInfoLog(circle_shader_program, 512, NULL, info_log);
+        cerr << "Circle Shader Program Linking Failed:\n"
+             << info_log << '\n';
+    }
+
+    // compile and link edge shaders
+    GLuint edge_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    compile_shader(edge_vertex_shader, edge_vertex_shader_source);
+
+    GLuint edge_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    compile_shader(edge_fragment_shader, edge_fragment_shader_source);
+
+    edge_shader_program = glCreateProgram();
+    glAttachShader(edge_shader_program, edge_vertex_shader);
+    glAttachShader(edge_shader_program, edge_fragment_shader);
+    glLinkProgram(edge_shader_program);
+
+    // check for linking errors
+    glGetProgramiv(edge_shader_program, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        char info_log[512];
+        glGetProgramInfoLog(edge_shader_program, 512, NULL, info_log);
+        cerr << "Edge Shader Program Linking Failed:\n"
              << info_log << '\n';
     }
 
     // generate buffer data from graph
-    vector<float> data = generate_circle_render_data();
+    vector<float> node_data = generate_circle_render_data();
+    vector<float> edge_data = generate_edge_render_data();
 
     // clean up shaders as they are no longer needed
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    glDeleteShader(circle_vertex_shader);
+    glDeleteShader(circle_fragment_shader);
+    glDeleteShader(edge_vertex_shader);
+    glDeleteShader(edge_fragment_shader);
 
-    // create and bind a Vertex Array Object (VAO)
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    // create and bind a Vertex Array Object (VAO) for nodes
+    glGenVertexArrays(1, &circle_vao);
+    glBindVertexArray(circle_vao);
 
-    // create and bind a Vertex Buffer Object (VBO)
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
+    // create and bind a Vertex Buffer Object (VBO) for nodes
+    glGenBuffers(1, &circle_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, circle_vbo);
+    glBufferData(GL_ARRAY_BUFFER, node_data.size() * sizeof(float), node_data.data(), GL_STATIC_DRAW);
 
-    // set up vertex attributes
-    GLint pos_attrib = glGetAttribLocation(shader_program, "a_position");
-    glEnableVertexAttribArray(pos_attrib);
-    glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, sizeof(circle), (void *)offsetof(circle, x));
+    // set up vertex attributes for nodes
+    GLint pos_attrib = glGetAttribLocation(circle_shader_program, "a_position");
+    if (pos_attrib != -1)
+    {
+        glEnableVertexAttribArray(pos_attrib);
+        glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+    }
 
-    GLint size_attrib = glGetAttribLocation(shader_program, "a_size");
-    glEnableVertexAttribArray(size_attrib);
-    glVertexAttribPointer(size_attrib, 1, GL_FLOAT, GL_FALSE, sizeof(circle), (void *)offsetof(circle, size));
+    GLint size_attrib = glGetAttribLocation(circle_shader_program, "a_size");
+    if (size_attrib != -1)
+    {
+        glEnableVertexAttribArray(size_attrib);
+        glVertexAttribPointer(size_attrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(2 * sizeof(float)));
+    }
 
-    GLint color_attrib = glGetAttribLocation(shader_program, "a_color");
-    glEnableVertexAttribArray(color_attrib);
-    glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, sizeof(circle), (void *)offsetof(circle, r));
+    GLint color_attrib = glGetAttribLocation(circle_shader_program, "a_color");
+    if (color_attrib != -1)
+    {
+        glEnableVertexAttribArray(color_attrib);
+        glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+    }
+
+    // create and bind a Vertex Array Object (VAO) for edges
+    glGenVertexArrays(1, &edge_vao);
+    glBindVertexArray(edge_vao);
+
+    // create and bind a Vertex Buffer Object (VBO) for edges
+    glGenBuffers(1, &edge_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, edge_vbo);
+    glBufferData(GL_ARRAY_BUFFER, edge_data.size() * sizeof(float), edge_data.data(), GL_STATIC_DRAW);
+
+    // setup attribute
+    pos_attrib = glGetAttribLocation(edge_shader_program, "a_position");
+    if (pos_attrib != -1)
+    {
+        glEnableVertexAttribArray(pos_attrib);
+        glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)0);
+    }
+
+    GLint color_attrib_edge = glGetAttribLocation(edge_shader_program, "a_color");
+    if (color_attrib_edge != -1)
+    {
+        glEnableVertexAttribArray(color_attrib_edge);
+        glVertexAttribPointer(color_attrib_edge, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(4 * sizeof(float)));
+    }
 
     // save canvas size
     canvas_width = EM_ASM_INT({ return getCanvasSize().width; }, 0);
@@ -162,10 +259,15 @@ void init_gl()
 
 void update_graph()
 {
-    vector<float> data = generate_circle_render_data();
+    vector<float> circle_data = generate_circle_render_data();
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, circle_vbo);
+    glBufferData(GL_ARRAY_BUFFER, circle_data.size() * sizeof(float), circle_data.data(), GL_STATIC_DRAW);
+
+    vector<float> edge_data = generate_edge_render_data();
+
+    glBindBuffer(GL_ARRAY_BUFFER, edge_vbo);
+    glBufferData(GL_ARRAY_BUFFER, edge_data.size() * sizeof(float), edge_data.data(), GL_STATIC_DRAW);
 }
 
 void render()
@@ -174,7 +276,13 @@ void render()
     glClearColor(rgb[0], rgb[1], rgb[2], 1.0f); // background
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glUseProgram(shader_program);
-    glBindVertexArray(VAO);
+    // draw nodes
+    glUseProgram(circle_shader_program);
+    glBindVertexArray(circle_vao);
     glDrawArrays(GL_POINTS, 0, g.get_node_count());
+
+    // draw edges
+    glUseProgram(edge_shader_program);
+    glBindVertexArray(edge_vao);
+    glDrawArrays(GL_LINES, 0, g.get_edge_count() * 2);
 }
