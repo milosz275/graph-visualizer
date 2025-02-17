@@ -17,38 +17,77 @@
 using namespace std;
 
 GLuint circle_shader_program;  // shader program for circles
-GLuint edge_shader_program;    // shader program for edges
+GLuint line_shader_program;    // shader program for lines
 GLuint circle_vbo, circle_vao; // vertex buffer object, vertex array object for circles
-GLuint edge_vbo, edge_vao;     // vertex buffer object, vertex array object for edges
+GLuint line_vbo, line_vao;     // vertex buffer object, vertex array object for lines
 
 static int canvas_width, canvas_height; // canvas resolution
 
 unordered_map<int, pair<float, float>> node_positions; // node id -> (x, y)
 
-background::background()
+color_scheme::color_scheme()
 {
     mode = LIGHT; // default color mode
 
-    light_rgb[0] = 0.9f;
-    light_rgb[1] = 0.9f;
-    light_rgb[2] = 1.0f;
+    light_rgb_background[0] = 0.9f;
+    light_rgb_background[1] = 0.9f;
+    light_rgb_background[2] = 1.0f;
 
-    dark_rgb[0] = 0.0f;
-    dark_rgb[1] = 0.1f;
-    dark_rgb[2] = 0.2f;
+    light_rgb_selected_circle[0] = 1.0f;
+    light_rgb_selected_circle[1] = 0.0f;
+    light_rgb_selected_circle[2] = 0.0f;
+
+    light_rgb_circle[0] = 0.0f;
+    light_rgb_circle[1] = 0.0f;
+    light_rgb_circle[2] = 1.0f;
+
+    light_rgb_line[0] = 0.0f;
+    light_rgb_line[1] = 0.0f;
+    light_rgb_line[2] = 0.0f;
+
+    dark_rgb_background[0] = 0.0f;
+    dark_rgb_background[1] = 0.1f;
+    dark_rgb_background[2] = 0.2f;
+
+    dark_rgb_selected_circle[0] = 1.0f;
+    dark_rgb_selected_circle[1] = 0.0f;
+    dark_rgb_selected_circle[2] = 0.0f;
+
+    dark_rgb_circle[0] = 0.0f;
+    dark_rgb_circle[1] = 1.0f;
+    dark_rgb_circle[2] = 0.0f;
+
+    dark_rgb_line[0] = 1.0f;
+    dark_rgb_line[1] = 1.0f;
+    dark_rgb_line[2] = 1.0f;
 }
 
-void background::set_mode(Mode new_mode)
+void color_scheme::set_mode(Mode new_mode)
 {
     mode = new_mode;
 }
 
-const float *background::get_current_rgb() const
+const float *color_scheme::get_background_rgb() const
 {
-    return (mode == LIGHT) ? light_rgb : dark_rgb;
+    return (mode == LIGHT) ? light_rgb_background : dark_rgb_background;
 }
 
-background bg;
+const float *color_scheme::get_selected_circle_rgb() const
+{
+    return (mode == LIGHT) ? light_rgb_selected_circle : dark_rgb_selected_circle;
+}
+
+const float *color_scheme::get_circle_rgb() const
+{
+    return (mode == LIGHT) ? light_rgb_circle : dark_rgb_circle;
+}
+
+const float *color_scheme::get_line_rgb() const
+{
+    return (mode == LIGHT) ? light_rgb_line : dark_rgb_line;
+}
+
+color_scheme scheme;
 
 directed_graph g;
 graph_node a, b, c, d; // ids 0, 1, 2, 3
@@ -86,9 +125,8 @@ vector<float> generate_circle_render_data()
         c.x = -0.25f + i * inc;       // from left to right
         c.y = 0.25f + j * (-1 * inc); // from top to bottom
         c.size = 40.0f;
-        c.r = 1.0f;
-        c.g = 0.0f;
-        c.b = 1.0f;
+        const float *rgb = scheme.get_circle_rgb();
+        c.r = rgb[0], c.g = rgb[1], c.b = rgb[2];
         data.push_back(c.x);
         data.push_back(c.y);
         data.push_back(c.size);
@@ -108,7 +146,7 @@ vector<float> generate_circle_render_data()
     return data;
 }
 
-vector<float> generate_edge_render_data()
+vector<float> generate_line_render_data()
 {
     vector<float> data;
 
@@ -116,24 +154,25 @@ vector<float> generate_edge_render_data()
                     {
                         auto start_pos = node_positions[start.get_id()];
                         auto end_pos = node_positions[end.get_id()];
+                        const float *rgb = scheme.get_line_rgb();
 
-                        // first vertex of the edge
+                        // first vertex of the line
                         data.push_back(start_pos.first);
                         data.push_back(start_pos.second);
                         data.push_back(end_pos.first);
                         data.push_back(end_pos.second);
-                        data.push_back(1.0f); // r
-                        data.push_back(1.0f); // g
-                        data.push_back(1.0f); // b
+                        data.push_back(rgb[0]); // r
+                        data.push_back(rgb[1]); // g
+                        data.push_back(rgb[2]); // b
 
-                        // second vertex of the edge
+                        // second vertex of the line
                         data.push_back(end_pos.first);
                         data.push_back(end_pos.second);
                         data.push_back(start_pos.first);
                         data.push_back(start_pos.second);
-                        data.push_back(1.0f); // r
-                        data.push_back(1.0f); // g
-                        data.push_back(1.0f); // b
+                        data.push_back(rgb[0]); // r
+                        data.push_back(rgb[1]); // g
+                        data.push_back(rgb[2]); // b
                     });
 
     return data;
@@ -164,37 +203,37 @@ void init_gl()
              << info_log << '\n';
     }
 
-    // compile and link edge shaders
-    GLuint edge_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    compile_shader(edge_vertex_shader, edge_vertex_shader_source);
+    // compile and link line shaders
+    GLuint line_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    compile_shader(line_vertex_shader, line_vertex_shader_source);
 
-    GLuint edge_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    compile_shader(edge_fragment_shader, edge_fragment_shader_source);
+    GLuint line_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    compile_shader(line_fragment_shader, line_fragment_shader_source);
 
-    edge_shader_program = glCreateProgram();
-    glAttachShader(edge_shader_program, edge_vertex_shader);
-    glAttachShader(edge_shader_program, edge_fragment_shader);
-    glLinkProgram(edge_shader_program);
+    line_shader_program = glCreateProgram();
+    glAttachShader(line_shader_program, line_vertex_shader);
+    glAttachShader(line_shader_program, line_fragment_shader);
+    glLinkProgram(line_shader_program);
 
     // check for linking errors
-    glGetProgramiv(edge_shader_program, GL_LINK_STATUS, &success);
+    glGetProgramiv(line_shader_program, GL_LINK_STATUS, &success);
     if (!success)
     {
         char info_log[512];
-        glGetProgramInfoLog(edge_shader_program, 512, NULL, info_log);
-        cerr << "Edge Shader Program Linking Failed:\n"
+        glGetProgramInfoLog(line_shader_program, 512, NULL, info_log);
+        cerr << "line Shader Program Linking Failed:\n"
              << info_log << '\n';
     }
 
     // generate buffer data from graph
     vector<float> node_data = generate_circle_render_data();
-    vector<float> edge_data = generate_edge_render_data();
+    vector<float> line_data = generate_line_render_data();
 
     // clean up shaders as they are no longer needed
     glDeleteShader(circle_vertex_shader);
     glDeleteShader(circle_fragment_shader);
-    glDeleteShader(edge_vertex_shader);
-    glDeleteShader(edge_fragment_shader);
+    glDeleteShader(line_vertex_shader);
+    glDeleteShader(line_fragment_shader);
 
     // create and bind a Vertex Array Object (VAO) for nodes
     glGenVertexArrays(1, &circle_vao);
@@ -227,28 +266,28 @@ void init_gl()
         glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
     }
 
-    // create and bind a Vertex Array Object (VAO) for edges
-    glGenVertexArrays(1, &edge_vao);
-    glBindVertexArray(edge_vao);
+    // create and bind a Vertex Array Object (VAO) for lines
+    glGenVertexArrays(1, &line_vao);
+    glBindVertexArray(line_vao);
 
-    // create and bind a Vertex Buffer Object (VBO) for edges
-    glGenBuffers(1, &edge_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, edge_vbo);
-    glBufferData(GL_ARRAY_BUFFER, edge_data.size() * sizeof(float), edge_data.data(), GL_STATIC_DRAW);
+    // create and bind a Vertex Buffer Object (VBO) for lines
+    glGenBuffers(1, &line_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, line_vbo);
+    glBufferData(GL_ARRAY_BUFFER, line_data.size() * sizeof(float), line_data.data(), GL_STATIC_DRAW);
 
     // setup attribute
-    pos_attrib = glGetAttribLocation(edge_shader_program, "a_position");
+    pos_attrib = glGetAttribLocation(line_shader_program, "a_position");
     if (pos_attrib != -1)
     {
         glEnableVertexAttribArray(pos_attrib);
         glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)0);
     }
 
-    GLint color_attrib_edge = glGetAttribLocation(edge_shader_program, "a_color");
-    if (color_attrib_edge != -1)
+    GLint color_attrib_line = glGetAttribLocation(line_shader_program, "a_color");
+    if (color_attrib_line != -1)
     {
-        glEnableVertexAttribArray(color_attrib_edge);
-        glVertexAttribPointer(color_attrib_edge, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(4 * sizeof(float)));
+        glEnableVertexAttribArray(color_attrib_line);
+        glVertexAttribPointer(color_attrib_line, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(4 * sizeof(float)));
     }
 
     // save canvas size
@@ -264,15 +303,15 @@ void update_graph()
     glBindBuffer(GL_ARRAY_BUFFER, circle_vbo);
     glBufferData(GL_ARRAY_BUFFER, circle_data.size() * sizeof(float), circle_data.data(), GL_STATIC_DRAW);
 
-    vector<float> edge_data = generate_edge_render_data();
+    vector<float> line_data = generate_line_render_data();
 
-    glBindBuffer(GL_ARRAY_BUFFER, edge_vbo);
-    glBufferData(GL_ARRAY_BUFFER, edge_data.size() * sizeof(float), edge_data.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, line_vbo);
+    glBufferData(GL_ARRAY_BUFFER, line_data.size() * sizeof(float), line_data.data(), GL_STATIC_DRAW);
 }
 
 void render()
 {
-    const float *rgb = bg.get_current_rgb();
+    const float *rgb = scheme.get_background_rgb();
     glClearColor(rgb[0], rgb[1], rgb[2], 1.0f); // background
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -281,8 +320,8 @@ void render()
     glBindVertexArray(circle_vao);
     glDrawArrays(GL_POINTS, 0, g.get_node_count());
 
-    // draw edges
-    glUseProgram(edge_shader_program);
-    glBindVertexArray(edge_vao);
+    // draw lines
+    glUseProgram(line_shader_program);
+    glBindVertexArray(line_vao);
     glDrawArrays(GL_LINES, 0, g.get_edge_count() * 2);
 }
