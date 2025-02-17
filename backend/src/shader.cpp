@@ -53,7 +53,7 @@ const char *circle_fragment_shader_source = R"(
     }
 )";
 
-const char *edge_vertex_shader_source = R"(
+const char *line_vertex_shader_source = R"(
     attribute vec2 a_position;
     attribute vec3 a_color;
     varying vec3 v_color;
@@ -64,7 +64,7 @@ const char *edge_vertex_shader_source = R"(
     }
 )";
 
-const char *edge_fragment_shader_source = R"(
+const char *line_fragment_shader_source = R"(
     precision mediump float;
     varying vec3 v_color;
     void main()
