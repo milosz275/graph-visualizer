@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 // use "g++ -std=c++17 -o graph.out src/main.cpp -DEMSCRIPTEN_GUI=0" to compile for CLI
-// use make to compile for web (Makefile will use emcc instead of g++)
+// use "make" to compile for web (Makefile will use emcc instead of g++)
 
 #if EMSCRIPTEN_GUI == 1
 
