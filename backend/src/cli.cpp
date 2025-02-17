@@ -28,14 +28,5 @@ void update_graph()
 
 void cli_print_graph()
 {
-    cout << "Graph:\n";
-    for (auto& [node, edges] : g)
-    {
-        cout << node << " -> ";
-        for (auto& [target, weight] : edges)
-        {
-            cout << target << " (" << weight << "), ";
-        }
-        cout << '\n';
-    }
+    cout << g;
 }
