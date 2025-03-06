@@ -1,12 +1,23 @@
-# [Web UI](https://milosz275.github.io/web-ui/demo)
+# [Graph Visualizer](https://milosz275.github.io/graph-visualizer/demo)
 
-[![Make](https://github.com/milosz275/web-ui/actions/workflows/makefile.yml/badge.svg)](https://github.com/milosz275/web-ui/actions/workflows/makefile.yml)
-[![CodeQL](https://github.com/milosz275/web-ui/actions/workflows/codeql.yml/badge.svg)](https://github.com/milosz275/web-ui/actions/workflows/codeql.yml)
-[![Doxygen Pages](https://github.com/milosz275/web-ui/actions/workflows/doxygen-pages.yml/badge.svg)](https://github.com/milosz275/web-ui/actions/workflows/doxygen-pages.yml)
-[![License](https://img.shields.io/github/license/milosz275/web-ui)](/LICENSE)
+[![Make](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml)
+[![CodeQL](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml)
+[![Doxygen Pages](https://github.com/milosz275/graph-visualizer/actions/workflows/doxygen-pages.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/doxygen-pages.yml)
+[![License](https://img.shields.io/github/license/milosz275/graph-visualizer)](/LICENSE)
 
-Web interface utilizing Emscripten to build Webassembly program in C++. Clone it or use as a template to add your functionality.
+![Logo](assets/logo.png)
+
+Graph Visualizer implements directed and undirected graph structures with common path finding algorithms for traversal visualization in browser using WebGL with Emscripten. Try it out with the [demo](https://milosz275.github.io/graph-visualizer/demo).
+
+## Table of Contents
+
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
+
+## Acknowledgements
+
+- [Project icon](https://www.svgrepo.com/svg/451006/knowledge-graph)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/milosz275/web-ui/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/milosz275/graph-visualizer/blob/main/LICENSE) file for details.
