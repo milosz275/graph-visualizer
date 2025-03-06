@@ -1,4 +1,4 @@
-# [Graph Visualizer](https://milosz275.github.io/graph-visualizer/demo)
+# Graph Visualizer
 
 [![Make](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/makefile.yml)
 [![CodeQL](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml/badge.svg)](https://github.com/milosz275/graph-visualizer/actions/workflows/codeql.yml)
