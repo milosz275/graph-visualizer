@@ -87,8 +87,8 @@ jobs:
         run: |
           mkdir -p docs/demo
           cp src/index.html docs/demo/
-          cp build/web-ui.js docs/demo/
-          cp build/web-ui.wasm docs/demo/
+          cp build/graph-visualizer.js docs/demo/
+          cp build/graph-visualizer.wasm docs/demo/
           # cp assets/* docs/demo/
 
       - name: Upload to GitHub Pages
