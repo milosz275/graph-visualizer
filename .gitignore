@@ -1,11 +1,19 @@
+# misc
 *.o
 *.out
 *.exe
 *.dll
 *.so
-*.wasm
-web-ui.js
-.vscode
-.vs
-.idea
 *.bak
+
+# ides and edititors
+.vs
+.vscode
+.idea
+
+# webgl build
+*.wasm
+graph-visualizer.js
+
+# icon for localhost:8000 testing in /src
+src/favicon.ico
