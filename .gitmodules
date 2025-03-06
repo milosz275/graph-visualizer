@@ -1,0 +1,6 @@
+[submodule "include/emscripten"]
+	path = include/emscripten
+	url = https://github.com/milosz275/emscripten
+[submodule "include/fonts"]
+	path = include/fonts
+	url = https://github.com/milosz275/fonts

@@ -1,0 +1,89 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'emsdk/**'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'emsdk/**'
+  schedule:
+    - cron: '17 19 * * 6'
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - language: c-cpp
+          build-mode: manual
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize submodules
+      run: |
+        git submodule update --init --recursive
+      shell: bash
+
+    - name: Set up Emscripten
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+        source ./emsdk_env.sh
+      shell: bash
+
+    - name: Install FreeGLUT
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y freeglut3-dev
+      shell: bash
+
+    - name: Install FreeType2
+      run: |
+        sudo apt-get install -y libfreetype6-dev
+      shell: bash
+
+    - name: Install GLM
+      run: |
+        git clone https://github.com/g-truc/glm
+        cd glm
+        cmake \
+          -DGLM_BUILD_TESTS=OFF \
+          -DBUILD_SHARED_LIBS=OFF \
+          -B build .
+        cmake --build build -- all
+        sudo cmake --build build -- install
+      shell: bash
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+
+    - if: matrix.build-mode == 'manual'
+      shell: bash
+      run: |
+        source emsdk/emsdk_env.sh
+        make
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"

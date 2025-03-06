@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Web UI using WebAssembly and WebGL">
+    <meta name="author" content="Miłosz Maculewicz">
+    <meta name="keywords" content="web, webgl, webassembly, ui, web ui">
+    <link rel="icon" href="favicon.ico">
+    <title>Web UI</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #webglCanvas {
+            z-index: 0;
+        }
+        #textCanvas {
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="webglCanvas"></canvas>
+    <canvas id="textCanvas"></canvas>
+    <script src="web-ui.js"></script>
+
+    <script>
+        function setupCanvas() {
+            var glCanvas = document.getElementById('webglCanvas');
+            var textCanvas = document.getElementById('textCanvas');
+
+            glCanvas.width = textCanvas.width = window.innerWidth;
+            glCanvas.height = textCanvas.height = window.innerHeight;
+
+            var gl = glCanvas.getContext('webgl2');
+            if (!gl) {
+                console.error("WebGL2 is not supported. Waiting for WebAssembly...");
+                return;
+            }
+        }
+
+        function getCanvasSize() {
+            var canvas = document.getElementById('webglCanvas');
+            return {
+                width: canvas.width,
+                height: canvas.height
+            };
+        }
+
+        function resizeCanvas() {
+            var glCanvas = document.getElementById('webglCanvas');
+            var textCanvas = document.getElementById('textCanvas');
+            if (glCanvas && textCanvas) {
+                glCanvas.width = textCanvas.width = window.innerWidth;
+                glCanvas.height = textCanvas.height = window.innerHeight;
+            }
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(setupCanvas, 2000);
+        });
+
+        Module.onRuntimeInitialized = function () {
+            var glCanvas = document.getElementById('webglCanvas');
+            if (!glCanvas) {
+                console.error('WebGL canvas element not found');
+                return;
+            }
+            resizeCanvas();
+            var gl = glCanvas.getContext('webgl2');
+
+            if (!gl) {
+                alert("WebGL2 is not supported on this browser.");
+                return;
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+    </script>
+</body>
+
+</html>

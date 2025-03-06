@@ -1,0 +1,101 @@
+name: Doxygen Pages
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Initialize submodules
+        run: |
+          git submodule update --init --recursive
+        shell: bash
+
+      - name: Install Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen doxygen-latex doxygen-doc doxygen-gui graphviz xapian-tools
+
+      - name: Install doxygen-awesome-css
+        run: |
+          git clone https://github.com/jothepro/doxygen-awesome-css.git
+          cd doxygen-awesome-css
+          sudo make install
+
+      - name: Run Doxygen
+        run: doxygen
+
+      - name: Setup Emscripten
+        run: |
+          sudo apt-get install -y make clang llvm lld
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+
+      - name: Setup Freeglut
+        run: |
+          sudo apt-get install -y wget freeglut3-dev freeglut3-dev libglew-dev libgl1-mesa-dev libglu1-mesa-dev
+          wget https://github.com/freeglut/freeglut/releases/download/v3.6.0/freeglut-3.6.0.tar.gz
+          tar -xvf freeglut-3.6.0.tar.gz
+          cd freeglut-3.6.0
+          export FREEGLUT=$(pwd)
+
+      - name: Install FreeType2
+        run: |
+          sudo apt-get install -y libfreetype6-dev
+        shell: bash
+
+      - name: Install GLM
+        run: |
+          git clone https://github.com/g-truc/glm
+          cd glm
+          cmake \
+            -DGLM_BUILD_TESTS=OFF \
+            -DBUILD_SHARED_LIBS=OFF \
+            -B build .
+          cmake --build build -- all
+          sudo cmake --build build -- install
+        shell: bash
+
+      - name: Build WebAssembly (WASM)
+        run: |
+          source ./emsdk/emsdk_env.sh
+          make
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare Deployment Artifacts
+        run: |
+          mkdir -p docs/demo
+          cp src/index.html docs/demo/
+          cp build/web-ui.js docs/demo/
+          cp build/web-ui.wasm docs/demo/
+          # cp assets/* docs/demo/
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
