@@ -1,7 +1,7 @@
 EMCC = emcc
 GCC = g++
 
-SRC_WEB = src/app.cpp src/main.cpp src/renderer.cpp src/background.cpp src/text.cpp
+SRC_WEB = $(shell find src/ -name '*.cpp')
 OUT_WEB = build/graph-visualizer.js
 
 COMMON_CFLAGS = -std=c++17 -Wall -Wextra -pedantic -O3
@@ -10,7 +10,9 @@ EMCC_FLAGS = -Wno-nullability-completeness \
 	-Wno-nullability-extension \
 	-Wno-gnu-zero-variadic-macro-arguments \
 	-Iinclude/web \
-	-Iinclude/fonts \
+	-Iinclude/model \
+	-Iinclude/view \
+	-Iinclude/controller \
 	-I/usr/local/include \
 	-I/usr/include/freetype2 \
 	-I/usr/include/libpng16
