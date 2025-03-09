@@ -4,18 +4,19 @@
 
 #include "graph_node.h"
 
-using namespace std;
-
 namespace mvc
 {
+    class graph_state;
+
     class graph
     {
     protected:
-        vector<graph_node> nodes;
-        vector<pair<int, int>> edges;
+        std::vector<graph_node> nodes;
+        std::vector<std::pair<int, int>> edges;
         
     public:
-        
+        graph();
+        graph(int num_nodes, bool random);
         void create_default();
         void generate_random(int num_nodes, int num_edges);
         
@@ -25,5 +26,13 @@ namespace mvc
         // physical members (for rendering)
         void draw();
         void apply_physics();
+
+        int get_node_count();
+
+        // overload the [] operator to access graph_node by ID
+        graph_node& operator[](int id);
+        const graph_node& operator[](int id) const;
+
+        friend class graph_state;
     };
 }
