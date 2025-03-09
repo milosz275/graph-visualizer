@@ -2,7 +2,7 @@
 
 namespace mvc
 {
-    void graph_physics::apply_repulsion(vector<graph_node>& nodes, float k_r)
+    void graph_physics::apply_repulsion(std::vector<graph_node>& nodes, float k_r)
     {
         for (size_t i = 0; i < nodes.size(); ++i)
         {
@@ -24,7 +24,7 @@ namespace mvc
         }
     }
 
-    void graph_physics::apply_attraction(vector<graph_node>& nodes, vector<pair<int, int>>& edges, float k_a, float rest_length)
+    void graph_physics::apply_attraction(std::vector<graph_node>& nodes, std::vector<std::pair<int, int>>& edges, float k_a, float rest_length)
     {
         for (auto& edge : edges)
         {
@@ -45,7 +45,7 @@ namespace mvc
         }
     }
 
-    void graph_physics::apply_gravity(vector<graph_node>& nodes, float k_g)
+    void graph_physics::apply_gravity(std::vector<graph_node>& nodes, float k_g)
     {
         for (auto& node : nodes)
         {
@@ -56,7 +56,7 @@ namespace mvc
         }
     }
 
-    void graph_physics::update_nodes(vector<graph_node>& nodes, float time_step, float damping)
+    void graph_physics::update_nodes(std::vector<graph_node>& nodes, float time_step, float damping)
     {
         for (auto& node : nodes)
         {

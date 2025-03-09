@@ -6,8 +6,6 @@
 
 #include "app.h"
 
-using namespace std;
-
 int main()
 {
     EmscriptenWebGLContextAttributes attr;
@@ -21,7 +19,7 @@ int main()
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("#webglCanvas", &attr);
     if (context <= 0)
     {
-        cerr << "Failed to create WebGL context!" << '\n';
+        std::cerr << "Failed to create WebGL context!" << '\n';
         return 1;
     }
     emscripten_webgl_make_context_current(context);

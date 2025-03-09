@@ -7,13 +7,9 @@
 #include <GLES3/gl3.h>
 #include <glm/glm.hpp>
 
-using namespace std;
-
 namespace web_ui
 {
     GLint renderer::program;
-    int renderer::canvas_width;
-    int renderer::canvas_height;
 
     GLuint compile_shader(GLenum type, const char* source)
     {
@@ -31,7 +27,7 @@ namespace web_ui
             {
                 char* infoLog = new char[info_len];
                 glGetShaderInfoLog(shader, info_len, nullptr, infoLog);
-                cerr << "Error compiling shader: " << infoLog << '\n';
+                std::cerr << "Error compiling shader: " << infoLog << '\n';
                 delete[] infoLog;
             }
             glDeleteShader(shader);
@@ -63,7 +59,7 @@ namespace web_ui
             {
                 char* infoLog = new char[info_len];
                 glGetProgramInfoLog(program, info_len, nullptr, infoLog);
-                cerr << "Error linking program: " << infoLog << '\n';
+                std::cerr << "Error linking program: " << infoLog << '\n';
                 delete[] infoLog;
             }
             glDeleteProgram(program);
@@ -97,7 +93,7 @@ namespace web_ui
         program = create_program(vertex_source, fragment_source);
         if (!program)
         {
-            cerr << "Failed to create program\n";
+            std::cerr << "Failed to create program\n";
             return;
         }
 
