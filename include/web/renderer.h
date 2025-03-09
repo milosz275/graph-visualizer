@@ -11,8 +11,6 @@ namespace web_ui
     {
     private:
         static GLint program;
-        static int canvas_width;
-        static int canvas_height;
     
     public:
         /**
