@@ -10,6 +10,7 @@ namespace mvc
     class graph_algorithm
     {
     public:
+        virtual ~graph_algorithm() = default;
         virtual void step(mvc::graph& graph) = 0;
         virtual bool is_complete() const = 0;
     };
