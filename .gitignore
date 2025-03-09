@@ -5,6 +5,7 @@
 *.dll
 *.so
 *.bak
+.notes
 
 # ides and edititors
 .vs
