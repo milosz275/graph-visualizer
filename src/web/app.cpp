@@ -1,17 +1,18 @@
 #include "app.h"
 
+#include <iostream>
+
 #include "renderer.h"
 #include "text.h"
 #include "mouse.h"
 #include "background.h"
-
-using namespace std;
+#include "menu_state.h"
 
 namespace app
 {
     bool graph_app::initialized;
     bool graph_app::running;
-    unique_ptr<mvc::ui_state> graph_app::current_state;
+    std::unique_ptr<mvc::ui_state> graph_app::current_state;
 
     void graph_app::init()
     {
@@ -25,11 +26,12 @@ namespace app
         web_ui::renderer::init();
         mvc::mouse::connect_mouse_callbacks();
 
-        current_state = make_unique<mvc::menu_state>();
+        current_state = std::make_unique<mvc::menu_state>();
     }
 
     void graph_app::set_state(std::unique_ptr<mvc::ui_state> new_state)
     {
+        std::cout << "Going to new state: " << new_state->get_label() << '\n';
         current_state = std::move(new_state);
     }
 
@@ -66,8 +68,8 @@ namespace app
         // graph state and algorithm state have the graph, that needs to be called with .apply_physics()
     }
 
-    void graph_app::handle_mouse_click(int x, int y, bool down)
+    void graph_app::handle_mouse_click(glm::vec2 mouse, bool down)
     {
-        current_state->handle_click(x, y, down);
+        current_state->handle_click(mouse, down);
     }
 }
