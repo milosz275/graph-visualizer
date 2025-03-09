@@ -1,22 +1,36 @@
 #pragma once
 
-#include <functional>
+#include <iostream>
+#include <memory>
 
 #include <emscripten/html5.h>
 
-namespace web_ui
+#include "ui_state.h"
+
+namespace mvc
 {
-    class app
+    class mouse;
+}
+
+namespace app
+{
+    class graph_app
     {
     public:
-        /**
-         * @brief Connect loop cycle function to run by Emcripten in main loop
-         */
-        static void run(std::function<void()> loop);
+        static void init();
+        static void run();
+    
+    private:
+        static bool initialized;
+        static bool running;
+        static unique_ptr<mvc::ui_state> current_state;
 
-        /**
-         * @brief Connect cleanup function to run by Emcripten after main loop
-         */
-        static void cleanup(std::function<void()> clean);
+        static void set_state(std::unique_ptr<mvc::ui_state> new_state);
+        static void main_loop();
+        static void render_cycle();
+        static void simulation_cycle();
+        static void handle_mouse_click(int x, int y, bool down);
+
+        friend class mvc::mouse;
     };
 }
