@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <glm/glm.hpp> // handling positions and transformations
+#include <glm/glm.hpp>
 #include <GLES3/gl3.h>
 
 namespace web_ui
