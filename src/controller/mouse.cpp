@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "app.h"
+#include "view.h"
 
 namespace mvc
 {
@@ -21,13 +22,13 @@ namespace mvc
 
     EM_BOOL mouse::mouse_down_callback(int event_type, const EmscriptenMouseEvent* e, void* user_data)
     {
-        app::graph_app::handle_mouse_click(e->clientX, e->clientY, true);
+        app::graph_app::handle_mouse_click(view::get_coordinates({e->clientX, e->clientY}), true);
         return EM_TRUE;
     }
 
     EM_BOOL mouse::mouse_up_callback(int event_type, const EmscriptenMouseEvent* e, void* user_data)
     {
-        app::graph_app::handle_mouse_click(e->clientX, e->clientY, false);
+        app::graph_app::handle_mouse_click(view::get_coordinates({e->clientX, e->clientY}), false);
         return EM_TRUE;
     }
 
