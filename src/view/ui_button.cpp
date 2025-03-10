@@ -23,8 +23,10 @@ namespace mvc
             background_color);
 
         web_ui::text::draw_text(
-            {position.x, position.y},
-            label, "24px serif", text_color);
+            {position.x + 0.015f, position.y + size.y / 2 - 0.015f},
+            label,
+            "24px serif",
+            text_color);
     }
 
     bool ui_button::is_clicked(glm::vec2 mouse)
@@ -33,5 +35,5 @@ namespace mvc
             mouse.y >= position.y && mouse.y <= (position.y + size.y);
     }
 
-    void ui_button::on_click() { callback(); }
+    void ui_button::on_click() { if (enabled) callback(); }
 }
