@@ -13,13 +13,20 @@ namespace mvc
 {
     class menu_state : public ui_state
     {
-    private:
-        std::vector<std::unique_ptr<mvc::ui_element>> elements;
-        
     public:
+        /**
+         * @brief Sets up graph generation menu.
+         */
         menu_state();
+
+        /**
+         * @brief Descructor.
+         */
         ~menu_state() override;
+
+        /**
+         * @brief Renders the scene including all menu elements.
+         */
         void render() override;
-        void handle_click(glm::vec2 mouse, bool down) override;
     };
 }

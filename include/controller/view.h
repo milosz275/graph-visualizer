@@ -10,7 +10,9 @@ namespace mvc
     class view
     {
     public:
+
         static glm::vec2 get_canvas_size();
+        
         static glm::vec2 get_coordinates(glm::vec2 window_coordinates);
     };
 }

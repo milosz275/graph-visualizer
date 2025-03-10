@@ -15,12 +15,22 @@ namespace mvc
     {
     private:
         std::unique_ptr<mvc::graph> graph;
-        std::vector<std::unique_ptr<mvc::ui_element>> elements;
         
     public:
+        /**
+         * @brief Sets up graph algorithm menu and render the graph itself.
+         * @param graph Graph object pointer
+         */
         graph_state(std::unique_ptr<mvc::graph> graph);
+
+        /**
+         * @brief Descructor.
+         */
         ~graph_state() override;
+
+        /**
+         * @brief Renders the scene including all menu elements and graph itself.
+         */
         void render() override;
-        void handle_click(glm::vec2 mouse, bool down) override;
     };
 }
