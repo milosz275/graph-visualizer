@@ -7,13 +7,9 @@
 #include <GLES3/gl3.h>
 #include <glm/glm.hpp>
 
-using namespace std;
-
 namespace web_ui
 {
     GLint renderer::program;
-    int renderer::canvas_width;
-    int renderer::canvas_height;
 
     GLuint compile_shader(GLenum type, const char* source)
     {
@@ -31,7 +27,7 @@ namespace web_ui
             {
                 char* infoLog = new char[info_len];
                 glGetShaderInfoLog(shader, info_len, nullptr, infoLog);
-                cerr << "Error compiling shader: " << infoLog << '\n';
+                std::cerr << "Error compiling shader: " << infoLog << '\n';
                 delete[] infoLog;
             }
             glDeleteShader(shader);
@@ -63,7 +59,7 @@ namespace web_ui
             {
                 char* infoLog = new char[info_len];
                 glGetProgramInfoLog(program, info_len, nullptr, infoLog);
-                cerr << "Error linking program: " << infoLog << '\n';
+                std::cerr << "Error linking program: " << infoLog << '\n';
                 delete[] infoLog;
             }
             glDeleteProgram(program);
@@ -97,7 +93,7 @@ namespace web_ui
         program = create_program(vertex_source, fragment_source);
         if (!program)
         {
-            cerr << "Failed to create program\n";
+            std::cerr << "Failed to create program\n";
             return;
         }
 
@@ -184,6 +180,41 @@ namespace web_ui
             float angle = 2.0f * M_PI * float(i) / float(num_segments);
             vertices[2 * (i + 1)] = center.x + radius * cosf(angle);
             vertices[2 * (i + 1) + 1] = center.y + radius * sinf(angle);
+            colors[4 * (i + 1)] = color.r;
+            colors[4 * (i + 1) + 1] = color.g;
+            colors[4 * (i + 1) + 2] = color.b;
+            colors[4 * (i + 1) + 3] = 1.0f;
+        }
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, colors);
+
+        glDrawArrays(GL_TRIANGLE_FAN, 0, num_segments + 2);
+
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+    }
+
+    void renderer::draw_ellipse(glm::vec2 center, float radius_x, float radius_y, glm::vec3 color)
+    {
+        const int num_segments = 100;
+        float vertices[2 * (num_segments + 2)];
+        float colors[4 * (num_segments + 2)];
+        vertices[0] = center.x;
+        vertices[1] = center.y;
+        colors[0] = color.r;
+        colors[1] = color.g;
+        colors[2] = color.b;
+        colors[3] = 1.0f;
+
+        for (int i = 0; i <= num_segments; ++i)
+        {
+            float angle = 2.0f * M_PI * float(i) / float(num_segments);
+            vertices[2 * (i + 1)] = center.x + radius_x * cosf(angle);
+            vertices[2 * (i + 1) + 1] = center.y + radius_y * sinf(angle);
             colors[4 * (i + 1)] = color.r;
             colors[4 * (i + 1) + 1] = color.g;
             colors[4 * (i + 1) + 2] = color.b;

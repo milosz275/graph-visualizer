@@ -5,6 +5,7 @@
 *.dll
 *.so
 *.bak
+.notes
 
 # ides and edititors
 .vs
@@ -14,6 +15,7 @@
 # webgl build
 *.wasm
 graph-visualizer.js
+build
 
 # icon for localhost:8000 testing in /src
 src/favicon.ico
