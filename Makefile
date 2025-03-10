@@ -4,10 +4,11 @@ GCC = g++
 SRC_WEB = $(shell find src/ -name '*.cpp')
 OUT_WEB = build/graph-visualizer.js
 
-COMMON_CFLAGS = -std=c++17 -Wall -Wextra -pedantic -O3
+COMMON_CFLAGS = -std=c++20 -Wall -Wextra -pedantic -O3
 
 EMCC_FLAGS = -Wno-nullability-completeness \
 	-Wno-nullability-extension \
+	-Wno-unused-parameter \
 	-Wno-gnu-zero-variadic-macro-arguments \
 	-Iinclude/web \
 	-Iinclude/model \
