@@ -992,6 +992,9 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = ./include/web \
+                         ./include/model \
+                         ./include/view \
+                         ./include/controller \
                          ./src \
                          ./README.md
 
