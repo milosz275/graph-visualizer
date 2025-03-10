@@ -24,16 +24,16 @@ namespace mvc
         }
     }
 
-    void graph_physics::apply_attraction(std::vector<graph_node>& nodes, std::vector<std::pair<int, int>>& edges, float k_a, float rest_length)
+    void graph_physics::apply_attraction(std::vector<graph_node>& nodes, std::vector<std::tuple<int, int, float>>& edges, float k_a, float rest_length)
     {
         for (auto& edge : edges)
         {
-            int i = edge.first, j = edge.second;
+            auto [i, j, cost] = edge;
 
             float dx = nodes[j].x - nodes[i].x;
             float dy = nodes[j].y - nodes[i].y;
             float dist = sqrt(dx * dx + dy * dy + 1e-6); // avoid zero division
-            float force = k_a * (dist - rest_length);
+            float force = k_a * (dist - rest_length) / cost;
 
             float fx = force * dx / dist;
             float fy = force * dy / dist;
@@ -68,6 +68,22 @@ namespace mvc
     
             // reset forces
             node.fx = node.fy = 0;
+        }
+    }
+
+    void graph_physics::explode(std::vector<graph_node>& nodes, float explosion_force)
+    {
+        for (auto& node : nodes)
+        {
+            float dx = node.x;
+            float dy = node.y;
+            float dist = sqrt(dx * dx + dy * dy + 1e-6); // avoid zero division
+
+            float fx = explosion_force * dx / dist;
+            float fy = explosion_force * dy / dist;
+
+            node.fx += fx;
+            node.fy += fy;
         }
     }
 }
