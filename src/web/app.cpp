@@ -7,6 +7,7 @@
 #include "mouse.h"
 #include "background.h"
 #include "menu_state.h"
+#include "canvas.h"
 
 namespace app
 {
@@ -49,6 +50,7 @@ namespace app
 
     void graph_app::main_loop()
     {
+        web_ui::canvas::update_canvas_size();
         web_ui::background::draw_background();
         web_ui::text::clear_text_canvas();
         web_ui::text::draw_text_absolute(); // logo
