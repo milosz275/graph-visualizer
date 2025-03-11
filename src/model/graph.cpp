@@ -2,7 +2,7 @@
 
 #include <set>
 #include <random>
-#include <iostream>
+#include <deque>
 #include <format>
 
 #include <glm/glm.hpp>
@@ -101,29 +101,67 @@ namespace mvc
 
     void graph::generate_polygon(int vertices)
     {
+        if (vertices < 3)
+            return;
+
         nodes.clear();
         edges.clear();
 
-        // create n default nodes on a circle of radius 0.5
+        // build positions deque to construct polygon
+        // 0 and n (n being the largest node i) are furthest (opposite sites of polygon)
         int num_nodes = vertices;
         float radius = 0.5f;
+        std::deque<glm::vec2> positions;
         for (int i = 0; i < num_nodes; ++i)
         {
-            graph_node node;
-            node.id = i;
             float angle = 2.0f * M_PI * i / num_nodes; // angle in radians
-            node.x = radius * cos(angle);
-            node.y = radius * sin(angle);
-            nodes.push_back(node);
+            positions.push_back({radius * cos(angle), radius * sin(angle)});
         }
 
-        // connect nodes sequentially
-        for (int i = 0; i < num_nodes - 1; ++i)
-            edges.push_back({i, i + 1, 1.0f});
+        // create n default nodes on a circle of radius 0.5
+        int i = 0;
+        while (!positions.empty())
+        {
+            glm::vec2 position = positions.front();
+            positions.pop_front();
 
-        // add loop connection
-        edges.push_back({num_nodes - 1, 0, 1.0f});
-        
+            graph_node node;
+            node.id = i++;
+            node.x = position.x;
+            node.y = position.y;
+            nodes.push_back(node);
+
+            if (!positions.empty())
+            {
+                glm::vec2 position = positions.back();
+                positions.pop_back();
+
+                graph_node node;
+                node.id = i++;
+                node.x = position.x;
+                node.y = position.y;
+                nodes.push_back(node);
+            }
+        }
+
+        // add edges following the pattern
+        int max_even = (num_nodes % 2 == 0) ? num_nodes - 2 : num_nodes - 1;
+        int max_odd = (num_nodes % 2 == 0) ? num_nodes - 1 : num_nodes - 2;
+
+        // connect evens
+        for (int i = 0; i < max_even; i += 2)
+            edges.push_back({i, i + 2, 1.0f});
+
+        // connect odds
+        for (int i = 1; i < max_odd; i += 2)
+            edges.push_back({i, i + 2, 1.0f});
+
+        // connect the farthest nodes
+        edges.push_back({max_even, max_odd, 1.0f});
+
+        // connect last odd to first
+        edges.push_back({1, 0, 1.0f});
+
         // update neighbor lists
         for (auto& edge : edges)
         {
@@ -186,33 +224,33 @@ namespace mvc
                 {nodes[second_node].x, nodes[second_node].y},
                 {1.0f, 1.0f, 1.0f});
 
-            // edge cost
-            web_ui::text::draw_text(
-                {(nodes[first_node].x + nodes[second_node].x) / 2 + 0.01f,
-                 (nodes[first_node].y + nodes[second_node].y) / 2 + 0.01f},
-                std::format("{:.2f}", cost),
-                "16px serif",
-                "gray");
+            // // edge cost
+            // web_ui::text::draw_text(
+            //     {(nodes[first_node].x + nodes[second_node].x) / 2 + 0.01f,
+            //      (nodes[first_node].y + nodes[second_node].y) / 2 + 0.01f},
+            //     std::format("{:.2f}", cost),
+            //     "16px Arial",
+            //     "gray");
 
-            // tip of the edge
-            float dx = nodes[second_node].x - nodes[first_node].x;
-            float dy = nodes[second_node].y - nodes[first_node].y;
-            float angle = atan2(dy, dx);
+            // // tip of the edge
+            // float dx = nodes[second_node].x - nodes[first_node].x;
+            // float dy = nodes[second_node].y - nodes[first_node].y;
+            // float angle = atan2(dy, dx);
 
-            float tip_length = 0.01f; // length of the triangle tip
-            float tip_width = 0.005f;  // width of the triangle tip
-            float node_radius = 0.01f; // radius of the node
+            // float tip_length = 0.01f; // length of the triangle tip
+            // float tip_width = 0.005f;  // width of the triangle tip
+            // float node_radius = 0.01f; // radius of the node
 
-            glm::vec2 tip_center = {
-                nodes[second_node].x - node_radius * cos(angle),
-                nodes[second_node].y - node_radius * sin(angle)};
-            glm::vec2 tip_left = {
-                tip_center.x - tip_length * cos(angle) - tip_width * sin(angle),
-                tip_center.y - tip_length * sin(angle) + tip_width * cos(angle)};
-            glm::vec2 tip_right = {
-                tip_center.x - tip_length * cos(angle) + tip_width * sin(angle),
-                tip_center.y - tip_length * sin(angle) - tip_width * cos(angle)};
-            web_ui::renderer::draw_triangle(tip_center, tip_left, tip_right, {1.0f, 1.0f, 1.0f});
+            // glm::vec2 tip_center = {
+            //     nodes[second_node].x - node_radius * cos(angle),
+            //     nodes[second_node].y - node_radius * sin(angle)};
+            // glm::vec2 tip_left = {
+            //     tip_center.x - tip_length * cos(angle) - tip_width * sin(angle),
+            //     tip_center.y - tip_length * sin(angle) + tip_width * cos(angle)};
+            // glm::vec2 tip_right = {
+            //     tip_center.x - tip_length * cos(angle) + tip_width * sin(angle),
+            //     tip_center.y - tip_length * sin(angle) - tip_width * cos(angle)};
+            // web_ui::renderer::draw_triangle(tip_center, tip_left, tip_right, {1.0f, 1.0f, 1.0f});
         }
         for (auto& node : nodes)
         {
@@ -229,7 +267,7 @@ namespace mvc
             web_ui::text::draw_text(
                 {node.x + 0.01f, node.y + 0.01f},
                 "id: " + std::to_string(node.id),
-                "16px serif",
+                "16px Arial",
                 "black");
         }
     }
