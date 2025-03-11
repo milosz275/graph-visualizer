@@ -14,6 +14,7 @@ Graph Visualizer is a browser-based tool for visualizing directed and undirected
 - [Features](#features)
 - [Structure](#structure)
 - [Design Patterns](#design-patterns)
+- [Force-directed Graph Simulation](#force-directed-graph-simulation)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
 
