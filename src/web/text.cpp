@@ -1,7 +1,14 @@
 #include "text.h"
 
+#include <iostream> // remove
+#include <algorithm>
+
 #include <emscripten.h>
 #include <emscripten/html5.h>
+
+#include <glm/vec2.hpp>
+
+#include "canvas.h"
 
 namespace web_ui
 {
@@ -64,10 +71,31 @@ namespace web_ui
 
     void text::draw_text(glm::vec2 coords, std::string text, std::string font, std::string fill_style)
     {
-        int canvas_width = EM_ASM_INT({ return getCanvasSize().width; }, 0);
-        int canvas_height = EM_ASM_INT({ return getCanvasSize().height; }, 0);
-        float pixel_x = (coords.x + 1.0f) * 0.5f * canvas_width;
-        float pixel_y = (1.0f - coords.y) * 0.5f * canvas_height;
+        glm::vec2 canvas = web_ui::canvas::get_canvas_size();
+        float pixel_x = (coords.x + 1.0f) * 0.5f * canvas.x;
+        float pixel_y = (1.0f - coords.y) * 0.5f * canvas.y;
+        
+        // parsing font style
+        if ((int)font.length() < 4)
+            font = "2px Arial";
+        else if (isdigit(font[0]) && isdigit(font[1]) && isdigit(font[2]))
+            font = "64px Arial";
+        else if (isdigit(font[0]) && isdigit(font[1]))
+        {
+            if ((float)canvas.x / (float)canvas.y < 4.0 / 3.0)
+            {
+                int font_size = std::stoi(font.substr(0, 2));
+                font_size *= (canvas.x / 1000);
+                font = std::to_string(font_size) + "px Arial";
+            }
+        }
+        else
+            font = "8px Arial";
+
+        // parsing fill style
+        if (!std::all_of(fill_style.begin(), fill_style.end(), [](char c) { return std::isalpha(c); }))
+            fill_style = "red";
+
         em_render_text(pixel_x, pixel_y, text.c_str(), font.c_str(), fill_style.c_str());
     }
 
