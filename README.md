@@ -48,6 +48,18 @@ Graph Visualizer is a highly abstracted project that leverages multiple design p
 - State Pattern – Manages different states of the program and executes appropriate behavior.
 - Visitor Pattern – Allows traversal algorithms to operate on graph nodes without modifying their structure.
 
+## Force-directed Graph Simulation
+
+Graph Visualizer includes a force-directed graph simulation that models realistic physical interactions between nodes. The simulation applies several forces to create a natural graph layout:
+
+- Repulsion Force – Nodes repel each other to avoid overlap, using a repulsion constant `k_r`.
+- Attraction Force – Connected nodes attract each other like springs, controlled by an attraction constant `k_a` and a rest length parameter.
+- Gravity Force – Nodes experience a gravitational pull toward a central point, determined by a gravity constant `k_g`.
+- Velocity and Damping – The simulation updates node positions and velocities over time `time_step`, with damping to smooth movements.
+- Explosion Force – An optional burst force can be applied to disperse nodes outward, simulating an explosion effect.
+
+These physics-based forces create an intuitive and interactive experience when exploring graph structures.
+
 ## Acknowledgements
 
 - [Project icon](https://www.svgrepo.com/svg/451006/knowledge-graph)
