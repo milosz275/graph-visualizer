@@ -2,6 +2,7 @@
 
 #include "renderer.h"
 #include "text.h"
+#include "view.h"
 
 namespace mvc
 {
@@ -9,6 +10,7 @@ namespace mvc
 
     void ui_button::render()
     {
+        glm::vec2 canvas = mvc::view::get_canvas_size();
         glm::vec3 background_color = {0.15f, 0.15f, 0.15f};
         std::string text_color = "white";
         if (!enabled)
@@ -23,9 +25,9 @@ namespace mvc
             background_color);
 
         web_ui::text::draw_text(
-            {position.x + 0.015f, position.y + size.y / 2 - 0.015f},
+            {position.x + (25 / canvas.x), position.y + (size.y * 0.320)},
             label,
-            "24px serif",
+            "24px Arial",
             text_color);
     }
 
