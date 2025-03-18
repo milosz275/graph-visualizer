@@ -11,6 +11,7 @@ namespace mvc
     
         // logical data (for algorithms)
         std::vector<int> neighbors;
+        bool highlighted = false;
         bool visited = false;
         float distance = INFINITY;
         int parent = -1;
