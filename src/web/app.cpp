@@ -53,7 +53,7 @@ namespace app
         web_ui::canvas::update_canvas_size();
         web_ui::background::draw_background();
         web_ui::text::clear_text_canvas();
-        web_ui::text::draw_text_absolute(); // logo
+        web_ui::text::draw_text_absolute({10.0f, 10.0f}, "Graph Visualizer", "32px Arial", "#2158b7");
 
         current_state->render();
     }
