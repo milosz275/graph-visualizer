@@ -25,7 +25,30 @@ Graph Visualizer is a browser-based tool for visualizing directed and undirected
 - Step-by-step execution with one-second intervals.
 - Interactive UI with WebGL rendering.
 
-## Structure
+## Prerequisites
+
+Graph Visualizer is compiled by emcc, available from [Emscripten](https://emscripten.org/). Build depends on `ccache`.
+
+## Build
+
+Run the following to setup to get a working copy of this project:
+
+```bash
+git clone --recurse-submodules -j$(nproc) https://github.com/milosz275/graph-visualizer
+cd graph-visualizer
+make -j$(nproc)
+```
+
+Setup local server to test the app:
+
+```bash
+cp src/index.html build
+cp assets/favicon.ico build
+cd build
+python3 -m http.server
+```
+
+## Project Structure
 
 The project uses the [web-ui](https://github.com/milosz275/web-ui) frontend framework for rendering. It follows the Model-View-Controller (MVC) architecture to separate concerns effectively.
 
