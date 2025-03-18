@@ -11,7 +11,7 @@ namespace mvc
     void ui_button::render()
     {
         glm::vec2 canvas = mvc::view::get_canvas_size();
-        glm::vec3 background_color = {0.15f, 0.15f, 0.15f};
+        glm::vec3 background_color = {0.325f, 0.325f, 0.325f};
         std::string text_color = "white";
         if (!enabled)
         {
