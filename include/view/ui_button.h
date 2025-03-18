@@ -22,11 +22,11 @@ namespace mvc
          * @param position Button coordinates.
          * @param min_size Minimum size of button to render. Might render larger when text label is longer.
          * @param label Text label.
-         * @param callback Function to be runned on click event.
+         * @param callback Function executed on click event.
          * @param enabled Flag indicating current button status, false would gray out the button, defaults to true.
          */
         ui_button(glm::vec2 position, glm::vec2 min_size, std::string label, std::function<void()> callback, bool enabled = true);
-        
+   
         /**
          * @brief Renders the button along with its' label.
          */
