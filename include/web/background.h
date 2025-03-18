@@ -4,7 +4,15 @@ namespace web_ui
 {
     class background
     {
+    private:
+        static int darkmode;
+
     public:
+        /**
+         * Toggles and returns new darkmode state, can be either true or false.
+         */
+        static bool toggle_darkmode();
+
         /**
          * Draw static background, gray on default
          */
