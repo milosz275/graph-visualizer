@@ -9,15 +9,28 @@
 #include "graph.h"
 #include "graph_state.h"
 #include "app.h"
+#include "graph_physics.h"
 
 namespace mvc
 {
     algorithm_state::algorithm_state(std::unique_ptr<mvc::graph_algorithm> algorithm, std::unique_ptr<mvc::graph> graph) : ui_state("algorithm"), graph(std::move(graph)), algorithm(std::move(algorithm))
     {
-        elements.push_back(std::make_unique<ui_button>(glm::vec2(-0.975f, 0.75f), glm::vec2(0.3f, 0.1f), "Back to Graph", [this]() {
-            this->graph->unvisit_nodes();
-            app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(this->graph)));
-        }));
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f, 0.75f),
+            glm::vec2(0.3f, 0.1f),
+            "Back to Graph",
+            [this]() {
+                this->graph->unvisit_nodes();
+                app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(this->graph)));
+            }));
+
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f, -0.9625f),
+            glm::vec2(0.3f, 0.1f),
+            "Toggle simulation",
+            []() {
+                graph_physics::toggle_simulation();
+            }));
     }
 
     algorithm_state::~algorithm_state() {}
