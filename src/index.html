@@ -101,6 +101,33 @@
             document.body.style.cursor = 'pointer';
             return 0;
         }
+
+        function getDarkmode() {
+            const isDarkMode = document.documentElement.classList.contains("dark");
+
+            const darkThemeCookie = document.cookie
+                .split("; ")
+                .find(row => row.startsWith("dark-theme="))
+                ?.split("=")[1];
+
+            if (darkThemeCookie) {
+                const darkModeEnabled = darkThemeCookie === "true";
+                document.documentElement.classList.toggle("dark", darkModeEnabled);
+                return darkModeEnabled ? 1 : 0;
+            }
+
+            return isDarkMode ? 1 : 0;
+        }
+
+        function toggleDarkmode() {
+            const isDarkMode = document.documentElement.classList.contains("dark");
+            const newTheme = !isDarkMode;
+
+            document.documentElement.classList.toggle("dark", newTheme);
+            document.cookie = `dark-theme=${newTheme}; path=/; max-age=31536000`;
+
+            return newTheme ? 1 : 0;
+        }
     </script>
 </body>
 
