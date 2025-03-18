@@ -103,7 +103,7 @@ namespace mvc
     {
         if (vertices < 3)
             return;
-
+            
         nodes.clear();
         edges.clear();
 
@@ -210,7 +210,10 @@ namespace mvc
     void graph::unvisit_nodes()
     {
         for (auto& node : nodes)
+        {
+            node.highlighted = false;
             node.visited = false;
+        }
     }
     
     void graph::draw()
@@ -224,13 +227,13 @@ namespace mvc
                 {nodes[second_node].x, nodes[second_node].y},
                 {1.0f, 1.0f, 1.0f});
 
-            // // edge cost
-            // web_ui::text::draw_text(
-            //     {(nodes[first_node].x + nodes[second_node].x) / 2 + 0.01f,
-            //      (nodes[first_node].y + nodes[second_node].y) / 2 + 0.01f},
-            //     std::format("{:.2f}", cost),
-            //     "16px Arial",
-            //     "gray");
+            // edge cost
+            web_ui::text::draw_text(
+                {(nodes[first_node].x + nodes[second_node].x) / 2 + 0.01f,
+                 (nodes[first_node].y + nodes[second_node].y) / 2 + 0.01f},
+                std::format("{:.2f}", cost),
+                "16px Arial",
+                "gray");
 
             // // tip of the edge
             // float dx = nodes[second_node].x - nodes[first_node].x;
@@ -256,7 +259,9 @@ namespace mvc
         {
             // node
             glm::vec3 color = {0.0f, 0.0f, 1.0f};
-            if (node.visited)
+            if (node.highlighted)
+                color = {0.0f, 0.8f, 0.8f};
+            else if (node.visited)
                 color = {1.0f, 0.0f, 1.0f};
             web_ui::renderer::draw_circle(
                 {node.x, node.y},
@@ -264,16 +269,25 @@ namespace mvc
                 color);
 
             // node id
-            web_ui::text::draw_text(
-                {node.x + 0.01f, node.y + 0.01f},
-                "id: " + std::to_string(node.id),
-                "16px Arial",
-                "black");
+            if (node.id == 0)
+                web_ui::text::draw_text(
+                    {node.x + 0.01f, node.y + 0.01f},
+                    "id: " + std::to_string(node.id),
+                    "16px Arial",
+                    "red");
+            else
+                web_ui::text::draw_text(
+                    {node.x + 0.01f, node.y + 0.01f},
+                    "id: " + std::to_string(node.id),
+                    "16px Arial",
+                    "black");
         }
     }
 
     void graph::apply_physics()
     {
+        if (graph_physics::paused())
+            return;
         graph_physics::apply_repulsion(nodes, 0.02f);
         graph_physics::apply_attraction(nodes, edges, 0.02f, 10.0f);
         graph_physics::apply_gravity(nodes, 2.5f);
