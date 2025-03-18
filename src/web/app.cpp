@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <glm/glm.hpp>
+
 #include "renderer.h"
 #include "text.h"
 #include "mouse.h"
@@ -22,12 +24,13 @@ namespace app
             std::cout << "Graph App already initialized. Returning...\n";
             return;
         }
-
+        current_state = std::make_unique<mvc::menu_state>();
+        
         web_ui::text::setup_canvas();
         web_ui::renderer::init();
         mvc::mouse::connect_mouse_callbacks();
 
-        current_state = std::make_unique<mvc::menu_state>();
+        initialized = true;
     }
 
     void graph_app::set_state(std::unique_ptr<mvc::ui_state> new_state)
