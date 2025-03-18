@@ -2,6 +2,12 @@
 
 namespace mvc
 {
+    bool graph_physics::is_paused = false;
+
+    bool graph_physics::paused() { return graph_physics::is_paused; }
+
+    void graph_physics::toggle_simulation() { graph_physics::is_paused = !graph_physics::is_paused; }
+
     void graph_physics::apply_repulsion(std::vector<graph_node>& nodes, float k_r)
     {
         for (size_t i = 0; i < nodes.size(); ++i)

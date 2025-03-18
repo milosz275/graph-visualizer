@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <tuple>
+#include <string>
 
 #include "graph_node.h"
 
@@ -9,7 +10,19 @@ namespace mvc
 {
     class graph_physics
     {
+        static bool is_paused;
+
     public:
+        /**
+         * @brief Returns whether the physical simulation is paused.
+         */
+        static bool paused();
+
+        /**
+         * @brief Toggles physics simulation pause.
+         */
+        static void toggle_simulation();
+
         /**
          * @brief Applies repulsion force between nodes to simulate repulsive behavior.
          * @param nodes Reference to the graph's nodes.
