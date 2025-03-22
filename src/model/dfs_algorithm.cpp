@@ -2,7 +2,7 @@
 
 namespace mvc
 {
-    dfs_algorithm::dfs_algorithm(int start_node)
+    dfs_algorithm::dfs_algorithm(int start_node) : graph_algorithm("DFS")
     {
         stack.push(start_node);
     }
@@ -14,14 +14,15 @@ namespace mvc
 
         int node_id = stack.top();
         stack.pop();
-        if (graph[node_id].visited)
+        if (graph[node_id].get_visited())
             return false;
 
-        graph[node_id].visited = true;
+        graph[node_id].set_visited(true);
+        graph.highlight_node(node_id);
 
-        for (int neighbor : graph[node_id].neighbors)
+        for (int neighbor : graph[node_id].get_neighbors())
         {
-            if (!graph[neighbor].visited)
+            if (!graph[neighbor].get_visited())
                 stack.push(neighbor);
         }
         return true;
