@@ -11,6 +11,7 @@
 #include "dfs_algorithm.h"
 #include "dijkstra_algorithm.h"
 #include "graph_physics.h"
+#include "notifications.h"
 
 namespace mvc
 {
@@ -27,9 +28,13 @@ namespace mvc
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, -0.9625f), 
             glm::vec2(0.3f, 0.1f), 
-            "Toggle simulation", 
+            "Toggle physics", 
             []() {
-                graph_physics::toggle_simulation();
+                bool state = graph_physics::toggle_simulation();
+                if (state)
+                    web_ui::notifications::add("Simulation physics turned on.", 3);
+                else
+                    web_ui::notifications::add("Simulation physics turned off.", 3);
             }));
 
         elements.push_back(std::make_unique<ui_button>(
