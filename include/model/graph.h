@@ -12,9 +12,10 @@ namespace mvc
 
     class graph
     {
-    protected:
+    private:
         std::vector<graph_node> nodes;
         std::vector<std::tuple<int, int, float>> edges; // (node id, node id, cost)
+        int highlighted_node;
         
     public:
         /**
@@ -56,6 +57,12 @@ namespace mvc
          * @brief Sets all graph nodes as unvisited.
          */
         void unvisit_nodes();
+
+        /**
+         * @brief Unhighlights previous node and highlights node with given id.
+         * @param node_id Node to be highlighted.
+         */
+        void highlight_node(int node_id);
         
         /**
          * @brief Draws entire graph including graph nodes, node identifiers, edges, edge costs.

@@ -14,17 +14,17 @@
 
 namespace mvc
 {
-    graph::graph()
+    graph::graph() : highlighted_node(-1)
     {
         create_default();
     }
 
-    graph::graph(int vertices)
+    graph::graph(int vertices) : highlighted_node(-1)
     {
         generate_polygon(vertices);
     }
 
-    graph::graph(int num_nodes, bool random)
+    graph::graph(int num_nodes, bool random) : highlighted_node(-1)
     {
         if (random)
         {
@@ -42,37 +42,15 @@ namespace mvc
     {
         nodes.clear();
         edges.clear();
+        graph_node::node_counter = 0;
 
-        graph_node node0;
-        graph_node node1;
-        graph_node node2;
-        graph_node node3;
-        graph_node node4;
-        graph_node node5;
-        graph_node node6;
-
-        node0.id = 0;
-        node1.id = 1;
-        node2.id = 2;
-        node3.id = 3;
-        node4.id = 4;
-        node5.id = 5;
-        node6.id = 6;
-
-        node0.x = -0.6f;
-        node0.y = 0.0f;
-        node1.x = -0.3f;
-        node1.y = 0.5f;
-        node2.x = -0.3f;
-        node2.y = -0.5f;
-        node3.x = 0.0f;
-        node3.y = 0.0f;
-        node4.x = 0.3f;
-        node4.y = 0.5f;
-        node5.x = 0.3f;
-        node5.y = -0.5f;
-        node6.x = 0.6f;
-        node6.y = 0.0f;
+        graph_node node0(-0.6f, 0.0f);
+        graph_node node1(-0.3f, 0.5f);
+        graph_node node2(-0.3f, -0.5f);
+        graph_node node3(0.0f, 0.0f);
+        graph_node node4(0.3f, 0.5f);
+        graph_node node5(0.3f, -0.5f);
+        graph_node node6(0.6f, 0.0f);
 
         nodes.push_back(node0);
         nodes.push_back(node1);
@@ -106,6 +84,7 @@ namespace mvc
             
         nodes.clear();
         edges.clear();
+        graph_node::node_counter = 0;
 
         // build positions deque to construct polygon
         // 0 and n (n being the largest node i) are furthest (opposite sites of polygon)
@@ -119,16 +98,12 @@ namespace mvc
         }
 
         // create n default nodes on a circle of radius 0.5
-        int i = 0;
         while (!positions.empty())
         {
             glm::vec2 position = positions.front();
             positions.pop_front();
 
-            graph_node node;
-            node.id = i++;
-            node.x = position.x;
-            node.y = position.y;
+            graph_node node(position);
             nodes.push_back(node);
 
             if (!positions.empty())
@@ -136,10 +111,7 @@ namespace mvc
                 glm::vec2 position = positions.back();
                 positions.pop_back();
 
-                graph_node node;
-                node.id = i++;
-                node.x = position.x;
-                node.y = position.y;
+                graph_node node(position);
                 nodes.push_back(node);
             }
         }
@@ -184,10 +156,7 @@ namespace mvc
         // create nodes with random positions
         for (int i = 0; i < num_nodes; ++i)
         {
-            graph_node node;
-            node.id = i;
-            node.x = pos_dist(gen);
-            node.y = pos_dist(gen);
+            graph_node node(pos_dist(gen), pos_dist(gen));
             nodes.push_back(node);
         }
 
@@ -210,10 +179,18 @@ namespace mvc
     void graph::unvisit_nodes()
     {
         for (auto& node : nodes)
-        {
-            node.highlighted = false;
             node.visited = false;
-        }
+    }
+
+    void graph::highlight_node(int node_id)
+    {
+        if (node_id > get_node_count() - 1 || node_id < -1)
+            node_id = -1;
+        if (highlighted_node != -1)
+            nodes[highlighted_node].set_highlighted(false);
+        highlighted_node = node_id;
+        if (highlighted_node != -1)
+            nodes[highlighted_node].set_highlighted(true);
     }
     
     void graph::draw()
@@ -223,21 +200,21 @@ namespace mvc
             // edge
             auto [first_node, second_node, cost] = edge;
             web_ui::renderer::draw_line(
-                {nodes[first_node].x, nodes[first_node].y},
-                {nodes[second_node].x, nodes[second_node].y},
+                {nodes[first_node].position.x, nodes[first_node].position.y},
+                {nodes[second_node].position.x, nodes[second_node].position.y},
                 {1.0f, 1.0f, 1.0f});
 
             // edge cost
             web_ui::text::draw_text(
-                {(nodes[first_node].x + nodes[second_node].x) / 2 + 0.01f,
-                 (nodes[first_node].y + nodes[second_node].y) / 2 + 0.01f},
+                {(nodes[first_node].position.x + nodes[second_node].position.x) / 2 + 0.01f,
+                 (nodes[first_node].position.y + nodes[second_node].position.y) / 2 + 0.01f},
                 std::format("{:.2f}", cost),
                 "16px Arial",
                 "gray");
 
             // // tip of the edge
-            // float dx = nodes[second_node].x - nodes[first_node].x;
-            // float dy = nodes[second_node].y - nodes[first_node].y;
+            // float dx = nodes[second_node].position.x - nodes[first_node].position.x;
+            // float dy = nodes[second_node].position.y - nodes[first_node].position.y;
             // float angle = atan2(dy, dx);
 
             // float tip_length = 0.01f; // length of the triangle tip
@@ -245,8 +222,8 @@ namespace mvc
             // float node_radius = 0.01f; // radius of the node
 
             // glm::vec2 tip_center = {
-            //     nodes[second_node].x - node_radius * cos(angle),
-            //     nodes[second_node].y - node_radius * sin(angle)};
+            //     nodes[second_node].position.x - node_radius * cos(angle),
+            //     nodes[second_node].position.y - node_radius * sin(angle)};
             // glm::vec2 tip_left = {
             //     tip_center.x - tip_length * cos(angle) - tip_width * sin(angle),
             //     tip_center.y - tip_length * sin(angle) + tip_width * cos(angle)};
@@ -264,20 +241,20 @@ namespace mvc
             else if (node.visited)
                 color = {1.0f, 0.0f, 1.0f};
             web_ui::renderer::draw_circle(
-                {node.x, node.y},
+                {node.position.x, node.position.y},
                 0.01f,
                 color);
 
             // node id
             if (node.id == 0)
                 web_ui::text::draw_text(
-                    {node.x + 0.01f, node.y + 0.01f},
+                    {node.position.x + 0.01f, node.position.y + 0.01f},
                     "id: " + std::to_string(node.id),
                     "16px Arial",
                     "red");
             else
                 web_ui::text::draw_text(
-                    {node.x + 0.01f, node.y + 0.01f},
+                    {node.position.x + 0.01f, node.position.y + 0.01f},
                     "id: " + std::to_string(node.id),
                     "16px Arial",
                     "black");
