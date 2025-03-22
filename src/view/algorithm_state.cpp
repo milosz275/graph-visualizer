@@ -34,9 +34,9 @@ namespace mvc
             []() {
                 bool state = graph_physics::toggle_simulation();
                 if (state)
-                    web_ui::notifications::add("Simulation physics turned on.", 3);
-                else
                     web_ui::notifications::add("Simulation physics turned off.", 3);
+                else
+                    web_ui::notifications::add("Simulation physics turned on.", 3);
             }));
 
         elements.push_back(std::make_unique<ui_button>(
