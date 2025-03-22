@@ -147,11 +147,13 @@ namespace mvc
     {
         nodes.clear();
         edges.clear();
+        graph_node::node_counter = 0;
         
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_real_distribution<float> pos_dist(-0.9f, 0.9f); // random positions
         std::uniform_int_distribution<int> node_dist(0, num_nodes - 1); // random node selection
+        std::uniform_real_distribution<float> cost(1.0f, 2.0f); // random cost
 
         // create nodes with random positions
         for (int i = 0; i < num_nodes; ++i)
@@ -169,7 +171,7 @@ namespace mvc
             if (a != b && edge_set.find({a, b}) == edge_set.end() && edge_set.find({b, a}) == edge_set.end())
             {
                 edge_set.insert({a, b});
-                edges.push_back({a, b, 1.0f}); // default cost 1.0
+                edges.push_back({a, b, cost(gen)}); // default cost 1.0
                 nodes[a].neighbors.push_back(b);
                 nodes[b].neighbors.push_back(a);
             }
