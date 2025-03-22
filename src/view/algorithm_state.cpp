@@ -1,5 +1,7 @@
 #include "algorithm_state.h"
 
+#include <iostream>
+
 #include <glm/vec2.hpp>
 
 #include "text.h"
@@ -64,16 +66,26 @@ namespace mvc
         graph->draw();
         draw_algorithm_button();
 
-        if (algorithm->check_timer())
+        try
         {
-            if (algorithm->step(*this->graph) == false)
-                algorithm->fast_forward_timer(); // do not sleep when step was empty
-            if (algorithm->is_complete())
+            if (algorithm->check_timer())
             {
-                graph->unvisit_nodes();
-                graph->highlight_node(-1);
-                app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(graph)));
+                if (algorithm->step(*this->graph) == false)
+                    algorithm->fast_forward_timer(); // do not sleep when step was empty
+                if (algorithm->is_complete())
+                {
+                    graph->unvisit_nodes();
+                    graph->highlight_node(-1);
+                    app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(graph)));
+                }
             }
+        }
+        catch (std::runtime_error& error)
+        {
+            std::cerr << error.what() << '\n';
+            graph->unvisit_nodes();
+            graph->highlight_node(-1);
+            app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(graph)));
         }
 
         for (const auto& element : elements)
