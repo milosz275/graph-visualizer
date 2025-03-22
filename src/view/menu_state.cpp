@@ -13,8 +13,28 @@
 
 namespace mvc
 {
+    bool menu_state::undirected = true;
+
     menu_state::menu_state() : ui_state("menu")
     {
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f, -0.9625f), 
+            glm::vec2(0.3f, 0.1f), 
+            "Undirected graph", 
+            [this]() {
+                toggle_undirected();
+            },
+            !undirected));
+
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f + 0.315f, -0.9625f), 
+            glm::vec2(0.3f, 0.1f), 
+            "Directed graph",
+            [this]() {
+                toggle_undirected();
+            },
+            undirected));
+
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.35f, 0.10f),
             glm::vec2(0.325f, 0.10f),
@@ -125,5 +145,12 @@ namespace mvc
 
         for (const auto& element : elements)
             element->render();
+    }
+
+    bool menu_state::toggle_undirected()
+    {
+        elements[0]->toggle_enabled();
+        elements[1]->toggle_enabled();
+        return undirected = !undirected;
     }
 }

@@ -13,6 +13,9 @@ namespace mvc
 {
     class menu_state : public ui_state
     {
+    private:
+        static bool undirected;
+
     public:
         /**
          * @brief Sets up graph generation menu.
@@ -28,5 +31,10 @@ namespace mvc
          * @brief Renders the scene including all menu elements.
          */
         void render() override;
+
+        /**
+         * 
+         */
+        bool toggle_undirected();
     };
 }
