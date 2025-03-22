@@ -17,6 +17,15 @@ namespace web_ui
             return false;
     }
 
+    bool background::get_darkmode()
+    {
+        int result = {EM_ASM_INT({ return getDarkmode(); }, 0)};
+        if (result)
+            return true;
+        else
+            return false;
+    }
+
     void background::draw_background()
     {
         darkmode = {EM_ASM_INT({ return getDarkmode(); }, 0)};
