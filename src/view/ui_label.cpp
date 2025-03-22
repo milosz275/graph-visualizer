@@ -9,7 +9,7 @@ namespace mvc
     void ui_label::render()
     {
         // [ ] Add font size and color
-        web_ui::text::draw_text({position.x, position.y}, text);
+        web_ui::text::draw_text({position.x, position.y}, text, "16px Arial", "gray");
     }
 
     bool ui_label::is_clicked(glm::vec2) { return false; } // label is non-clickable
