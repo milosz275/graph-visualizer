@@ -1,5 +1,7 @@
 #include "dfs_algorithm.h"
 
+#include "notifications.h"
+
 namespace mvc
 {
     dfs_algorithm::dfs_algorithm(int start_node) : graph_algorithm("DFS")
@@ -10,12 +12,14 @@ namespace mvc
     bool dfs_algorithm::step(mvc::graph& graph)
     {
         if (stack.empty())
-            return false;
+            return false; // not wait
 
         int node_id = stack.top();
         stack.pop();
+        if (node_id == graph.get_node_count() - 1) // assuming target is last
+            web_ui::notifications::add("DFS: Destination achieved in " + std::to_string(current_step + 1) + " steps.", 15);
         if (graph[node_id].get_visited())
-            return false;
+            return false; // not wait
 
         graph[node_id].set_visited(true);
         graph.highlight_node(node_id);
@@ -25,7 +29,8 @@ namespace mvc
             if (!graph[neighbor].get_visited())
                 stack.push(neighbor);
         }
-        return true;
+        current_step++;
+        return true; // wait
     }
 
     bool dfs_algorithm::is_complete() const
