@@ -35,8 +35,8 @@ namespace mvc
         void render() override;
 
         /**
-         * @brief Draws current algorithm information in window top right corner.
+         * @brief Draws current algorithm label as inactive menu button.
          */
-        void draw_algorithm_info();
+        void draw_algorithm_button();
     };
 }

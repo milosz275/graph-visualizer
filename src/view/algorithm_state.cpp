@@ -42,9 +42,12 @@ namespace mvc
         //         algorithm->fast_forward_timer();
         //     }));
         
-        elements.push_back(std::make_unique<ui_label>(
-            glm::vec2(0.0f, 0.0f),
-            "")); // algorithm label
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f, 0.60f),
+            glm::vec2(0.3f, 0.1f),
+            "",
+            [](){},
+            false)); // algorithm label placeholder
     }
 
     algorithm_state::~algorithm_state() {}
@@ -53,7 +56,7 @@ namespace mvc
     {
         graph->apply_physics();
         graph->draw();
-        draw_algorithm_info();
+        draw_algorithm_button();
 
         if (algorithm->check_timer())
         {
@@ -71,11 +74,15 @@ namespace mvc
             element->render();
     }
 
-    void algorithm_state::draw_algorithm_info()
+    void algorithm_state::draw_algorithm_button()
     {
+        // assumes last element is algorithm placeholder/previous algorithm state to update
         elements.pop_back();
-        elements.push_back(std::make_unique<ui_label>(
-            glm::vec2(0.775f, 0.9625f),
-            ("Algorithm: " + algorithm->get_label()).c_str()));
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f, 0.60f),
+            glm::vec2(0.3f, 0.1f),
+            ("Algorithm: " + algorithm->get_label()).c_str(),
+            [](){},
+            false)); // algorithm label
     }
 }
