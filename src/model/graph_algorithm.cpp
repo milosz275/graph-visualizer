@@ -2,7 +2,7 @@
 
 namespace mvc
 {
-    graph_algorithm::graph_algorithm(std::string label) : label(label), start_time(std::chrono::steady_clock::now()), current_step(0) {}
+    graph_algorithm::graph_algorithm(std::string label, int start_node) : label(label), start_node(start_node), start_time(std::chrono::steady_clock::now()), current_step(0) {}
 
     std::string graph_algorithm::get_label() { return label; }
 

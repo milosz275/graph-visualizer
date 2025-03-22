@@ -10,6 +10,7 @@ namespace mvc
     {
     protected:
         std::string label;
+        int start_node;
         std::chrono::steady_clock::time_point start_time;
         int current_step;
 
@@ -17,8 +18,10 @@ namespace mvc
         /**
          * @brief Provides base to extend with specilized algorithms.
          * @note Creation of graph_algorithm objects is not allowed.
+         * @param label Graph label.
+         * @param start_node Starting node id.
          */
-        graph_algorithm(std::string label);
+        graph_algorithm(std::string label, int start_node);
 
         /**
          * @brief Destructor.
