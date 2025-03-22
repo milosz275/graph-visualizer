@@ -23,7 +23,7 @@ namespace mvc
         menu_state();
 
         /**
-         * @brief Descructor.
+         * @brief Destructor.
          */
         ~menu_state() override;
 
@@ -33,7 +33,8 @@ namespace mvc
         void render() override;
 
         /**
-         * 
+         * @brief Toggles whether graphs created by the menu state will be undirected or directed.
+         * @return True for undirected, false otherwise.
          */
         bool toggle_undirected();
     };
