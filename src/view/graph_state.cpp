@@ -82,14 +82,6 @@ namespace mvc
                 std::cout << "Run all callback\n";
             },
             false));
-
-        elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(0.975f - 0.3f, -0.9625f),
-            glm::vec2(0.3f, 0.1f),
-            "Explode",
-            [this]() {
-                this->graph->explode();
-            }));
     }
 
     graph_state::~graph_state() {}
