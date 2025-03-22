@@ -11,6 +11,7 @@ namespace mvc
     protected:
         std::string label;
         std::chrono::steady_clock::time_point start_time;
+        int current_step;
 
     public:
         /**
@@ -51,5 +52,11 @@ namespace mvc
          * @brief Skips time in the timer to older than one second (skip waiting).
          */
         void fast_forward_timer();
+
+        /**
+         * @brief Gets current algorithm step id.
+         * @return Returns current step's id.
+         */
+        int get_current_step();
     };
 }
