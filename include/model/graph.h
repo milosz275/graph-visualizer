@@ -9,6 +9,7 @@
 namespace mvc
 {
     class graph_state;
+    class dijkstra_algorithm;
 
     class graph
     {
@@ -96,5 +97,6 @@ namespace mvc
         const graph_node& operator[](int id) const;
 
         friend class graph_state;
+        friend class dijkstra_algorithm;
     };
 }
