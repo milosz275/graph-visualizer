@@ -44,6 +44,19 @@ namespace mvc
          * @brief Returns whether UI element is currently enabled.
          * @return True if element is active, false otherwise.
          */
-        bool is_enabled();
+        bool get_enabled();
+
+        /**
+         * @brief Sets and returns UI enabled state.
+         * @param enabled New enabled state.
+         * @return True if element is active, false otherwise.
+         */
+        bool set_enabled(bool enabled);
+
+        /**
+         * @brief Toggles and returns UI enabled state.
+         * @return True if element is active, false otherwise.
+         */
+        bool toggle_enabled();
     };
 }
