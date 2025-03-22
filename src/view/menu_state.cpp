@@ -127,7 +127,7 @@ namespace mvc
             false));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(0.975f - 0.3f, 0.9625f - 0.1f),
+            glm::vec2(-0.975f, 0.75f), // glm::vec2(0.975f - 0.3f, 0.9625f - 0.1f),
             glm::vec2(0.3f, 0.1f),
             "Toggle background",
             []() {
