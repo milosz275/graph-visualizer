@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <vector>
+#include <set>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -13,14 +14,13 @@ namespace mvc
     class dijkstra_algorithm : public graph_algorithm
     {
     private:
-        std::priority_queue<std::pair<float, int>, std::vector<std::pair<float, int>>, std::greater<>> pq;
-        std::unordered_set<int> processed;
-        std::unordered_map<int, float> costs;
-        std::unordered_map<int, int> parents;
-        std::queue<int> path;
+        bool found_path; // flag indicating the best path is found
+        std::queue<int> path; // the best path constructed by the Dijkstra algorithm
+        int target_node; // node to find best path from origin (node 0)
 
-        bool found_path = false;
-        int target_node = -1;
+        std::set<std::pair<int, int>> processed; // (cost, node) - nodes and their costs to get to (set sorts pairs by first element - cost)
+        std::vector<int> distance; // distance/cost from origin (node 0) from i-th node
+        std::unordered_map<int, int> parent; // (node, parent)
 
     public:
         /**
