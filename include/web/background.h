@@ -14,6 +14,11 @@ namespace web_ui
         static bool toggle_darkmode();
 
         /**
+         * Returns new darkmode state, can be either true or false.
+         */
+        static bool get_darkmode();
+
+        /**
          * Draw static background, gray on default
          */
         static void draw_background();
