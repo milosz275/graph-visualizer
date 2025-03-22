@@ -11,6 +11,7 @@
 #include "graph_state.h"
 #include "app.h"
 #include "graph_physics.h"
+#include "notifications.h"
 
 namespace mvc
 {
@@ -29,18 +30,23 @@ namespace mvc
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, -0.9625f),
             glm::vec2(0.3f, 0.1f),
-            "Toggle simulation",
+            "Toggle physics",
             []() {
-                graph_physics::toggle_simulation();
+                bool state = graph_physics::toggle_simulation();
+                if (state)
+                    web_ui::notifications::add("Simulation physics turned on.", 3);
+                else
+                    web_ui::notifications::add("Simulation physics turned off.", 3);
             }));
 
-        // elements.push_back(std::make_unique<ui_button>(
-        //     glm::vec2(-0.975f + 0.315f, -0.9625f), 
-        //     glm::vec2(0.3f, 0.1f), 
-        //     "Step forward",
-        //     [&algorithm]() {
-        //         algorithm->fast_forward_timer();
-        //     }));
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f + 0.315f, -0.9625f), 
+            glm::vec2(0.3f, 0.1f), 
+            "Step forward",
+            []() { // &algorithm
+                // algorithm->fast_forward_timer();
+            },
+            false));
         
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, 0.60f),
@@ -83,6 +89,6 @@ namespace mvc
             glm::vec2(0.3f, 0.1f),
             ("Algorithm: " + algorithm->get_label()).c_str(),
             [](){},
-            false)); // algorithm label
+            false));
     }
 }
