@@ -21,8 +21,9 @@ namespace mvc
 
         /**
          * @brief Toggles physics simulation pause.
+         * @return Current simulation state.
          */
-        static void toggle_simulation();
+        static bool toggle_simulation();
 
         /**
          * @brief Applies repulsion force between nodes to simulate repulsive behavior.
