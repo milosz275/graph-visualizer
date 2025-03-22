@@ -9,6 +9,7 @@ namespace mvc
     class graph_algorithm
     {
     protected:
+        std::string label;
         std::chrono::steady_clock::time_point start_time;
 
     public:
@@ -16,12 +17,17 @@ namespace mvc
          * @brief Provides base to extend with specilized algorithms.
          * @note Creation of graph_algorithm objects is not allowed.
          */
-        graph_algorithm();
+        graph_algorithm(std::string label);
 
         /**
          * @brief Destructor.
          */
         virtual ~graph_algorithm() = default;
+
+        /**
+         * @brief Returns algorithm label
+         */
+        virtual std::string get_label();
 
         /**
          * @brief Allows to be overloaded step of the derived algorithm.
