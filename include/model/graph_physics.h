@@ -10,6 +10,7 @@ namespace mvc
 {
     class graph_physics
     {
+    private:
         static bool is_paused;
 
     public:
