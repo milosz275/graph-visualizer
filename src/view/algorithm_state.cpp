@@ -6,6 +6,7 @@
 #include "app.h"
 #include "renderer.h"
 #include "ui_button.h"
+#include "ui_label.h"
 #include "graph.h"
 #include "graph_state.h"
 #include "app.h"
@@ -21,6 +22,7 @@ namespace mvc
             "Back to Graph",
             [this]() {
                 this->graph->unvisit_nodes();
+                this->graph->highlight_node(-1);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(this->graph)));
             }));
 
@@ -31,6 +33,18 @@ namespace mvc
             []() {
                 graph_physics::toggle_simulation();
             }));
+
+        // elements.push_back(std::make_unique<ui_button>(
+        //     glm::vec2(-0.975f + 0.315f, -0.9625f), 
+        //     glm::vec2(0.3f, 0.1f), 
+        //     "Step forward",
+        //     [&algorithm]() {
+        //         algorithm->fast_forward_timer();
+        //     }));
+        
+        elements.push_back(std::make_unique<ui_label>(
+            glm::vec2(0.0f, 0.0f),
+            "")); // algorithm label
     }
 
     algorithm_state::~algorithm_state() {}
@@ -39,6 +53,7 @@ namespace mvc
     {
         graph->apply_physics();
         graph->draw();
+        draw_algorithm_info();
 
         if (algorithm->check_timer())
         {
@@ -47,11 +62,20 @@ namespace mvc
             if (algorithm->is_complete())
             {
                 graph->unvisit_nodes();
+                graph->highlight_node(-1);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(graph)));
             }
         }
 
         for (const auto& element : elements)
             element->render();
+    }
+
+    void algorithm_state::draw_algorithm_info()
+    {
+        elements.pop_back();
+        elements.push_back(std::make_unique<ui_label>(
+            glm::vec2(0.775f, 0.9625f),
+            ("Algorithm: " + algorithm->get_label()).c_str()));
     }
 }

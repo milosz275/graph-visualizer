@@ -33,5 +33,10 @@ namespace mvc
          * @brief Renders algorithm state including graph itself and runs specified algorithm.
          */
         void render() override;
+
+        /**
+         * @brief Draws current algorithm information in window top right corner.
+         */
+        void draw_algorithm_info();
     };
 }
