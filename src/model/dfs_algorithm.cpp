@@ -4,7 +4,7 @@
 
 namespace mvc
 {
-    dfs_algorithm::dfs_algorithm(int start_node) : graph_algorithm("DFS")
+    dfs_algorithm::dfs_algorithm(int start_node) : graph_algorithm("DFS", start_node)
     {
         stack.push(start_node);
     }

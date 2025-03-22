@@ -4,7 +4,7 @@
 
 namespace mvc
 {
-    bfs_algorithm::bfs_algorithm(int start_node) : graph_algorithm("BFS")
+    bfs_algorithm::bfs_algorithm(int start_node) : graph_algorithm("BFS", start_node)
     {
         queue.push(start_node);
     }
