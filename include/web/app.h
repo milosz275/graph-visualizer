@@ -58,6 +58,16 @@ namespace app
          */
         static void handle_mouse_move(glm::vec2 mouse);
 
+        /**
+         * @brief Draws logo.
+         */
+        static void draw_logo();
+
+        /**
+         * @brief Draws legend.
+         */
+        static void draw_legend();
+
         friend class mvc::mouse;
         friend class mvc::menu_state;
         friend class mvc::graph_state;
