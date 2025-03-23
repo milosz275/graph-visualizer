@@ -15,6 +15,7 @@ namespace mvc
     {
     private:
         static bool undirected;
+        static bool random_weights;
 
     public:
         /**
@@ -37,5 +38,11 @@ namespace mvc
          * @return True for undirected, false otherwise.
          */
         bool toggle_undirected();
+
+        /**
+         * @brief Toggles whether graphs created by the menu state will have random weight edges.
+         * @return True for random costs, false for uniform 1.0 costs.
+         */
+        bool toggle_random_weights();
     };
 }

@@ -38,12 +38,12 @@ namespace mvc
         graph(int num_nodes, bool random);
 
         /**
-         * Clears the graph and creates default graph.
+         * @brief Clears the graph and creates default graph.
          */
         void create_default();
 
         /**
-         * Clears the graph and generates polygon-based graph.
+         * @brief Clears the graph and generates polygon-based graph.
          */
         void generate_polygon(int vertices);
 
@@ -85,6 +85,12 @@ namespace mvc
          * @return Graph node count
          */
         int get_node_count();
+
+        /**
+         * @brief Checks if there is at least one edge with negative cost/weight.
+         * @return Returns true if there is at least one, false otherwise.
+         */
+        bool check_for_negative_edges();
 
         /**
          * @brief Supplies [] access to graph's nodes
