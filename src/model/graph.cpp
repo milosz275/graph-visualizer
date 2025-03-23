@@ -144,7 +144,7 @@ namespace mvc
         return false;
     }
 
-    int graph::get_edge_cost(int u, int v)
+    float graph::get_edge_cost(int u, int v)
     {
         for (auto [e_u, e_v, e_w] : edges)
             if (e_u == u && e_v == v)

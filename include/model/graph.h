@@ -109,7 +109,7 @@ namespace mvc
          * @brief Finds cost/weight of edge between nodes u and v.
          * @return Returns cost of the edge, throws runtime_error if it does not exist.
          */
-        int get_edge_cost(int u, int v);
+        float get_edge_cost(int u, int v);
 
         /**
          * @brief Supplies [] access to graph's nodes
