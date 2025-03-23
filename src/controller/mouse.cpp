@@ -27,7 +27,7 @@ namespace mvc
         EM_ASM_INT({ return setMousePointer(); }, 0);
     }
 
-    EM_BOOL mouse::mouse_click_callback(int, const EmscriptenMouseEvent* e, void*)
+    EM_BOOL mouse::mouse_click_callback(int, const EmscriptenMouseEvent*, void*)
     {
         return EM_TRUE;
     }
