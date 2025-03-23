@@ -11,6 +11,7 @@
 #include "graph_physics.h"
 #include "renderer.h"
 #include "text.h"
+#include "background.h"
 
 namespace mvc
 {
@@ -30,7 +31,8 @@ namespace mvc
         {
             std::random_device rd;
             std::mt19937 gen(rd());
-            std::uniform_int_distribution<int> edge_dist(0, num_nodes * (num_nodes - 1) / 2);
+            int max_edges = num_nodes * (num_nodes - 1) / 2;
+            std::uniform_int_distribution<int> edge_dist(max_edges / 5, max_edges / 3);
             int num_edges = edge_dist(gen);
             generate_random(num_nodes, num_edges);
         }
@@ -176,6 +178,7 @@ namespace mvc
                 edges.push_back({b, a, cost}); // graph on default
                 nodes[a].neighbors.push_back(b);
                 nodes[b].neighbors.push_back(a);
+                cost = cost_gen(gen);
             }
         }
     }
@@ -256,6 +259,12 @@ namespace mvc
                     "id: " + std::to_string(node.id),
                     "16px Arial",
                     "red");
+            else if (web_ui::background::get_darkmode())
+                web_ui::text::draw_text(
+                    {node.position.x + 0.01f, node.position.y + 0.01f},
+                    "id: " + std::to_string(node.id),
+                    "16px Arial",
+                    "white");
             else
                 web_ui::text::draw_text(
                     {node.position.x + 0.01f, node.position.y + 0.01f},
@@ -283,6 +292,17 @@ namespace mvc
     int graph::get_node_count()
     {
         return (int)nodes.size();
+    }
+
+    bool graph::check_for_negative_edges()
+    {
+        for (const auto& edge : edges)
+        {
+            auto [u, v, w] = edge;
+            if (w < 0.0)
+                return true;
+        }
+        return false;
     }
 
     graph_node& graph::operator[](int id)
