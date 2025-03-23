@@ -16,10 +16,10 @@ namespace mvc
 
         int node_id = queue.front();
         queue.pop();
-        if (node_id == graph.get_node_count() - 1) // assuming target is last
-            web_ui::notifications::add("BFS: Destination achieved in " + std::to_string(current_step + 1) + " steps.", 15);
         if (graph[node_id].get_visited())
             return false; // not wait
+        if (node_id == graph.get_node_count() - 1) // assuming target is last
+            web_ui::notifications::add("BFS: Destination achieved in " + std::to_string(current_step + 1) + " steps.", 15);
 
         graph[node_id].set_visited(true);
         graph.highlight_node(node_id);
