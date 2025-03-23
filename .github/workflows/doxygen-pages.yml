@@ -50,6 +50,10 @@ jobs:
           ./emsdk install latest
           ./emsdk activate latest
 
+      - name: Setup ccache
+        run: |
+          sudo apt-get install -y ccache
+
       - name: Setup Freeglut
         run: |
           sudo apt-get install -y wget freeglut3-dev freeglut3-dev libglew-dev libgl1-mesa-dev libglu1-mesa-dev
