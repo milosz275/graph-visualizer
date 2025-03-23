@@ -6,7 +6,7 @@ namespace web_ui
 {
     int notifications::target_size = 5;
     std::list<std::pair<std::string, std::chrono::steady_clock::time_point>> notifications::texts;
-    glm::vec2 notifications::upper_left_corner = {0.5f, 0.95f};
+    glm::vec2 notifications::upper_left_corner = {0.45f, 0.95f};
 
     void notifications::update()
     {
