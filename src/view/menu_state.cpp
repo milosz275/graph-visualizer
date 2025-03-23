@@ -14,11 +14,12 @@
 namespace mvc
 {
     bool menu_state::undirected = true;
+    bool menu_state::random_weights = true;
 
     menu_state::menu_state() : ui_state("menu")
     {
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f, -0.9625f), 
+            glm::vec2(-0.975f, -0.9625f + 0.115f), 
             glm::vec2(0.3f, 0.1f), 
             "Undirected graph", 
             [this]() {
@@ -27,13 +28,31 @@ namespace mvc
             !undirected));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f + 0.315f, -0.9625f), 
+            glm::vec2(-0.975f + 0.315f, -0.9625f + 0.115f), 
             glm::vec2(0.3f, 0.1f), 
             "Directed graph",
             [this]() {
                 toggle_undirected();
             },
             undirected));
+
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f, -0.9625f), 
+            glm::vec2(0.3f, 0.1f), 
+            "Random weights", 
+            [this]() {
+                toggle_random_weights();
+            },
+            !random_weights));
+
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f + 0.315f, -0.9625f), 
+            glm::vec2(0.3f, 0.1f), 
+            "Uniform weights",
+            [this]() {
+                toggle_random_weights();
+            },
+            random_weights));
 
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.35f, 0.10f),
@@ -85,7 +104,7 @@ namespace mvc
             glm::vec2(0.325f, 0.10f),
             "Random (5)",
             []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(5, true);
+                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(5, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -94,7 +113,7 @@ namespace mvc
             glm::vec2(0.325f, 0.10f),
             "Random (10)",
             []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(10, true);
+                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(10, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -103,7 +122,7 @@ namespace mvc
             glm::vec2(0.325f, 0.10f),
             "Random (20)",
             []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(20, true);
+                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(20, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -112,7 +131,7 @@ namespace mvc
             glm::vec2(0.325f, 0.10f),
             "Topological",
             []() {
-                // std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(50, true);
+                // std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(50, random_weights);
                 // app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -152,5 +171,12 @@ namespace mvc
         elements[0]->toggle_enabled();
         elements[1]->toggle_enabled();
         return undirected = !undirected;
+    }
+
+    bool menu_state::toggle_random_weights()
+    {
+        elements[2]->toggle_enabled();
+        elements[3]->toggle_enabled();
+        return random_weights = !random_weights;
     }
 }
