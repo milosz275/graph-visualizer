@@ -64,7 +64,25 @@ namespace mvc
          * @param node_id Node to be highlighted.
          */
         void highlight_node(int node_id);
+
+        /**
+         * @brief Draws given edge.
+         * @param edge Edge to draw.
+         */
+        void draw_edge(std::tuple<int, int, float>& edge);
         
+        /**
+         * @brief Draws arrow pointing at the end of given edge.
+         * @param edge Edge tip to draw.
+         */
+        void draw_arrow(std::tuple<int, int, float>& edge);
+        
+        /**
+         * @brief Draws given node.
+         * @param node Node to draw.
+         */
+        void draw_node(mvc::graph_node& node);
+
         /**
          * @brief Draws entire graph including graph nodes, node identifiers, edges, edge costs.
          */
