@@ -59,6 +59,11 @@ namespace mvc
             glm::vec2(0.3f, 0.1f),
             "Run Dijkstra",
             [this]() {
+                if (this->graph->check_for_negative_edges())
+                {
+                    web_ui::notifications::add("Dijkstra is unavailable: at least one edge with negative cost.", 3);
+                    return;
+                }
                 std::unique_ptr<mvc::graph_algorithm> algorithm = std::make_unique<mvc::dijkstra_algorithm>(0, (int)this->graph->get_node_count() - 1, this->graph->nodes);
                 app::graph_app::set_state(std::make_unique<mvc::algorithm_state>(std::move(algorithm), std::move(this->graph)));
             }));
