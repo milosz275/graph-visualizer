@@ -89,7 +89,7 @@ jobs:
           cp src/index.html docs/demo/
           cp build/graph-visualizer.js docs/demo/
           cp build/graph-visualizer.wasm docs/demo/
-          # cp assets/* docs/demo/
+          cp assets/* docs/demo/
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3

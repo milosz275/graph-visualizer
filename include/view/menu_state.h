@@ -11,8 +11,14 @@
 
 namespace mvc
 {
+    class graph;
+
     class menu_state : public ui_state
     {
+    private:
+        static bool undirected;
+        static bool random_weights;
+
     public:
         /**
          * @brief Sets up graph generation menu.
@@ -20,13 +26,32 @@ namespace mvc
         menu_state();
 
         /**
-         * @brief Descructor.
+         * @brief Destructor.
          */
         ~menu_state() override;
+
+        /**
+         * @brief Creates and returns proper graph (undirected/directed).
+         * @param num_nodes Number of nodes to allocate.
+         * @return The graph.
+         */
+        std::unique_ptr<mvc::graph> create_graph(int num_nodes);
 
         /**
          * @brief Renders the scene including all menu elements.
          */
         void render() override;
+
+        /**
+         * @brief Toggles whether graphs created by the menu state will be undirected or directed.
+         * @return True for undirected, false otherwise.
+         */
+        bool toggle_undirected();
+
+        /**
+         * @brief Toggles whether graphs created by the menu state will have random weight edges.
+         * @return True for random costs, false for uniform 1.0 costs.
+         */
+        bool toggle_random_weights();
     };
 }

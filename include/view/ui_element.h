@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <functional>
 
 #include <glm/vec2.hpp>
 
@@ -22,7 +21,7 @@ namespace mvc
         ui_element(glm::vec2 position, bool enabled = true);
 
         /**
-         * @brief Descructor
+         * @brief Destructor
          */
         virtual ~ui_element() = default;
 
@@ -45,6 +44,19 @@ namespace mvc
          * @brief Returns whether UI element is currently enabled.
          * @return True if element is active, false otherwise.
          */
-        bool is_enabled();
+        bool get_enabled();
+
+        /**
+         * @brief Sets and returns UI enabled state.
+         * @param enabled New enabled state.
+         * @return True if element is active, false otherwise.
+         */
+        bool set_enabled(bool enabled);
+
+        /**
+         * @brief Toggles and returns UI enabled state.
+         * @return True if element is active, false otherwise.
+         */
+        bool toggle_enabled();
     };
 }

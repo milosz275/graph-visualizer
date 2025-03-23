@@ -24,6 +24,7 @@ int main()
     }
     emscripten_webgl_make_context_current(context);
 
+    app::graph_app::init();
     app::graph_app::run();
 
     return 0;

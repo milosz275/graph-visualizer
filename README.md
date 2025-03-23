@@ -7,13 +7,14 @@
 
 ![Logo](assets/logo.png)
 
-Graph Visualizer is a browser-based tool for visualizing directed and undirected graphs, featuring interactive traversal algorithms using WebGL and Emscripten. Try it out with the [demo](https://milosz275.github.io/graph-visualizer/demo).
+Graph Visualizer is a browser-based tool for visualizing directed and undirected graphs, featuring interactive traversal algorithms using WebGL and Emscripten. Try it out with the [demo](https://milosz275.github.io/graph-visualizer/demo) (note: might not scale well on mobile devices).
 
 ## Table of Contents
 
 - [Features](#features)
 - [Structure](#structure)
 - [Design Patterns](#design-patterns)
+- [Force-directed Graph Simulation](#force-directed-graph-simulation)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
 
@@ -24,7 +25,30 @@ Graph Visualizer is a browser-based tool for visualizing directed and undirected
 - Step-by-step execution with one-second intervals.
 - Interactive UI with WebGL rendering.
 
-## Structure
+## Prerequisites
+
+Graph Visualizer is compiled by emcc, available from [Emscripten](https://emscripten.org/). Build depends on `ccache`.
+
+## Build
+
+Run the following to setup to get a working copy of this project:
+
+```bash
+git clone --recurse-submodules -j$(nproc) https://github.com/milosz275/graph-visualizer
+cd graph-visualizer
+make -j$(nproc)
+```
+
+Setup local server to test the app:
+
+```bash
+cp src/index.html build
+cp assets/favicon.ico build
+cd build
+python3 -m http.server
+```
+
+## Project Structure
 
 The project uses the [web-ui](https://github.com/milosz275/web-ui) frontend framework for rendering. It follows the Model-View-Controller (MVC) architecture to separate concerns effectively.
 
@@ -47,6 +71,18 @@ Graph Visualizer is a highly abstracted project that leverages multiple design p
 
 - State Pattern – Manages different states of the program and executes appropriate behavior.
 - Visitor Pattern – Allows traversal algorithms to operate on graph nodes without modifying their structure.
+
+## Force-directed Graph Simulation
+
+Graph Visualizer includes a force-directed graph simulation that models realistic physical interactions between nodes. The simulation applies several forces to create a natural graph layout:
+
+- Repulsion Force – Nodes repel each other to avoid overlap, using a repulsion constant `k_r`.
+- Attraction Force – Connected nodes attract each other like springs, controlled by an attraction constant `k_a` and a rest length parameter.
+- Gravity Force – Nodes experience a gravitational pull toward a central point, determined by a gravity constant `k_g`.
+- Velocity and Damping – The simulation updates node positions and velocities over time `time_step`, with damping to smooth movements.
+- Explosion Force – An optional burst force can be applied to disperse nodes outward, simulating an explosion effect.
+
+These physics-based forces create an intuitive and interactive experience when exploring graph structures.
 
 ## Acknowledgements
 

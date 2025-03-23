@@ -2,11 +2,15 @@
 
 #include <iostream>
 
+#include <glm/glm.hpp>
+
 #include "renderer.h"
 #include "text.h"
 #include "mouse.h"
 #include "background.h"
 #include "menu_state.h"
+#include "canvas.h"
+#include "notifications.h"
 
 namespace app
 {
@@ -21,12 +25,13 @@ namespace app
             std::cout << "Graph App already initialized. Returning...\n";
             return;
         }
-
+        current_state = std::make_unique<mvc::menu_state>();
+        
         web_ui::text::setup_canvas();
         web_ui::renderer::init();
         mvc::mouse::connect_mouse_callbacks();
 
-        current_state = std::make_unique<mvc::menu_state>();
+        initialized = true;
     }
 
     void graph_app::set_state(std::unique_ptr<mvc::ui_state> new_state)
@@ -49,10 +54,12 @@ namespace app
 
     void graph_app::main_loop()
     {
+        web_ui::canvas::update_canvas_size();
         web_ui::background::draw_background();
         web_ui::text::clear_text_canvas();
-        web_ui::text::draw_text_absolute(); // logo
-
+        draw_logo();
+        draw_legend();
+        web_ui::notifications::draw();
         current_state->render();
     }
 
@@ -64,5 +71,32 @@ namespace app
     void graph_app::handle_mouse_move(glm::vec2 mouse)
     {
         current_state->handle_hover(mouse);
+    }
+
+    void graph_app::draw_logo()
+    {
+        web_ui::text::draw_text_absolute({10.0f, 10.0f}, "Graph Visualizer", "32px Arial", "#2158b7");
+    }
+
+    void graph_app::draw_legend()
+    {
+        web_ui::renderer::draw_rectangle({0.85f - 0.02f, -0.875f + 0.04f}, {1.0f, -1.0f}, {0.4f, 0.4f, 0.4f});
+        web_ui::text::draw_text({0.85f - 0.01f, -0.875f}, "Legend", "16px Arial", "white");
+
+        web_ui::renderer::draw_circle(
+            {0.85f, -0.9f},
+            0.01f,
+            {0.0f, 0.0f, 1.0f});
+        web_ui::text::draw_text({0.862f, -0.9f - 0.01f}, "Unexplored", "16px Arial", "white");
+        web_ui::renderer::draw_circle(
+            {0.85f, -0.93f},
+            0.01f,
+            {0.0f, 0.8f, 0.8f});
+        web_ui::text::draw_text({0.862f, -0.93f - 0.01f}, "Current", "16px Arial", "white");
+        web_ui::renderer::draw_circle(
+            {0.85f, -0.96f},
+            0.01f,
+            {1.0f, 0.0f, 1.0f});
+        web_ui::text::draw_text({0.862f, -0.96f - 0.01f}, "Explored", "16px Arial", "white");
     }
 }

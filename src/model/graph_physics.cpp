@@ -2,24 +2,30 @@
 
 namespace mvc
 {
+    bool graph_physics::is_paused = false;
+
+    bool graph_physics::paused() { return graph_physics::is_paused; }
+
+    bool graph_physics::toggle_simulation() { return graph_physics::is_paused = !graph_physics::is_paused; }
+
     void graph_physics::apply_repulsion(std::vector<graph_node>& nodes, float k_r)
     {
         for (size_t i = 0; i < nodes.size(); ++i)
         {
             for (size_t j = i + 1; j < nodes.size(); ++j)
             {
-                float dx = nodes[i].x - nodes[j].x;
-                float dy = nodes[i].y - nodes[j].y;
+                float dx = nodes[i].position.x - nodes[j].position.x;
+                float dy = nodes[i].position.y - nodes[j].position.y;
                 float dist = sqrt(dx * dx + dy * dy + 1e-6);
                 float force = k_r / (dist * dist);
     
                 float fx = force * dx / dist;
                 float fy = force * dy / dist;
     
-                nodes[i].fx += fx;
-                nodes[i].fy += fy;
-                nodes[j].fx -= fx;
-                nodes[j].fy -= fy;
+                nodes[i].force_accumulator.x += fx;
+                nodes[i].force_accumulator.y += fy;
+                nodes[j].force_accumulator.x -= fx;
+                nodes[j].force_accumulator.y -= fy;
             }
         }
     }
@@ -30,18 +36,18 @@ namespace mvc
         {
             auto [i, j, cost] = edge;
 
-            float dx = nodes[j].x - nodes[i].x;
-            float dy = nodes[j].y - nodes[i].y;
+            float dx = nodes[j].position.x - nodes[i].position.x;
+            float dy = nodes[j].position.y - nodes[i].position.y;
             float dist = sqrt(dx * dx + dy * dy + 1e-6); // avoid zero division
             float force = k_a * (dist - rest_length) / cost;
 
             float fx = force * dx / dist;
             float fy = force * dy / dist;
 
-            nodes[i].fx += fx;
-            nodes[i].fy += fy;
-            nodes[j].fx -= fx;
-            nodes[j].fy -= fy;
+            nodes[i].force_accumulator.x += fx;
+            nodes[i].force_accumulator.y += fy;
+            nodes[j].force_accumulator.x -= fx;
+            nodes[j].force_accumulator.y -= fy;
         }
     }
 
@@ -49,10 +55,10 @@ namespace mvc
     {
         for (auto& node : nodes)
         {
-            float dx = -node.x;
-            float dy = -node.y;
-            node.fx += k_g * dx;
-            node.fy += k_g * dy;
+            float dx = -node.position.x;
+            float dy = -node.position.y;
+            node.force_accumulator.x += k_g * dx;
+            node.force_accumulator.y += k_g * dy;
         }
     }
 
@@ -60,14 +66,14 @@ namespace mvc
     {
         for (auto& node : nodes)
         {
-            node.vx = (node.vx + time_step * node.fx) * damping;
-            node.vy = (node.vy + time_step * node.fy) * damping;
+            node.velocity.x = (node.velocity.x + time_step * node.force_accumulator.x) * damping;
+            node.velocity.y = (node.velocity.y + time_step * node.force_accumulator.y) * damping;
     
-            node.x += time_step * node.vx;
-            node.y += time_step * node.vy;
+            node.position.x += time_step * node.velocity.x;
+            node.position.y += time_step * node.velocity.y;
     
             // reset forces
-            node.fx = node.fy = 0;
+            node.force_accumulator.x = node.force_accumulator.y = 0;
         }
     }
 
@@ -75,15 +81,15 @@ namespace mvc
     {
         for (auto& node : nodes)
         {
-            float dx = node.x;
-            float dy = node.y;
+            float dx = node.position.x;
+            float dy = node.position.y;
             float dist = sqrt(dx * dx + dy * dy + 1e-6); // avoid zero division
 
             float fx = explosion_force * dx / dist;
             float fy = explosion_force * dy / dist;
 
-            node.fx += fx;
-            node.fy += fy;
+            node.force_accumulator.x += fx;
+            node.force_accumulator.y += fy;
         }
     }
 }

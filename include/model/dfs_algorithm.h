@@ -10,7 +10,7 @@ namespace mvc
     class dfs_algorithm : public graph_algorithm
     {
     private:
-        std::stack<int> stack;
+        std::stack<std::pair<int, float>> stack;  // (node, cost)
 
     public:
         /**
@@ -21,8 +21,8 @@ namespace mvc
         
         /**
          * @brief Performs one step in DFS algorithm.
-         * @param graph Graph reference.dfs_algorithm.
-         * @return Return true if waiting after print is adviced, false when the step was empty (no changes to data structures).
+         * @param graph Graph reference.
+         * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;
         

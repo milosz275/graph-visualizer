@@ -2,7 +2,9 @@
 
 namespace mvc
 {
-    graph_algorithm::graph_algorithm() : start_time(std::chrono::steady_clock::now()) {}
+    graph_algorithm::graph_algorithm(std::string label, int start_node) : label(label), start_node(start_node), start_time(std::chrono::steady_clock::now()), current_step(0) {}
+
+    std::string graph_algorithm::get_label() { return label; }
 
     bool graph_algorithm::check_timer()
     {
@@ -20,4 +22,6 @@ namespace mvc
     {
         start_time = std::chrono::steady_clock::now() - std::chrono::seconds(1);
     }
+
+    int graph_algorithm::get_current_step() { return current_step; }
 }

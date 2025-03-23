@@ -27,24 +27,24 @@ namespace mvc
         EM_ASM_INT({ return setMousePointer(); }, 0);
     }
 
-    EM_BOOL mouse::mouse_click_callback(int event_type, const EmscriptenMouseEvent* e, void* user_data)
+    EM_BOOL mouse::mouse_click_callback(int, const EmscriptenMouseEvent* e, void*)
     {
         return EM_TRUE;
     }
 
-    EM_BOOL mouse::mouse_down_callback(int event_type, const EmscriptenMouseEvent* e, void* user_data)
+    EM_BOOL mouse::mouse_down_callback(int, const EmscriptenMouseEvent* e, void*)
     {
         app::graph_app::handle_mouse_click(view::get_coordinates({e->clientX, e->clientY}), true);
         return EM_TRUE;
     }
 
-    EM_BOOL mouse::mouse_up_callback(int event_type, const EmscriptenMouseEvent* e, void* user_data)
+    EM_BOOL mouse::mouse_up_callback(int, const EmscriptenMouseEvent* e, void*)
     {
         app::graph_app::handle_mouse_click(view::get_coordinates({e->clientX, e->clientY}), false);
         return EM_TRUE;
     }
 
-    EM_BOOL mouse::mouse_move_callback(int event_type, const EmscriptenMouseEvent* e, void* user_data)
+    EM_BOOL mouse::mouse_move_callback(int, const EmscriptenMouseEvent* e, void*)
     {
         app::graph_app::handle_mouse_move(view::get_coordinates({e->clientX, e->clientY}));
         return EM_TRUE;

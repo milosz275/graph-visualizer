@@ -25,7 +25,7 @@ namespace mvc
         algorithm_state(std::unique_ptr<mvc::graph_algorithm> algorithm, std::unique_ptr<mvc::graph> graph);
         
         /**
-         * @brief Descructor.
+         * @brief Destructor.
          */
         ~algorithm_state() override;
 
@@ -33,5 +33,10 @@ namespace mvc
          * @brief Renders algorithm state including graph itself and runs specified algorithm.
          */
         void render() override;
+
+        /**
+         * @brief Draws current algorithm label as inactive menu button.
+         */
+        void draw_algorithm_button();
     };
 }

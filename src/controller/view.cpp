@@ -1,10 +1,12 @@
 #include "view.h"
 
+#include "canvas.h"
+
 namespace mvc
 {
     glm::vec2 view::get_canvas_size()
     {
-        return {EM_ASM_INT({ return getCanvasSize().width; }, 0), EM_ASM_INT({ return getCanvasSize().height; }, 0)};
+        return web_ui::canvas::get_canvas_size();
     }
 
     glm::vec2 view::get_coordinates(glm::vec2 window_coordinates)
