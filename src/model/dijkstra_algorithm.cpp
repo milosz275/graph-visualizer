@@ -1,18 +1,18 @@
 #include "dijkstra_algorithm.h"
 
 #include <iostream>
+#include <format>
+#include <limits>
 
 #include "notifications.h"
-
-#define INF 0x3f3f3f3f
 
 namespace mvc
 {
     dijkstra_algorithm::dijkstra_algorithm(int start_node, int target_node, std::vector<graph_node>& nodes)
-        : graph_algorithm("Dijkstra", start_node), found_path(false), path(), target_node(target_node), distance(nodes.size(), INF)
+        : graph_algorithm("Dijkstra", start_node), found_path(false), path(), target_node(target_node), distance(nodes.size(), std::numeric_limits<float>::max())
     {
         processed.insert({0, start_node}); // origin with cost equal 0
-        distance[start_node] = 0;
+        distance[start_node] = 0.0f;
         parent[start_node] = -1;
 
         nodes[start_node].set_visited(true);
@@ -37,13 +37,13 @@ namespace mvc
                     {
                         if (e_u == u && e_v == neighbor)
                         {
-                            int cost = e_w;
+                            float cost = e_w;
                             int v = e_v;
 
                             // relaxation step
                             if (distance[v] > distance[u] + cost)
                             {
-                                if (distance[v] != INF)
+                                if (distance[v] != std::numeric_limits<float>::max())
                                     processed.erase(processed.find({distance[v], v}));
 
                                 distance[v] = distance[u] + cost;
@@ -60,8 +60,16 @@ namespace mvc
             else
             {
                 int i = 0;
-                for (int cost : distance)
+                std::cout << "Cost table:\n";
+                for (float cost : distance)
                     std::cout << i++ << ": " << cost << '\n';
+
+                if (distance[target_node] == std::numeric_limits<float>::max())
+                {
+                    web_ui::notifications::add("Dijkstra could not find shortest path from node " + std::to_string(start_node) + " to node " + std::to_string(target_node), 15);
+                    found_path = true;
+                    return false; // not wait
+                }
 
                 // construct target path
                 int current = target_node;
@@ -76,7 +84,7 @@ namespace mvc
                 graph.unvisit_nodes();
                 graph.highlight_node(-1);
                 found_path = true;
-                web_ui::notifications::add("Dijkstra found shortest path with " + std::to_string((int)path.size()) + " steps and " + std::to_string(distance[target_node]) + " total cost.", 15);
+                web_ui::notifications::add("Dijkstra found shortest path with " + std::to_string((int)path.size()) + " steps and " + std::format("{:.2f}", distance[target_node]) + " total cost.", 15);
 
                 return false; // not wait
             }
