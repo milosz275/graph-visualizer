@@ -31,7 +31,9 @@ namespace mvc
         ~menu_state() override;
 
         /**
-         * 
+         * @brief Creates and returns proper graph (undirected/directed).
+         * @param num_nodes Number of nodes to allocate.
+         * @return The graph.
          */
         std::unique_ptr<mvc::graph> create_graph(int num_nodes);
 

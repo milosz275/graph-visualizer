@@ -25,7 +25,7 @@ namespace mvc
         algorithm_state(std::unique_ptr<mvc::graph_algorithm> algorithm, std::unique_ptr<mvc::graph> graph);
         
         /**
-         * @brief Descructor.
+         * @brief Destructor.
          */
         ~algorithm_state() override;
 

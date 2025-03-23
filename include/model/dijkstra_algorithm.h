@@ -34,7 +34,7 @@ namespace mvc
         /**
          * @brief Performs one step in Dijkstra algorithm.
          * @param graph Graph reference.
-         * @return Return true if waiting after print is adviced, false when the step was empty (no changes to data structures).
+         * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;
         

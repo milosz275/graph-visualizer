@@ -21,7 +21,7 @@ namespace mvc
         
         /**
          * @brief Performs one step in DFS algorithm.
-         * @param graph Graph reference.dfs_algorithm.
+         * @param graph Graph reference.
          * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;

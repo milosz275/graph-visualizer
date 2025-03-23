@@ -53,18 +53,21 @@ namespace mvc
         
         /**
          * @brief Sets the node's visited flag.
+         * @param visited New visited state.
          * @return Returns visited flag.
          */
         bool set_visited(bool visited);
         
         /**
          * @brief Sets the node's highlighted flag.
+         * @param highlighted New highlighted state.
          * @return Returns highlighted flag.
          */
         bool set_highlighted(bool highlighted);
 
         /**
          * @brief Sets the node's parent id.
+         * @param parent New parent id.
          * @return Returns set parent.
          */
         int set_parent(int parent);

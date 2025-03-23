@@ -89,7 +89,7 @@ namespace mvc
         void apply_physics();
 
         /**
-         * Explodes the graph by applying gigantic forces.
+         * @brief Explodes the graph by applying gigantic forces.
          */
         void explode();
 
