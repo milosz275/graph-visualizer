@@ -8,6 +8,8 @@
 namespace mvc
 {
     class graph;
+    class undirected_graph;
+    class directed_graph;
     class graph_physics;
 
     class graph_node
@@ -73,6 +75,8 @@ namespace mvc
         std::vector<int>& get_neighbors();
 
         friend class graph;
+        friend class undirected_graph;
+        friend class directed_graph;
         friend class graph_physics;
     };
 }

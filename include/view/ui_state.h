@@ -23,7 +23,7 @@ namespace mvc
         ui_state(std::string label);
 
         /**
-         * @brief Descructor.
+         * @brief Destructor.
          */
         virtual ~ui_state() = default;
         

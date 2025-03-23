@@ -10,7 +10,7 @@ namespace mvc
     class bfs_algorithm : public graph_algorithm
     {
     private:
-        std::queue<int> queue;
+        std::queue<std::pair<int, float>> queue; // (node, cost)
 
     public:
         /**
@@ -22,7 +22,7 @@ namespace mvc
         /**
          * @brief Performs one step in BFS algorithm.
          * @param graph Graph reference.
-         * @return Return true if waiting after print is adviced, false when the step was empty (no changes to data structures).
+         * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;
         

@@ -13,46 +13,41 @@ namespace mvc
 
     class graph
     {
-    private:
+    protected:
         std::vector<graph_node> nodes;
         std::vector<std::tuple<int, int, float>> edges; // (node id, node id, cost)
         int highlighted_node;
         
     public:
         /**
-         * @brief Creates default graph from Grokking Algorithms book.
+         * @brief Creates base for directed/undirected graph.
+         * @param num_nodes Node count reserved in the graph.
          */
-        graph();
+        graph(int num_nodes);
 
         /**
-         * @brief Creates graph in polygon shape of given vertices count.
-         * @param vertices Polygon's vertex count.
+         * @brief Destructor.
          */
-        graph(int vertices);
-
-        /**
-         * @brief Generates graph.
-         * @param num_nodes Number of random nodes.
-         * @param random False creates default graph.
-         */
-        graph(int num_nodes, bool random);
+        virtual ~graph() = default;
 
         /**
          * @brief Clears the graph and creates default graph.
          */
-        void create_default();
+        virtual void create_default() = 0;
 
         /**
          * @brief Clears the graph and generates polygon-based graph.
+         * @param vertices Vertices of the polygon - number of nodes.
+         * @param random_weights Flag whether edges should random costs/weights.
          */
-        void generate_polygon(int vertices);
+        virtual void generate_polygon(int vertices, bool random_weights) = 0;
 
         /**
          * @brief Clears the graph and generates random graph.
          * @param num_nodes Number of nodes.
-         * @param num_edges Number of edges.
+         * @param random_weights Flag whether edges should random costs/weights.
          */
-        void generate_random(int num_nodes, int num_edges);
+        virtual void generate_random(int num_nodes, bool random_weights) = 0;
 
         /**
          * @brief Sets all graph nodes as unvisited.
@@ -86,7 +81,7 @@ namespace mvc
         /**
          * @brief Draws entire graph including graph nodes, node identifiers, edges, edge costs.
          */
-        void draw();
+        virtual void draw() = 0;
 
         /**
          * @brief Applies defined physics forces.
@@ -109,6 +104,12 @@ namespace mvc
          * @return Returns true if there is at least one, false otherwise.
          */
         bool check_for_negative_edges();
+
+        /**
+         * @brief Finds cost/weight of edge between nodes u and v.
+         * @return Returns cost of the edge, throws runtime_error if it does not exist.
+         */
+        int get_edge_cost(int u, int v);
 
         /**
          * @brief Supplies [] access to graph's nodes

@@ -24,7 +24,7 @@ namespace mvc
         graph_state(std::unique_ptr<mvc::graph> graph);
 
         /**
-         * @brief Descructor.
+         * @brief Destructor.
          */
         ~graph_state() override;
 

@@ -21,7 +21,7 @@ namespace mvc
         ui_element(glm::vec2 position, bool enabled = true);
 
         /**
-         * @brief Descructor
+         * @brief Destructor
          */
         virtual ~ui_element() = default;
 

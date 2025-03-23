@@ -11,6 +11,8 @@
 
 namespace mvc
 {
+    class graph;
+
     class menu_state : public ui_state
     {
     private:
@@ -27,6 +29,11 @@ namespace mvc
          * @brief Destructor.
          */
         ~menu_state() override;
+
+        /**
+         * 
+         */
+        std::unique_ptr<mvc::graph> create_graph(int num_nodes);
 
         /**
          * @brief Renders the scene including all menu elements.
