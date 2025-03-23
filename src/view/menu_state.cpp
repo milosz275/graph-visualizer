@@ -12,6 +12,7 @@
 #include "background.h"
 #include "undirected_graph.h"
 #include "directed_graph.h"
+#include "notifications.h"
 
 namespace mvc
 {
@@ -63,6 +64,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(7);
                 new_graph->create_default();
+                web_ui::notifications::add("Default graph selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -73,6 +75,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(5);
                 new_graph->generate_polygon(5, random_weights);
+                web_ui::notifications::add("Pentagon selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -83,6 +86,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(6);
                 new_graph->generate_polygon(6, random_weights);
+                web_ui::notifications::add("Hexagon selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -93,6 +97,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(16);
                 new_graph->generate_polygon(16, random_weights);
+                web_ui::notifications::add("Hexadecagon selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -103,6 +108,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(100);
                 new_graph->generate_polygon(100, random_weights);
+                web_ui::notifications::add("Hectogon selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -113,6 +119,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(5);
                 new_graph->generate_random(5, random_weights);
+                web_ui::notifications::add("Random graph with 5 nodes selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -123,6 +130,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(10);
                 new_graph->generate_random(10, random_weights);
+                web_ui::notifications::add("Random graph with 10 nodes selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -133,6 +141,7 @@ namespace mvc
             [this]() {
                 std::unique_ptr<mvc::graph> new_graph = create_graph(20);
                 new_graph->generate_random(20, random_weights);
+                web_ui::notifications::add("Random graph with 20 nodes selected", 3);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -143,13 +152,14 @@ namespace mvc
             []() { // this
                 // std::unique_ptr<mvc::graph> new_graph = create_graph(20);
                 // // [ ] generate topological
+                // web_ui::notifications::add("Topological graph with 20 nodes selected", 3);
                 // app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }, false));
 
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(0.025f, -0.50f),
             glm::vec2(0.325f, 0.10f),
-            "Load",
+            "Load previous",
             []() {
                 // [ ] Add loading graph from user input
             },
