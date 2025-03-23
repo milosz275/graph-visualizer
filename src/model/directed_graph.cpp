@@ -123,7 +123,7 @@ namespace mvc
         cost = cost_gen(gen);
 
         // connect last odd to first
-        edges.push_back({1, 0, cost});
+        edges.push_back({0, 1, cost});
         cost = cost_gen(gen);
 
         // update neighbor lists
