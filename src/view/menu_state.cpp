@@ -10,6 +10,8 @@
 #include "graph_state.h"
 #include "canvas.h"
 #include "background.h"
+#include "undirected_graph.h"
+#include "directed_graph.h"
 
 namespace mvc
 {
@@ -58,8 +60,9 @@ namespace mvc
             glm::vec2(-0.35f, 0.10f),
             glm::vec2(0.325f, 0.10f),
             "Default",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>();
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(7);
+                new_graph->create_default();
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -67,8 +70,9 @@ namespace mvc
             glm::vec2(-0.35f, -0.05f),
             glm::vec2(0.325f, 0.10f),
             "Pentagon",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(5);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(5);
+                new_graph->generate_polygon(5, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -76,8 +80,9 @@ namespace mvc
             glm::vec2(-0.35f, -0.20f),
             glm::vec2(0.325f, 0.10f),
             "Hexagon",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(6);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(6);
+                new_graph->generate_polygon(6, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -85,8 +90,9 @@ namespace mvc
             glm::vec2(-0.35f, -0.35f),
             glm::vec2(0.325f, 0.10f),
             "Hexadecagon (16)",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(16);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(16);
+                new_graph->generate_polygon(16, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -94,8 +100,9 @@ namespace mvc
             glm::vec2(-0.35f, -0.50f),
             glm::vec2(0.325f, 0.10f),
             "Hectogon (100)",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(100);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(100);
+                new_graph->generate_polygon(100, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -103,8 +110,9 @@ namespace mvc
             glm::vec2(0.025f, 0.10f),
             glm::vec2(0.325f, 0.10f),
             "Random (5)",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(5, random_weights);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(5);
+                new_graph->generate_random(5, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -112,8 +120,9 @@ namespace mvc
             glm::vec2(0.025f, -0.05f),
             glm::vec2(0.325f, 0.10f),
             "Random (10)",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(10, random_weights);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(10);
+                new_graph->generate_random(10, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
@@ -121,32 +130,33 @@ namespace mvc
             glm::vec2(0.025f, -0.20f),
             glm::vec2(0.325f, 0.10f),
             "Random (20)",
-            []() {
-                std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(20, random_weights);
+            [this]() {
+                std::unique_ptr<mvc::graph> new_graph = create_graph(20);
+                new_graph->generate_random(20, random_weights);
                 app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
             }));
 
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(0.025f, -0.35f),
             glm::vec2(0.325f, 0.10f),
-            "Topological",
-            []() {
-                // std::unique_ptr<mvc::graph> new_graph = std::make_unique<mvc::graph>(50, random_weights);
+            "Topological (20)",
+            []() { // this
+                // std::unique_ptr<mvc::graph> new_graph = create_graph(20);
+                // // [ ] generate topological
                 // app::graph_app::set_state(std::make_unique<mvc::graph_state>(std::move(new_graph)));
-            }));
+            }, false));
 
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(0.025f, -0.50f),
             glm::vec2(0.325f, 0.10f),
             "Load",
             []() {
-                std::cout << "Load callback\n";
                 // [ ] Add loading graph from user input
             },
             false));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f, 0.75f), // glm::vec2(0.975f - 0.3f, 0.9625f - 0.1f),
+            glm::vec2(-0.975f, 0.75f),
             glm::vec2(0.3f, 0.1f),
             "Toggle background",
             []() {
@@ -155,6 +165,13 @@ namespace mvc
     }
 
     menu_state::~menu_state() {}
+
+    std::unique_ptr<mvc::graph> menu_state::create_graph(int num_nodes)
+    {
+        if (undirected)
+            return std::make_unique<mvc::undirected_graph>(num_nodes);
+        return std::make_unique<mvc::directed_graph>(num_nodes);
+    }
 
     void menu_state::render()
     {
