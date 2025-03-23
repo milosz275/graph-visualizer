@@ -18,8 +18,8 @@ namespace mvc
         std::queue<int> path; // the best path constructed by the Dijkstra algorithm
         int target_node; // node to find best path from origin (node 0)
 
-        std::set<std::pair<int, int>> processed; // (cost, node) - nodes and their costs to get to (set sorts pairs by first element - cost)
-        std::vector<int> distance; // distance/cost from origin (node 0) from i-th node
+        std::set<std::pair<float, int>> processed; // (cost, node) - nodes and their costs to get to (set sorts pairs by first element - cost)
+        std::vector<float> distance; // distance/cost from origin (node 0) from i-th node
         std::unordered_map<int, int> parent; // (node, parent)
 
     public:
