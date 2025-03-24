@@ -31,28 +31,21 @@ namespace mvc
                 graph.highlight_node(u);
 
                 // explore neighbors of node u
-                for (int neighbor : graph.nodes[u].get_neighbors())
+                for (int v : graph.nodes[u].get_neighbors())
                 {
-                    for (auto [e_u, e_v, e_w] : graph.edges)
+                    float cost = graph.get_edge_cost(u, v);
+                    
+                    // relaxation step
+                    if (distance[v] > distance[u] + cost)
                     {
-                        if (e_u == u && e_v == neighbor)
-                        {
-                            float cost = e_w;
-                            int v = e_v;
+                        if (distance[v] != std::numeric_limits<float>::max())
+                            processed.erase(processed.find({distance[v], v}));
 
-                            // relaxation step
-                            if (distance[v] > distance[u] + cost)
-                            {
-                                if (distance[v] != std::numeric_limits<float>::max())
-                                    processed.erase(processed.find({distance[v], v}));
+                        distance[v] = distance[u] + cost;
+                        parent[v] = u; // track previous node
+                        processed.insert({distance[v], v});
 
-                                distance[v] = distance[u] + cost;
-                                parent[v] = u; // track previous node
-                                processed.insert({distance[v], v});
-
-                                graph[v].set_visited(true);
-                            }
-                        }
+                        graph[v].set_visited(true);
                     }
                 }
                 return true; // not wait
