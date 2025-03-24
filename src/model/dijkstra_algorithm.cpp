@@ -77,10 +77,7 @@ namespace mvc
                 graph.unvisit_nodes();
                 graph.highlight_node(-1);
                 found_path = true;
-                if (path.size() <= 3) // for start_node = target_node Dijkstra would not construct the path
-                    web_ui::notifications::add("Dijkstra found shortest path with " + std::to_string((int)path.size() - 2) + " step and " + std::format("{:.2f}", distance[target_node]) + " total cost.", 15);
-                else
-                    web_ui::notifications::add("Dijkstra found shortest path with " + std::to_string((int)path.size() - 2) + " steps and " + std::format("{:.2f}", distance[target_node]) + " total cost.", 15);
+                web_ui::notifications::add("Dijkstra found shortest path with " + std::to_string((int)path.size() - 2) + " steps and " + std::format("{:.2f}", distance[target_node]) + " total cost.", 15);
 
                 return false; // not wait
             }
