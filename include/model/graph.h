@@ -11,6 +11,7 @@ namespace mvc
     class graph_state;
     class dijkstra_algorithm;
     class a_star_algorithm;
+    class bellman_ford_algorithm;
 
     class graph
     {
@@ -125,5 +126,6 @@ namespace mvc
         friend class graph_state;
         friend class dijkstra_algorithm;
         friend class a_star_algorithm;
+        friend class bellman_ford_algorithm;
     };
 }

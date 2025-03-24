@@ -33,7 +33,7 @@ namespace mvc
     
     public:
         /**
-         * @brief
+         * @brief Creates A* algorithm runner marking the start node.
          * @param start_node ID of a node to start from.
          * @param target_node ID of a node to target to stop at.
          * @param nodes Reference to graph's nodes.
