@@ -1,6 +1,7 @@
 #include "algorithm_state.h"
 
 #include <iostream>
+#include <format>
 
 #include <glm/vec2.hpp>
 
@@ -44,11 +45,20 @@ namespace mvc
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f + 0.315f, -0.9625f), 
             glm::vec2(0.3f, 0.1f), 
-            "Step forward",
-            []() { // &algorithm
-                // algorithm->fast_forward_timer();
-            },
-            false));
+            "Quicker step",
+            [algorithm = this->algorithm.get()]() {
+                if (algorithm)
+                    web_ui::notifications::add("New simulation step length: " + std::format("{:.3f}", algorithm->speed_up()), 3);
+            }));
+        
+        elements.push_back(std::make_unique<ui_button>(
+            glm::vec2(-0.975f + 0.315f * 2, -0.9625f), 
+            glm::vec2(0.3f, 0.1f), 
+            "Slower step",
+            [algorithm = this->algorithm.get()]() {
+                if (algorithm)
+                    web_ui::notifications::add("New simulation step length: " + std::format("{:.3f}", algorithm->slow_down()), 3);
+            }));
         
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, 0.60f),
@@ -64,7 +74,7 @@ namespace mvc
     {
         graph->apply_physics();
         graph->draw();
-        draw_algorithm_button();
+        update_algorithm_label_button();
 
         try
         {
@@ -92,15 +102,12 @@ namespace mvc
             element->render();
     }
 
-    void algorithm_state::draw_algorithm_button()
+    void algorithm_state::update_algorithm_label_button()
     {
-        // assumes last element is algorithm placeholder/previous algorithm state to update
-        elements.pop_back();
-        elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f, 0.60f),
-            glm::vec2(0.3f, 0.1f),
-            ("Algorithm: " + algorithm->get_label()).c_str(),
-            [](){},
-            false));
+        // assumes last element is algorithm label button
+        auto& last_element = elements.back();
+        auto* button = dynamic_cast<ui_button*>(last_element.get());
+        if (button)
+            button->set_label("Algorithm: " + algorithm->get_label());
     }
 }
