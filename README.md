@@ -7,12 +7,15 @@
 
 ![Logo](assets/logo.png)
 
-Graph Visualizer is a browser-based tool for visualizing directed and undirected graphs, featuring interactive traversal algorithms using WebGL and Emscripten. Try it out with the [demo](https://milosz275.github.io/graph-visualizer/demo) (note: might not scale well on mobile devices).
+[Graph Visualizer](https://github.com/milosz275/graph-visualizer) is a browser-based tool for visualizing directed and undirected graphs, featuring interactive traversal algorithms using WebGL and Emscripten. Try it out with the [demo](https://milosz275.github.io/graph-visualizer/demo) (note: might not scale well on mobile devices).
 
 ## Table of Contents
 
 - [Features](#features)
-- [Structure](#structure)
+- [Prerequisites](#prerequisites)
+- [Build](#build)
+- [Graph Algorithms](#graph-algorithms)
+- [Project Structure](#project-structure)
 - [Design Patterns](#design-patterns)
 - [Force-directed Graph Simulation](#force-directed-graph-simulation)
 - [Acknowledgements](#acknowledgements)
@@ -47,6 +50,14 @@ cp assets/favicon.ico build
 cd build
 python3 -m http.server
 ```
+
+## Graph Algorithms
+
+- [x] BFS - Traverses the graph using a queue, exploring all neighbors of a node before moving to the next level.
+- [x] DFS - Traverses the graph using a stack, exploring as far as possible along each branch before backtracking.
+- [x] Dijkstra - Finds the shortest path from a source node to all other nodes using a priority queue, ensuring the lowest-cost path is always processed first. Recovers the best path by backtracking from the target node to the source.
+- [x] A* - An optimized shortest-path algorithm that combines Dijkstra’s approach with a heuristic function to estimate the remaining cost, guiding the search more efficiently toward the target.
+- [ ] Bellman-Ford - Computes the shortest paths from a source node to all other nodes, allowing for negative-weight edges. Iteratively relaxes edges, ensuring that no shorter path exists. Can detect negative-weight cycles.
 
 ## Project Structure
 
