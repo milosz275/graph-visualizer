@@ -46,6 +46,12 @@ namespace mvc
         graph_node(glm::vec2 position);
 
         /**
+         * @brief Returns position of the node.
+         * @return Position vector.
+         */
+        glm::vec2 get_position();
+
+        /**
          * @brief Checks if the node is visited.
          * @return Returns visited flag.
          */
