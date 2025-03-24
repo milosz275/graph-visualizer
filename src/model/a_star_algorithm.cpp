@@ -40,7 +40,7 @@ namespace mvc
 
                 if (u == target_node)
                 {
-                    found_path = true;
+                    // construct path
                     int current = target_node;
                     while (current != -1)
                     {
@@ -48,10 +48,14 @@ namespace mvc
                         current = parent[current];
                     }
                     path.push(start_node);
+
+                    // reset graph state
                     graph.unvisit_nodes();
                     graph.highlight_node(-1);
+                    found_path = true;
                     web_ui::notifications::add("A* found path with " + std::to_string(path.size() - 2) + " steps and " + std::format("{:.2f}", g_cost[target_node]) + " total cost.", 15);
-                    return false;
+                    
+                    return false; // not wait
                 }
 
                 for (int v : graph.nodes[u].get_neighbors())
@@ -72,19 +76,19 @@ namespace mvc
                         graph[v].set_visited(true);
                     }
                 }
-                return true;
+                return true; // wait
             }
             else
             {
                 web_ui::notifications::add("A* could not find a path from node " + std::to_string(start_node) + " to node " + std::to_string(target_node), 15);
                 found_path = true;
-                return false;
+                return false; // not wait
             }
         }
         else
         {
             if (path.empty())
-                return true;
+                return true; // wait
 
             int node_id = path.front();
             path.pop();
@@ -92,9 +96,9 @@ namespace mvc
             graph[node_id].set_visited(true);
             graph.highlight_node(node_id);
 
-            return true;
+            return true; // wait
         }
-        return false;
+        return false; // not wait
     }
 
     bool a_star_algorithm::is_complete() const
