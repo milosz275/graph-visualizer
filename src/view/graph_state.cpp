@@ -11,6 +11,7 @@
 #include "dfs_algorithm.h"
 #include "dijkstra_algorithm.h"
 #include "a_star_algorithm.h"
+#include "bellman_ford_algorithm.h"
 #include "graph_physics.h"
 #include "notifications.h"
 
@@ -82,10 +83,10 @@ namespace mvc
             glm::vec2(-0.975f, 0.00f),
             glm::vec2(0.3f, 0.1f),
             "Run Bellman-Ford",
-            []() {
-                std::cout << "Run Bellman-Ford callback\n";
-            },
-            false));
+            [this]() {
+                std::unique_ptr<mvc::graph_algorithm> algorithm = std::make_unique<mvc::bellman_ford_algorithm>(0, (int)this->graph->get_node_count() - 1, this->graph->nodes);
+                app::graph_app::set_state(std::make_unique<mvc::algorithm_state>(std::move(algorithm), std::move(this->graph)));
+            }));
 
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, -0.15f),
