@@ -149,7 +149,7 @@ namespace mvc
         for (auto [e_u, e_v, e_w] : edges)
             if (e_u == u && e_v == v)
                 return e_w;
-        throw std::runtime_error("get_edge_cost: No edge from " + std::to_string(u) + " and " + std::to_string(u) + '.');
+        throw std::runtime_error("get_edge_cost: No edge from " + std::to_string(u) + " to " + std::to_string(u) + '.');
     }
 
     graph_node& graph::operator[](int id)
