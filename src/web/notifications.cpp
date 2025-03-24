@@ -6,7 +6,7 @@ namespace web_ui
 {
     int notifications::target_size = 5;
     std::list<std::pair<std::string, std::chrono::steady_clock::time_point>> notifications::texts;
-    glm::vec2 notifications::upper_left_corner = {0.45f, 0.95f};
+    glm::vec2 notifications::upper_left_corner = { 0.45f, 0.95f };
 
     void notifications::update()
     {
@@ -26,7 +26,7 @@ namespace web_ui
             }
         }
     }
-    
+
     void notifications::draw()
     {
         update();
@@ -40,7 +40,7 @@ namespace web_ui
                 it++;
             for (; it != texts.begin(); --it)
             {
-                mvc::ui_label label({upper_left_corner.x, upper_left_corner.y - i++ * 0.04f}, (*it).first);
+                mvc::ui_label label({ upper_left_corner.x, upper_left_corner.y - i++ * 0.04f }, (*it).first);
                 label.render();
                 if (i == target_size)
                     break;
@@ -52,10 +52,10 @@ namespace web_ui
             it--;
             for (; it != texts.begin(); --it)
             {
-                mvc::ui_label label({upper_left_corner.x, upper_left_corner.y - i++ * 0.04f}, (*it).first);
+                mvc::ui_label label({ upper_left_corner.x, upper_left_corner.y - i++ * 0.04f }, (*it).first);
                 label.render();
             }
-            mvc::ui_label label({upper_left_corner.x, upper_left_corner.y - i++ * 0.04f}, texts.begin()->first);
+            mvc::ui_label label({ upper_left_corner.x, upper_left_corner.y - i++ * 0.04f }, texts.begin()->first);
             label.render();
         }
     }
@@ -63,8 +63,8 @@ namespace web_ui
     void notifications::add(std::string text, int duration)
     {
         if (duration > 0)
-            texts.push_back({text, std::chrono::steady_clock::now() + std::chrono::seconds(duration)});
+            texts.push_back({ text, std::chrono::steady_clock::now() + std::chrono::seconds(duration) });
         else
-            texts.push_back({text, {}});
+            texts.push_back({ text, {} });
     }
 }

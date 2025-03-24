@@ -34,19 +34,19 @@ namespace mvc
 
     EM_BOOL mouse::mouse_down_callback(int, const EmscriptenMouseEvent* e, void*)
     {
-        app::graph_app::handle_mouse_click(view::get_coordinates({e->clientX, e->clientY}), true);
+        app::graph_app::handle_mouse_click(view::get_coordinates({ e->clientX, e->clientY }), true);
         return EM_TRUE;
     }
 
     EM_BOOL mouse::mouse_up_callback(int, const EmscriptenMouseEvent* e, void*)
     {
-        app::graph_app::handle_mouse_click(view::get_coordinates({e->clientX, e->clientY}), false);
+        app::graph_app::handle_mouse_click(view::get_coordinates({ e->clientX, e->clientY }), false);
         return EM_TRUE;
     }
 
     EM_BOOL mouse::mouse_move_callback(int, const EmscriptenMouseEvent* e, void*)
     {
-        app::graph_app::handle_mouse_move(view::get_coordinates({e->clientX, e->clientY}));
+        app::graph_app::handle_mouse_move(view::get_coordinates({ e->clientX, e->clientY }));
         return EM_TRUE;
     }
 }

@@ -26,11 +26,11 @@ namespace mvc
             []() {
                 app::graph_app::set_state(std::make_unique<mvc::menu_state>());
             }));
-        
+
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f, -0.9625f), 
-            glm::vec2(0.3f, 0.1f), 
-            "Toggle physics", 
+            glm::vec2(-0.975f, -0.9625f),
+            glm::vec2(0.3f, 0.1f),
+            "Toggle physics",
             []() {
                 bool state = graph_physics::toggle_simulation();
                 if (state)
@@ -42,7 +42,7 @@ namespace mvc
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, 0.60f),
             glm::vec2(0.3f, 0.1f),
-            "Run BFS", [this](){
+            "Run BFS", [this]() {
                 std::unique_ptr<mvc::graph_algorithm> algorithm = std::make_unique<mvc::bfs_algorithm>(0);
                 app::graph_app::set_state(std::make_unique<mvc::algorithm_state>(std::move(algorithm), std::move(this->graph)));
             }));
@@ -90,7 +90,7 @@ namespace mvc
 
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, -0.15f),
-            glm::vec2(0.3f, 0.1f), 
+            glm::vec2(0.3f, 0.1f),
             "Run all", []() {
                 std::cout << "Run all callback\n";
             },

@@ -31,7 +31,7 @@ namespace mvc
          * @param k_r Repulsion constant.
          */
         static void apply_repulsion(std::vector<graph_node>& nodes, float k_r);
-        
+
         /**
          * @brief Applies attraction force between connected nodes to simulate attractive behavior.
          * @param nodes Reference to the graph's nodes.
@@ -40,14 +40,14 @@ namespace mvc
          * @param rest_length The rest length of the spring between nodes.
          */
         static void apply_attraction(std::vector<graph_node>& nodes, std::vector<std::tuple<int, int, float>>& edges, float k_a, float rest_length);
-        
+
         /**
          * @brief Applies gravity force to all nodes to simulate gravitational pull.
          * @param nodes Reference to the graph's nodes.
          * @param k_g Gravity constant.
          */
         static void apply_gravity(std::vector<graph_node>& nodes, float k_g);
-        
+
         /**
          * @brief Updates the position and velocity of nodes based on the applied forces.
          * @param nodes Reference to the graph's nodes.
@@ -55,7 +55,7 @@ namespace mvc
          * @param damping Damping factor to reduce velocity over time.
          */
         static void update_nodes(std::vector<graph_node>& nodes, float time_step, float damping);
-        
+
         /**
          * @brief Applies an explosion force to all nodes to simulate an explosive effect.
          * @param nodes Reference to the graph's nodes.

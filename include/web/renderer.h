@@ -11,7 +11,7 @@ namespace web_ui
     {
     private:
         static GLint program;
-    
+
     public:
         /**
          * @brief Initializes the renderer.
@@ -25,7 +25,7 @@ namespace web_ui
          * @param p2 Second point (x, y)
          * @param color Color vector (R, G, B)
          */
-        
+
          /**
          * @brief Draws a line connecting two points with the specified color.
          * @param p1 First point (x, y)

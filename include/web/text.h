@@ -23,8 +23,8 @@ namespace web_ui
          * @param font String font style, e.g. "30px Arial"
          * @param fill_style String fill style, in text or hex format, e.g. "white" or "#2158b7"
          */
-        static void draw_text(glm::vec2 coords = {-0.9f, 0.9f}, std::string text = "Graph Visualizer", std::string font = "30px Arial", std::string fill_style = "white");
-        
+        static void draw_text(glm::vec2 coords = { -0.9f, 0.9f }, std::string text = "Graph Visualizer", std::string font = "30px Arial", std::string fill_style = "white");
+
         /**
          * @brief Draws text wrapping Emscripten.
          * @details Supply (x, y) coordinates, text style to draw it on text canvas.
@@ -34,7 +34,7 @@ namespace web_ui
          * @param font String font style, e.g. "30px Arial"
          * @param fill_style String fill style, in text or hex format, e.g. "white" or "#2158b7"
          */
-        static void draw_text_absolute(glm::vec2 coords = {10.0f, 10.0f}, std::string text = "Graph Visualizer", std::string font = "30px Arial", std::string fill_style = "white");
+        static void draw_text_absolute(glm::vec2 coords = { 10.0f, 10.0f }, std::string text = "Graph Visualizer", std::string font = "30px Arial", std::string fill_style = "white");
 
         /**
          * @brief Clears text canvas.

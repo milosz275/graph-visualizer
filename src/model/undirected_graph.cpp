@@ -39,29 +39,29 @@ namespace mvc
         nodes.push_back(node5);
         nodes.push_back(node6);
 
-        edges.push_back({0, 1, 4.0f});
-        edges.push_back({1, 0, 4.0f});
+        edges.push_back({ 0, 1, 4.0f });
+        edges.push_back({ 1, 0, 4.0f });
 
-        edges.push_back({0, 2, 10.0f});
-        edges.push_back({2, 0, 10.0f});
+        edges.push_back({ 0, 2, 10.0f });
+        edges.push_back({ 2, 0, 10.0f });
 
-        edges.push_back({2, 3, 5.0f});
-        edges.push_back({3, 2, 5.0f});
+        edges.push_back({ 2, 3, 5.0f });
+        edges.push_back({ 3, 2, 5.0f });
 
-        edges.push_back({3, 4, 5.0f});
-        edges.push_back({4, 3, 5.0f});
+        edges.push_back({ 3, 4, 5.0f });
+        edges.push_back({ 4, 3, 5.0f });
 
-        edges.push_back({1, 4, 21.0f});
-        edges.push_back({4, 1, 21.0f});
+        edges.push_back({ 1, 4, 21.0f });
+        edges.push_back({ 4, 1, 21.0f });
 
-        edges.push_back({2, 5, 8.0f});
-        edges.push_back({5, 2, 8.0f});
+        edges.push_back({ 2, 5, 8.0f });
+        edges.push_back({ 5, 2, 8.0f });
 
-        edges.push_back({5, 4, 12.0f});
-        edges.push_back({4, 5, 12.0f});
+        edges.push_back({ 5, 4, 12.0f });
+        edges.push_back({ 4, 5, 12.0f });
 
-        edges.push_back({4, 6, 4.0f});
-        edges.push_back({6, 4, 4.0f});
+        edges.push_back({ 4, 6, 4.0f });
+        edges.push_back({ 6, 4, 4.0f });
 
         for (auto& edge : edges)
         {
@@ -75,7 +75,7 @@ namespace mvc
     {
         if (vertices < 3)
             return;
-            
+
         nodes.clear();
         edges.clear();
         graph_node::node_counter = 0;
@@ -88,7 +88,7 @@ namespace mvc
         for (int i = 0; i < num_nodes; ++i)
         {
             float angle = 2.0f * M_PI * i / num_nodes; // angle in radians
-            positions.push_back({radius * cos(angle), radius * sin(angle)});
+            positions.push_back({ radius * cos(angle), radius * sin(angle) });
         }
 
         // create n default nodes on a circle of radius 0.5
@@ -123,27 +123,27 @@ namespace mvc
         // connect evens
         for (int i = 0; i < max_even; i += 2)
         {
-            edges.push_back({i, i + 2, cost});
-            edges.push_back({i + 2, i, cost});
+            edges.push_back({ i, i + 2, cost });
+            edges.push_back({ i + 2, i, cost });
             cost = cost_gen(gen);
         }
 
         // connect odds
         for (int i = 1; i < max_odd; i += 2)
         {
-            edges.push_back({i, i + 2, cost});
-            edges.push_back({i + 2, i, cost});
+            edges.push_back({ i, i + 2, cost });
+            edges.push_back({ i + 2, i, cost });
             cost = cost_gen(gen);
         }
 
         // connect the farthest nodes
-        edges.push_back({max_even, max_odd, cost});
-        edges.push_back({max_odd, max_even, cost});
+        edges.push_back({ max_even, max_odd, cost });
+        edges.push_back({ max_odd, max_even, cost });
         cost = cost_gen(gen);
 
         // connect last odd to first
-        edges.push_back({1, 0, cost});
-        edges.push_back({0, 1, cost});
+        edges.push_back({ 1, 0, cost });
+        edges.push_back({ 0, 1, cost });
         cost = cost_gen(gen);
 
         // update neighbor lists
@@ -167,7 +167,7 @@ namespace mvc
         std::uniform_int_distribution<int> node_dist(0, num_nodes - 1); // random node selection
         std::uniform_real_distribution<float> cost_gen(random_weights ? 1.0f : 1.0f, random_weights ? 2.0f : 1.0f);
         float cost = cost_gen(gen);
-        
+
         int max_edges = num_nodes * (num_nodes - 1) / 2;
         std::uniform_int_distribution<int> num_edges_gen(max_edges / 3, max_edges / 2); // random edge count
         int num_edges = num_edges_gen(gen);
@@ -185,11 +185,11 @@ namespace mvc
         {
             int a = node_dist(gen);
             int b = node_dist(gen);
-            if (a != b && edge_set.find({a, b}) == edge_set.end() && edge_set.find({b, a}) == edge_set.end())
+            if (a != b && edge_set.find({ a, b }) == edge_set.end() && edge_set.find({ b, a }) == edge_set.end())
             {
-                edge_set.insert({a, b});
-                edges.push_back({a, b, cost});
-                edges.push_back({b, a, cost});
+                edge_set.insert({ a, b });
+                edges.push_back({ a, b, cost });
+                edges.push_back({ b, a, cost });
                 nodes[a].neighbors.push_back(b);
                 nodes[b].neighbors.push_back(a);
                 cost = cost_gen(gen);

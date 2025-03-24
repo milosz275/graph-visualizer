@@ -34,7 +34,7 @@ namespace mvc
          * @brief Allows overloading and checking for match in click event.
          */
         virtual bool is_clicked(glm::vec2) = 0;
-        
+
         /**
          * @brief Allows overloading and connecting as on click event.
          */

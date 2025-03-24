@@ -17,7 +17,7 @@ namespace mvc
         bool found_path;
         std::queue<int> path;
         int target_node;
-        
+
         std::set<std::pair<float, int>> open_set;
         std::vector<float> g_cost;
         std::vector<float> f_cost;
@@ -30,7 +30,7 @@ namespace mvc
          * @return The Euclidean distance between the current node and the goal node.
          */
         float heuristic(glm::vec2 node_pos, glm::vec2 goal_pos);
-    
+
     public:
         /**
          * @brief Creates A* algorithm runner marking the start node.
@@ -39,14 +39,14 @@ namespace mvc
          * @param nodes Reference to graph's nodes.
          */
         explicit a_star_algorithm(int start_node, int target_node, std::vector<graph_node>& nodes);
-        
+
         /**
          * @brief Performs one step in A* algorithm.
          * @param graph Graph reference.
          * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;
-        
+
         /**
          * @brief Returns whether shortest path was found and path queue is empty.
          * @return Return true if algorithm is complete, false otherwise.

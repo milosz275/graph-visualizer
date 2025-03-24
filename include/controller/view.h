@@ -13,7 +13,7 @@ namespace mvc
          * @return Current canvas size
          */
         static glm::vec2 get_canvas_size();
-        
+
         /**
          * @brief Translates given screen coordinates to graph app's coordinates system (-1.0f, 1.0f).
          * @param window_coordinates Coordinates in screen relative domain starting from upper left corner.

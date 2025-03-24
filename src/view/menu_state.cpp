@@ -22,17 +22,17 @@ namespace mvc
     menu_state::menu_state() : ui_state("menu")
     {
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f, -0.9625f + 0.115f), 
-            glm::vec2(0.3f, 0.1f), 
-            "Undirected graph", 
+            glm::vec2(-0.975f, -0.9625f + 0.115f),
+            glm::vec2(0.3f, 0.1f),
+            "Undirected graph",
             [this]() {
                 toggle_undirected();
             },
             !undirected));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f + 0.315f, -0.9625f + 0.115f), 
-            glm::vec2(0.3f, 0.1f), 
+            glm::vec2(-0.975f + 0.315f, -0.9625f + 0.115f),
+            glm::vec2(0.3f, 0.1f),
             "Directed graph",
             [this]() {
                 toggle_undirected();
@@ -40,17 +40,17 @@ namespace mvc
             undirected));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f, -0.9625f), 
-            glm::vec2(0.3f, 0.1f), 
-            "Random weights", 
+            glm::vec2(-0.975f, -0.9625f),
+            glm::vec2(0.3f, 0.1f),
+            "Random weights",
             [this]() {
                 toggle_random_weights();
             },
             !random_weights));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f + 0.315f, -0.9625f), 
-            glm::vec2(0.3f, 0.1f), 
+            glm::vec2(-0.975f + 0.315f, -0.9625f),
+            glm::vec2(0.3f, 0.1f),
             "Uniform weights",
             [this]() {
                 toggle_random_weights();
@@ -186,8 +186,8 @@ namespace mvc
     void menu_state::render()
     {
         glm::vec2 canvas = web_ui::canvas::get_canvas_size();
-        web_ui::renderer::draw_rectangle({-0.4f, -0.55f}, {0.4f, 0.4f}, {0.3f, 0.3f, 0.3f});
-        web_ui::text::draw_text({-1 * (417.5 / canvas.x), 0.275f}, "Choose graph generation", "36px Arial", "white");
+        web_ui::renderer::draw_rectangle({ -0.4f, -0.55f }, { 0.4f, 0.4f }, { 0.3f, 0.3f, 0.3f });
+        web_ui::text::draw_text({ -1 * (417.5 / canvas.x), 0.275f }, "Choose graph generation", "36px Arial", "white");
 
         for (const auto& element : elements)
             element->render();

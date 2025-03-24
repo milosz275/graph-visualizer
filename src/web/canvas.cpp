@@ -9,7 +9,7 @@ namespace web_ui
 
     void canvas::update_canvas_size()
     {
-        size = {EM_ASM_INT({ return getCanvasSize().width; }, 0), EM_ASM_INT({ return getCanvasSize().height; }, 0)};
+        size = { EM_ASM_INT({ return getCanvasSize().width; }, 0), EM_ASM_INT({ return getCanvasSize().height; }, 0) };
     }
 
     glm::vec2 canvas::get_canvas_size()

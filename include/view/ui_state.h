@@ -26,7 +26,7 @@ namespace mvc
          * @brief Destructor.
          */
         virtual ~ui_state() = default;
-        
+
         /**
          * @brief Renders menu and the graph.
          */

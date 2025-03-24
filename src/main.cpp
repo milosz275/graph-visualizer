@@ -15,7 +15,7 @@ int main()
     attr.stencil = 1;
     attr.antialias = 1;
     attr.majorVersion = 2;
-    
+
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("#webglCanvas", &attr);
     if (context <= 0)
     {

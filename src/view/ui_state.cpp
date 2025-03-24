@@ -16,7 +16,7 @@ namespace mvc
             return;
 
         for (size_t i = 0; i < elements.size(); ++i)
-            if (elements[i]->is_clicked({mouse.x, mouse.y}))
+            if (elements[i]->is_clicked({ mouse.x, mouse.y }))
                 elements[i]->on_click();
     }
 
@@ -27,7 +27,7 @@ namespace mvc
 
         for (size_t i = 0; i < elements.size(); ++i)
         {
-            if (elements[i]->get_enabled() && elements[i]->is_clicked({mouse.x, mouse.y}))
+            if (elements[i]->get_enabled() && elements[i]->is_clicked({ mouse.x, mouse.y }))
             {
                 mvc::mouse::hover = true;
                 break;

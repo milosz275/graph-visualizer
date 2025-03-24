@@ -15,7 +15,7 @@ namespace mvc
     private:
         std::unique_ptr<mvc::graph> graph;
         std::unique_ptr<mvc::graph_algorithm> algorithm;
-        
+
     public:
         /**
          * @brief Sets up algorithm state and cancel button.
@@ -23,7 +23,7 @@ namespace mvc
          * @param graph Graph object pointer
          */
         algorithm_state(std::unique_ptr<mvc::graph_algorithm> algorithm, std::unique_ptr<mvc::graph> graph);
-        
+
         /**
          * @brief Destructor.
          */
