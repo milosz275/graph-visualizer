@@ -43,5 +43,11 @@ namespace mvc
          * Executes the callback on click event.
          */
         void on_click() override;
+
+        /**
+         * @brief Sets and returns new label.
+         * @param label New label.
+         */
+        void set_label(std::string label);
     };
 }
