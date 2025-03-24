@@ -13,6 +13,17 @@ namespace mvc
         int start_node;
         std::chrono::steady_clock::time_point start_time;
         int current_step;
+        double step_pause;
+        int step_index; // 
+
+        /**
+         * @brief Updates step_pause using step_index.
+         * 
+         * 2^step_index = step_pause (..., 1/4, 1/2, 1, 2, 4, ...)
+         * 
+         * @return Value of newly set step pause value.
+         */
+        double update_step_pause();
 
     public:
         /**
@@ -62,5 +73,17 @@ namespace mvc
          * @return Returns current step's id.
          */
         int get_current_step();
+
+        /**
+         * @brief Decrements step index. Speeds up simulation by recalculating step pause.
+         * @return Newly set step pause.
+         */
+        float speed_up();
+
+        /**
+         * @brief Increments step index. Slows down simulation by recalculating step pause.
+         * @return Newly set step pause.
+         */
+        float slow_down();
     };
 }

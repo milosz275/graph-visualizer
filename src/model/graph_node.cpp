@@ -10,6 +10,8 @@ namespace mvc
     
     graph_node::graph_node(glm::vec2 position) : id(node_counter++), position(position), velocity({0.0f, 0.0f}), force_accumulator({0.0f, 0.0f}), visited(false), highlighted(false), parent(-1) {}
 
+    glm::vec2 graph_node::get_position() { return position; }
+
     bool graph_node::get_visited() { return visited; }
 
     bool graph_node::set_visited(bool visited) { return this->visited = visited; }

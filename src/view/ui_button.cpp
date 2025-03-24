@@ -38,4 +38,6 @@ namespace mvc
     }
 
     void ui_button::on_click() { if (enabled) callback(); }
+
+    void ui_button::set_label(std::string label) { this->label = label; }
 }
