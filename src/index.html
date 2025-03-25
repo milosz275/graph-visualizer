@@ -103,7 +103,17 @@
 
         function setMousePointer() {
             document.body.style.cursor = 'pointer';
-            return 0;
+            return 1;
+        }
+
+        function toggleMouse() {
+            if (document.body.style.cursor === 'pointer') {
+                document.body.style.cursor = 'default';
+                return 0;
+            } else {
+                document.body.style.cursor = 'pointer';
+                return 1;
+            }
         }
 
         function getDarkmode() {
