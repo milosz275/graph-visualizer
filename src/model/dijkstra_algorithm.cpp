@@ -11,7 +11,7 @@ namespace mvc
     dijkstra_algorithm::dijkstra_algorithm(int start_node, int target_node, std::vector<graph_node>& nodes)
         : graph_algorithm("Dijkstra", start_node), found_path(false), path(), target_node(target_node), distance(nodes.size(), std::numeric_limits<float>::max())
     {
-        processed.insert({0, start_node}); // origin with cost equal 0
+        processed.insert({ 0, start_node }); // origin with cost equal 0
         distance[start_node] = 0.0f;
         parent[start_node] = -1;
 
@@ -34,16 +34,16 @@ namespace mvc
                 for (int v : graph.nodes[u].get_neighbors())
                 {
                     float cost = graph.get_edge_cost(u, v);
-                    
+
                     // relaxation step
                     if (distance[v] > distance[u] + cost)
                     {
                         if (distance[v] != std::numeric_limits<float>::max())
-                            processed.erase(processed.find({distance[v], v}));
+                            processed.erase(processed.find({ distance[v], v }));
 
                         distance[v] = distance[u] + cost;
                         parent[v] = u; // track previous node
-                        processed.insert({distance[v], v});
+                        processed.insert({ distance[v], v });
 
                         graph[v].set_visited(true);
                     }
@@ -93,7 +93,7 @@ namespace mvc
 
             graph[node_id].set_visited(true);
             graph.highlight_node(node_id);
-            
+
             return true; // wait
         }
         return false; // not wait

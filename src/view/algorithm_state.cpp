@@ -43,28 +43,28 @@ namespace mvc
             }));
 
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f + 0.315f, -0.9625f), 
-            glm::vec2(0.3f, 0.1f), 
+            glm::vec2(-0.975f + 0.315f, -0.9625f),
+            glm::vec2(0.3f, 0.1f),
             "Quicker step",
             [algorithm = this->algorithm.get()]() {
                 if (algorithm)
                     web_ui::notifications::add("New simulation step length: " + std::format("{:.3f}", algorithm->speed_up()), 3);
             }));
-        
+
         elements.push_back(std::make_unique<ui_button>(
-            glm::vec2(-0.975f + 0.315f * 2, -0.9625f), 
-            glm::vec2(0.3f, 0.1f), 
+            glm::vec2(-0.975f + 0.315f * 2, -0.9625f),
+            glm::vec2(0.3f, 0.1f),
             "Slower step",
             [algorithm = this->algorithm.get()]() {
                 if (algorithm)
                     web_ui::notifications::add("New simulation step length: " + std::format("{:.3f}", algorithm->slow_down()), 3);
             }));
-        
+
         elements.push_back(std::make_unique<ui_button>(
             glm::vec2(-0.975f, 0.60f),
             glm::vec2(0.3f, 0.1f),
             "",
-            [](){},
+            []() {},
             false)); // algorithm label placeholder
     }
 

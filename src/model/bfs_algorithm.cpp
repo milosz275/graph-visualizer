@@ -8,7 +8,7 @@ namespace mvc
 {
     bfs_algorithm::bfs_algorithm(int start_node) : graph_algorithm("BFS", start_node)
     {
-        queue.push({start_node, 0.0f});
+        queue.push({ start_node, 0.0f });
     }
 
     bool bfs_algorithm::step(mvc::graph& graph)
@@ -31,7 +31,7 @@ namespace mvc
             if (!graph[neighbor].get_visited())
             {
                 float total_cost = cost + graph.get_edge_cost(node_id, neighbor);
-                queue.push({neighbor, total_cost});
+                queue.push({ neighbor, total_cost });
                 graph[neighbor].set_parent(node_id);
             }
         }

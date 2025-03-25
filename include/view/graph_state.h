@@ -15,7 +15,7 @@ namespace mvc
     {
     private:
         std::unique_ptr<mvc::graph> graph;
-        
+
     public:
         /**
          * @brief Sets up graph algorithm menu and render the graph itself.

@@ -18,10 +18,10 @@ namespace mvc
                 float dy = nodes[i].position.y - nodes[j].position.y;
                 float dist = sqrt(dx * dx + dy * dy + 1e-6);
                 float force = k_r / (dist * dist);
-    
+
                 float fx = force * dx / dist;
                 float fy = force * dy / dist;
-    
+
                 nodes[i].force_accumulator.x += fx;
                 nodes[i].force_accumulator.y += fy;
                 nodes[j].force_accumulator.x -= fx;
@@ -68,10 +68,10 @@ namespace mvc
         {
             node.velocity.x = (node.velocity.x + time_step * node.force_accumulator.x) * damping;
             node.velocity.y = (node.velocity.y + time_step * node.force_accumulator.y) * damping;
-    
+
             node.position.x += time_step * node.velocity.x;
             node.position.y += time_step * node.velocity.y;
-    
+
             // reset forces
             node.force_accumulator.x = node.force_accumulator.y = 0;
         }

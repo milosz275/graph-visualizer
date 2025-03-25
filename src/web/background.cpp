@@ -10,7 +10,7 @@ namespace web_ui
 
     bool background::toggle_darkmode()
     {
-        int result = {EM_ASM_INT({ return toggleDarkmode(); }, 0)};
+        int result = { EM_ASM_INT({ return toggleDarkmode(); }, 0) };
         if (result)
             return true;
         else
@@ -19,7 +19,7 @@ namespace web_ui
 
     bool background::get_darkmode()
     {
-        int result = {EM_ASM_INT({ return getDarkmode(); }, 0)};
+        int result = { EM_ASM_INT({ return getDarkmode(); }, 0) };
         if (result)
             return true;
         else
@@ -28,7 +28,7 @@ namespace web_ui
 
     void background::draw_background()
     {
-        darkmode = {EM_ASM_INT({ return getDarkmode(); }, 0)};
+        darkmode = { EM_ASM_INT({ return getDarkmode(); }, 0) };
 
         if (!darkmode)
             glClearColor(0.65f, 0.65f, 0.65f, 1.0f);

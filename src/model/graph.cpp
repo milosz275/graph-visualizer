@@ -43,14 +43,14 @@ namespace mvc
         // edge
         auto [first_node, second_node, cost] = edge;
         web_ui::renderer::draw_line(
-            {nodes[first_node].position.x, nodes[first_node].position.y},
-            {nodes[second_node].position.x, nodes[second_node].position.y},
-            {1.0f, 1.0f, 1.0f});
+            { nodes[first_node].position.x, nodes[first_node].position.y },
+            { nodes[second_node].position.x, nodes[second_node].position.y },
+            { 1.0f, 1.0f, 1.0f });
 
         // edge cost
         web_ui::text::draw_text(
-            {(nodes[first_node].position.x + nodes[second_node].position.x) / 2 + 0.01f,
-             (nodes[first_node].position.y + nodes[second_node].position.y) / 2 + 0.01f},
+            { (nodes[first_node].position.x + nodes[second_node].position.x) / 2 + 0.01f,
+             (nodes[first_node].position.y + nodes[second_node].position.y) / 2 + 0.01f },
             std::format("{:.2f}", cost),
             "16px Arial",
             "gray");
@@ -69,45 +69,45 @@ namespace mvc
 
         glm::vec2 tip_center = {
             nodes[second_node].position.x - node_radius * cos(angle),
-            nodes[second_node].position.y - node_radius * sin(angle)};
+            nodes[second_node].position.y - node_radius * sin(angle) };
         glm::vec2 tip_left = {
             tip_center.x - tip_length * cos(angle) - tip_width * sin(angle),
-            tip_center.y - tip_length * sin(angle) + tip_width * cos(angle)};
+            tip_center.y - tip_length * sin(angle) + tip_width * cos(angle) };
         glm::vec2 tip_right = {
             tip_center.x - tip_length * cos(angle) + tip_width * sin(angle),
-            tip_center.y - tip_length * sin(angle) - tip_width * cos(angle)};
-        web_ui::renderer::draw_triangle(tip_center, tip_left, tip_right, {1.0f, 1.0f, 1.0f});
+            tip_center.y - tip_length * sin(angle) - tip_width * cos(angle) };
+        web_ui::renderer::draw_triangle(tip_center, tip_left, tip_right, { 1.0f, 1.0f, 1.0f });
     }
 
     void graph::draw_node(mvc::graph_node& node)
     {
         // node
-        glm::vec3 color = {0.0f, 0.0f, 1.0f};
+        glm::vec3 color = { 0.0f, 0.0f, 1.0f };
         if (node.highlighted)
-            color = {0.0f, 0.8f, 0.8f};
+            color = { 0.0f, 0.8f, 0.8f };
         else if (node.visited)
-            color = {1.0f, 0.0f, 1.0f};
+            color = { 1.0f, 0.0f, 1.0f };
         web_ui::renderer::draw_circle(
-            {node.position.x, node.position.y},
+            { node.position.x, node.position.y },
             0.01f,
             color);
 
         // node id
         if (node.id == 0)
             web_ui::text::draw_text(
-                {node.position.x + 0.01f, node.position.y + 0.01f},
+                { node.position.x + 0.01f, node.position.y + 0.01f },
                 "id: " + std::to_string(node.id),
                 "16px Arial",
                 "red");
         else if (web_ui::background::get_darkmode())
             web_ui::text::draw_text(
-                {node.position.x + 0.01f, node.position.y + 0.01f},
+                { node.position.x + 0.01f, node.position.y + 0.01f },
                 "id: " + std::to_string(node.id),
                 "16px Arial",
                 "white");
         else
             web_ui::text::draw_text(
-                {node.position.x + 0.01f, node.position.y + 0.01f},
+                { node.position.x + 0.01f, node.position.y + 0.01f },
                 "id: " + std::to_string(node.id),
                 "16px Arial",
                 "black");
@@ -117,10 +117,10 @@ namespace mvc
     {
         if (graph_physics::paused())
             return;
-        graph_physics::apply_repulsion(nodes, 0.02f);
-        graph_physics::apply_attraction(nodes, edges, 0.02f, 10.0f);
-        graph_physics::apply_gravity(nodes, 2.5f);
-        graph_physics::update_nodes(nodes, 0.02f, 0.9f);
+        graph_physics::apply_repulsion(nodes, 0.01f);
+        graph_physics::apply_attraction(nodes, edges, 0.01f, 2.0f);
+        graph_physics::apply_gravity(nodes, 0.5f);
+        graph_physics::update_nodes(nodes, 0.08f, 0.7f);
     }
 
     void graph::explode()

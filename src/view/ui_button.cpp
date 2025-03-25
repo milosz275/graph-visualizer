@@ -11,21 +11,21 @@ namespace mvc
     void ui_button::render()
     {
         glm::vec2 canvas = mvc::view::get_canvas_size();
-        glm::vec3 background_color = {0.325f, 0.325f, 0.325f};
+        glm::vec3 background_color = { 0.325f, 0.325f, 0.325f };
         std::string text_color = "white";
         if (!enabled)
         {
-            background_color = {0.25f, 0.25f, 0.25f};
+            background_color = { 0.25f, 0.25f, 0.25f };
             text_color = "grey";
         }
-        
+
         web_ui::renderer::draw_rectangle(
-            {position.x, position.y},
-            {position.x + size.x, position.y + size.y},
+            { position.x, position.y },
+            { position.x + size.x, position.y + size.y },
             background_color);
 
         web_ui::text::draw_text(
-            {position.x + (25 / canvas.x), position.y + (size.y * 0.320)},
+            { position.x + (25 / canvas.x), position.y + (size.y * 0.320) },
             label,
             "24px Arial",
             text_color);

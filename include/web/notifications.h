@@ -19,7 +19,7 @@ namespace web_ui
          * @brief Removes timed out notifications from the list.
          */
         static void update();
-        
+
     public:
         /**
          * @brief Draws first n notifications from the list.

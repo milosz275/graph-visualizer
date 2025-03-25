@@ -37,7 +37,7 @@ namespace mvc
          * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;
-        
+
         /**
          * @brief Returns whether shortest path was found and path queue is empty.
          * @return Return true if algorithm is complete, false otherwise.

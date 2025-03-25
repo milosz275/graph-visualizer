@@ -18,9 +18,9 @@ namespace mvc
 
         /**
          * @brief Updates step_pause using step_index.
-         * 
+         *
          * 2^step_index = step_pause (..., 1/4, 1/2, 1, 2, 4, ...)
-         * 
+         *
          * @return Value of newly set step pause value.
          */
         double update_step_pause();

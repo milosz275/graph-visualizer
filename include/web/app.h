@@ -28,7 +28,7 @@ namespace app
          * Runs the graph app.
          */
         static void run();
-    
+
     private:
         static bool initialized;
         static bool running;

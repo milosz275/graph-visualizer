@@ -41,6 +41,13 @@ namespace mvc
         void generate_random(int num_nodes, bool random_weights) override;
 
         /**
+         * @brief Clears the graph and generates random topological undirected graph.
+         * @param num_nodes Number of nodes.
+         * @param random_weights Flag whether edges should random costs/weights.
+         */
+        void generate_topological(int num_nodes, bool random_weights) override;
+
+        /**
          * @brief Draws entire graph including graph nodes, node identifiers, edges, edge costs.
          */
         void draw() override;

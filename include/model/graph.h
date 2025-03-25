@@ -19,7 +19,7 @@ namespace mvc
         std::vector<graph_node> nodes;
         std::vector<std::tuple<int, int, float>> edges; // (node id, node id, cost)
         int highlighted_node;
-        
+
     public:
         /**
          * @brief Creates base for directed/undirected graph.
@@ -45,11 +45,18 @@ namespace mvc
         virtual void generate_polygon(int vertices, bool random_weights) = 0;
 
         /**
-         * @brief Clears the graph and generates random graph.
+         * @brief Clears the graph and generates random graph with random edges.
          * @param num_nodes Number of nodes.
          * @param random_weights Flag whether edges should random costs/weights.
          */
         virtual void generate_random(int num_nodes, bool random_weights) = 0;
+
+        /**
+         * @brief Clears the graph and generates random topological graph.
+         * @param num_nodes Number of nodes.
+         * @param random_weights Flag whether edges should random costs/weights.
+         */
+        virtual void generate_topological(int num_nodes, bool random_weights) = 0;
 
         /**
          * @brief Sets all graph nodes as unvisited.
@@ -67,13 +74,13 @@ namespace mvc
          * @param edge Edge to draw.
          */
         void draw_edge(std::tuple<int, int, float>& edge);
-        
+
         /**
          * @brief Draws arrow pointing at the end of given edge.
          * @param edge Edge tip to draw.
          */
         void draw_arrow(std::tuple<int, int, float>& edge);
-        
+
         /**
          * @brief Draws given node.
          * @param node Node to draw.
@@ -122,6 +129,8 @@ namespace mvc
          * @brief Supplies [] access to graph's nodes
          */
         const graph_node& operator[](int id) const;
+
+
 
         friend class graph_state;
         friend class dijkstra_algorithm;

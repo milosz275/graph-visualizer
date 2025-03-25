@@ -11,10 +11,10 @@ namespace mvc
 {
     a_star_algorithm::a_star_algorithm(int start_node, int target_node, std::vector<graph_node>& nodes)
         : graph_algorithm("A*", start_node), found_path(false), path(), target_node(target_node),
-          g_cost(nodes.size(), std::numeric_limits<float>::max()),
-          f_cost(nodes.size(), std::numeric_limits<float>::max())
+        g_cost(nodes.size(), std::numeric_limits<float>::max()),
+        f_cost(nodes.size(), std::numeric_limits<float>::max())
     {
-        open_set.insert({0, start_node});
+        open_set.insert({ 0, start_node });
         g_cost[start_node] = 0.0f;
         f_cost[start_node] = heuristic(nodes[start_node].get_position(), nodes[target_node].get_position());
         parent[start_node] = -1;
@@ -54,7 +54,7 @@ namespace mvc
                     graph.highlight_node(-1);
                     found_path = true;
                     web_ui::notifications::add("A* found path with " + std::to_string(path.size() - 2) + " steps and " + std::format("{:.2f}", g_cost[target_node]) + " total cost.", 15);
-                    
+
                     return false; // not wait
                 }
 
@@ -66,12 +66,12 @@ namespace mvc
                     if (tentative_g < g_cost[v])
                     {
                         if (g_cost[v] != std::numeric_limits<float>::max())
-                            open_set.erase(open_set.find({f_cost[v], v}));
+                            open_set.erase(open_set.find({ f_cost[v], v }));
 
                         g_cost[v] = tentative_g;
                         f_cost[v] = g_cost[v] + heuristic(graph.nodes[v].get_position(), graph.nodes[target_node].get_position());
                         parent[v] = u;
-                        open_set.insert({f_cost[v], v});
+                        open_set.insert({ f_cost[v], v });
 
                         graph[v].set_visited(true);
                     }

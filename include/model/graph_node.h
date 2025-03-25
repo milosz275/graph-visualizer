@@ -16,11 +16,11 @@ namespace mvc
     {
         static int node_counter;
         int id;
-        
+
         glm::vec2 position;
         glm::vec2 velocity;
         glm::vec2 force_accumulator;
-        
+
         std::vector<int> neighbors;
         bool visited;
         bool highlighted;
@@ -56,14 +56,14 @@ namespace mvc
          * @return Returns visited flag.
          */
         bool get_visited();
-        
+
         /**
          * @brief Sets the node's visited flag.
          * @param visited New visited state.
          * @return Returns visited flag.
          */
         bool set_visited(bool visited);
-        
+
         /**
          * @brief Sets the node's highlighted flag.
          * @param highlighted New highlighted state.

@@ -10,8 +10,8 @@ namespace mvc
 {
     bellman_ford_algorithm::bellman_ford_algorithm(int start_node, int target_node, std::vector<graph_node>& nodes)
         : graph_algorithm("Bellman-Ford", start_node), found_path(false), path(), target_node(target_node),
-          distance(nodes.size(), std::numeric_limits<float>::max()), iteration(0), has_negative_cycle(false),
-          current_node(start_node)
+        distance(nodes.size(), std::numeric_limits<float>::max()), iteration(0), has_negative_cycle(false),
+        current_node(start_node)
     {
         distance[start_node] = 0.0f;
         parent[start_node] = -1;
@@ -25,11 +25,11 @@ namespace mvc
             if (iteration < (int)graph.nodes.size() - 1)
             {
                 // process only one node at a time in each step
-                if (current_node < (int)graph.nodes.size()) 
+                if (current_node < (int)graph.nodes.size())
                 {
                     graph.highlight_node(current_node);
                     graph[current_node].set_visited(true);
-                    
+
                     // process all the neighbors of the current node
                     for (int v : graph.nodes[current_node].get_neighbors())
                     {
@@ -40,7 +40,7 @@ namespace mvc
                             parent[v] = current_node;
                         }
                     }
-                    
+
                     current_node++;
                     return true; // wait
                 }
@@ -91,7 +91,7 @@ namespace mvc
                 graph.highlight_node(-1);
                 found_path = true;
                 web_ui::notifications::add("Bellman-Ford found shortest path with " + std::to_string(path.size() - 2) + " steps and " + std::format("{:.2f}", distance[target_node]) + " total cost.", 15);
-                
+
                 return false;  // not wait
             }
         }

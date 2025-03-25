@@ -18,14 +18,14 @@ namespace mvc
          * @param start_node ID of a node to start from.
          */
         explicit bfs_algorithm(int start_node);
-        
+
         /**
          * @brief Performs one step in BFS algorithm.
          * @param graph Graph reference.
          * @return Return true if waiting after print is advised, false when the step was empty (no changes to data structures).
          */
         bool step(mvc::graph& graph) override;
-        
+
         /**
          * @brief Returns whether queue is empty and therefore BFS algorithm is finished.
          * @return Return true if algorithm is complete, false otherwise.
