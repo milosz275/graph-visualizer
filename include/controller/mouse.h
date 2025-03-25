@@ -27,6 +27,12 @@ namespace mvc
          */
         static void set_mouse_pointer();
 
+        /**
+         * @brief Toggles mouse cursor/pointer.
+         * @return 0 for cursor, 1 for pointer.
+         */
+        static int toggle_mouse();
+
     private:
         /**
          * @brief Mouse click callback. Executed on both up/down clicks.
