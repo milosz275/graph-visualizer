@@ -57,11 +57,15 @@ python3 -m http.server
 - [x] DFS - Traverses the graph using a stack, exploring as far as possible along each branch before backtracking.
 - [x] Dijkstra - Finds the shortest path from a source node to all other nodes using a priority queue, ensuring the lowest-cost path is always processed first. Recovers the best path by backtracking from the target node to the source.
 - [x] A* - An optimized shortest-path algorithm that combines Dijkstra’s approach with a heuristic function to estimate the remaining cost, guiding the search more efficiently toward the target.
-- [ ] Bellman-Ford - Computes the shortest paths from a source node to all other nodes, allowing for negative-weight edges. Iteratively relaxes edges, ensuring that no shorter path exists. Can detect negative-weight cycles.
+- [x] Bellman-Ford - Computes the shortest paths from a source node to all other nodes, allowing for negative-weight edges. Iteratively relaxes edges, ensuring that no shorter path exists. Can detect negative-weight cycles.
 
 ## Project Structure
 
 The project uses the [web-ui](https://github.com/milosz275/web-ui) frontend framework for rendering. It follows the Model-View-Controller (MVC) architecture to separate concerns effectively.
+
+- Model - Abstract elements of the Graph Visualizer such as graph nodes, their physical properties along with graph algorithms, state of individual nodes and representation.
+- View - Graphical aspect of both the program's state, UI and the graph itself.
+- Controller - Interaction with the canvas with mouse and canvas translation to model component, and canvas resizing (no keyboard integration at this point).
 
 ## Design Patterns
 
