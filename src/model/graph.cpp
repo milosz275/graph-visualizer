@@ -117,10 +117,10 @@ namespace mvc
     {
         if (graph_physics::paused())
             return;
-        graph_physics::apply_repulsion(nodes, 0.02f);
-        graph_physics::apply_attraction(nodes, edges, 0.02f, 10.0f);
-        graph_physics::apply_gravity(nodes, 2.5f);
-        graph_physics::update_nodes(nodes, 0.02f, 0.9f);
+        graph_physics::apply_repulsion(nodes, 0.01f);
+        graph_physics::apply_attraction(nodes, edges, 0.01f, 2.0f);
+        graph_physics::apply_gravity(nodes, 0.5f);
+        graph_physics::update_nodes(nodes, 0.08f, 0.7f);
     }
 
     void graph::explode()
