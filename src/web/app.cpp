@@ -54,13 +54,20 @@ namespace app
 
     void graph_app::main_loop()
     {
-        web_ui::canvas::update_canvas_size();
-        web_ui::background::draw_background();
-        web_ui::text::clear_text_canvas();
-        draw_logo();
-        draw_legend();
-        web_ui::notifications::draw();
-        current_state->render();
+        try
+        {
+            web_ui::canvas::update_canvas_size();
+            web_ui::background::draw_background();
+            web_ui::text::clear_text_canvas();
+            draw_logo();
+            draw_legend();
+            web_ui::notifications::draw();
+            current_state->render();
+        }
+        catch (std::runtime_error& e)
+        {
+            std::cerr << "Main loop: " << e.what() << '\n';
+        }
     }
 
     void graph_app::handle_mouse_click(glm::vec2 mouse, bool down)
