@@ -53,6 +53,9 @@ namespace mvc
             auto [first_node, second_node, cost] = edge;
             nodes[first_node].neighbors.push_back(second_node);
         }
+
+        if ((int)this->nodes.size() <= 0)
+            throw std::runtime_error("Directed graph: create default did not create positive number of nodes.");
     }
 
     void directed_graph::generate_polygon(int vertices, bool random_weights)
@@ -132,6 +135,9 @@ namespace mvc
             auto [first_node, second_node, cost] = edge;
             nodes[first_node].neighbors.push_back(second_node);
         }
+
+        if ((int)this->nodes.size() != num_nodes)
+            throw std::runtime_error("Directed graph: generate polygon did not create " + std::to_string(num_nodes) + " random nodes.");
     }
 
     void directed_graph::generate_random(int num_nodes, bool random_weights)
@@ -172,6 +178,20 @@ namespace mvc
                 cost = cost_gen(gen);
             }
         }
+
+        if ((int)this->nodes.size() != num_nodes)
+            throw std::runtime_error("Directed graph: generate random did not create " + std::to_string(num_nodes) + " random nodes.");
+    }
+
+    void directed_graph::generate_topological(int num_nodes, bool random_weights)
+    {
+        nodes.clear();
+        edges.clear();
+        graph_node::node_counter = 0;
+
+
+        if ((int)this->nodes.size() != num_nodes)
+            throw std::runtime_error("Directed graph: generate topological did not create " + std::to_string(num_nodes) + " random nodes.");
     }
 
     void directed_graph::draw()
