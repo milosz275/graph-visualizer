@@ -35,12 +35,12 @@ namespace web_ui
         // draw backwards (top to bottom)
         if ((int)texts.size() > target_size)
         {
-            auto it = texts.begin();
+            auto it = texts.end();
             for (int k = 0; k < target_size; ++k)
-                it++;
-            for (; it != texts.begin(); --it)
+                it--;
+            for (; it != texts.end(); ++it)
             {
-                mvc::ui_label label({ upper_left_corner.x, upper_left_corner.y - i++ * 0.04f }, (*it).first);
+                mvc::ui_label label({ upper_left_corner.x, (upper_left_corner.y - (target_size - 1) * 0.04f) + i++ * 0.04f }, (*it).first);
                 label.render();
                 if (i == target_size)
                     break;
