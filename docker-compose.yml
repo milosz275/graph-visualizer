@@ -1,0 +1,28 @@
+services:
+  dev:
+    build: .
+    container_name: graph-vis-dev
+    volumes:
+      - build_output:/app/docs
+    working_dir: /app
+    command: >
+      sh -c "
+        mkdir -p docs/demo &&
+        cp src/index.html docs/demo/ &&
+        cp build/graph-visualizer.js docs/demo/ &&
+        cp build/graph-visualizer.wasm docs/demo/ &&
+        cp -r assets/* docs/demo/ &&
+        tail -f /dev/null
+      "
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-doc-server
+    ports:
+      - "8081:80"
+    volumes:
+      - build_output:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+volumes:
+  build_output:
