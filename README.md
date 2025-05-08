@@ -34,6 +34,12 @@ Graph Visualizer is compiled by emcc, available from [Emscripten](https://emscri
 
 ## Build
 
+### Docker
+
+Run `docker compose up --build` to create local instance of the project and access the demo at `http://localhost:8081/demo/`.
+
+### Manual build
+
 Run the following to setup to get a working copy of this project:
 
 ```bash
