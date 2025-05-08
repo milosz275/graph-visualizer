@@ -19,3 +19,6 @@ build
 
 # icon for localhost:8000 testing in /src
 src/favicon.ico
+
+# docs
+docs
